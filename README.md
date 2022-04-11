@@ -1,10 +1,10 @@
 # Ghala-Android
-This is an android version of a warehouse information system, which has processes and flows that take place on a typical work day in a warehouse.
+This is an android version of a warehouse management system, that helps in managing day-to-day operations in a warehouse.
 
 # Table Of Contents
 
 
-* [About the App](#AboutTheApp)
+* [About the App](#about-the-app)
 
 * [General Preview](#general-preview)
 
@@ -12,15 +12,15 @@ This is an android version of a warehouse information system, which has processe
 
 * [Permissions](#permissions)
 
-* [Run Poject](#run-locally)
+* [Run Project](#run-project)
 
 * [Installation](#installation)
 
 * [Dependencies](#dependencies)
 
-* [To Do List](#todo)
+* [To Do List](#to-do-list)
 
-* [Authors](#todo)
+* [Contributors](#contributors)
 
 * [Contributing](#contributing)
 
@@ -39,10 +39,10 @@ The app has the following key features:
 - An admin can  view All Warehouses or Filter Warehouses
 
 ## General Preview
-Designs coming soon
+Designs coming soon.
 
 ## Architecture
-The app uses the MVVM architecture: A comprehensive architecture design is coming soon.
+The app uses the MVVM architecture: A comprehensive architecture design is still WIP.
 
 ## Permissions
 You need to allow the following permissions before running the app:
@@ -50,8 +50,8 @@ You need to allow the following permissions before running the app:
 
 ## Run Project
 You can check out the compiled version of the app here: [appetize](https://appetize.io/#howitworks)
-## Installations
 
+## Installation
 Clone the project
 
 ```bash
@@ -90,9 +90,12 @@ Run the app on your emulator or device
 - [ ] Unit Testing
 - [ ] Deploy app on [appetize.io](https://appetize.io/#howitworks)
 
-## Contributers
-Auto-populated from:
+## Contributors
+Auto-populated from:[contrib.rocks](https://contrib.rocks)
 
+<a href="https://github.com/Ultra-Techies/ghala-android/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Ultra-Techies/ghala-android" />
+</a>
 
 ## Contributing
 
@@ -110,7 +113,7 @@ Please adhere to this project's `code of conduct`.
 
 ## Wiki
 
-Check out the app's wiki [coming soon]()
+Check out the app's wiki [here](https://github.com/Ultra-Techies/ghala-android/wiki)
 
 
 ## License
