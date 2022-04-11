@@ -4,7 +4,7 @@ This is an android version of a warehouse information system, which has processe
 # Table Of Contents
 
 
-* [About the App](#AboutTheApp)
+* [About the App](#aboutTheApp)
 
 * [General Preview](#general-preview)
 
@@ -18,9 +18,9 @@ This is an android version of a warehouse information system, which has processe
 
 * [Dependencies](#dependencies)
 
-* [To Do List](#todo)
+* [To Do List](#to-do-list)
 
-* [Authors](#todo)
+* [Contributors](#contributors)
 
 * [Contributing](#contributing)
 
@@ -51,7 +51,7 @@ You need to allow the following permissions before running the app:
 ## Run Project
 You can check out the compiled version of the app here: [appetize](https://appetize.io/#howitworks)
 
-## Installations
+## Installation
 Clone the project
 
 ```bash
@@ -90,7 +90,7 @@ Run the app on your emulator or device
 - [ ] Unit Testing
 - [ ] Deploy app on [appetize.io](https://appetize.io/#howitworks)
 
-## Contributers
+## Contributors
 Auto-populated from:
 
 
@@ -110,7 +110,7 @@ Please adhere to this project's `code of conduct`.
 
 ## Wiki
 
-Check out the app's wiki [coming soon]()
+Check out the app's wiki [here](https://github.com/Ultra-Techies/ghala-android/wiki)
 
 
 ## License
