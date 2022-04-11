@@ -4,7 +4,7 @@ This is an android version of a warehouse management system, that helps in manag
 # Table Of Contents
 
 
-* [About the App](#aboutTheApp)
+* [About the App](#about-the-app)
 
 * [General Preview](#general-preview)
 
