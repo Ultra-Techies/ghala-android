@@ -39,7 +39,7 @@ The app has the following key features:
 - An admin can  view All Warehouses or Filter Warehouses
 
 ## General Preview
-Designs coming soon
+Designs coming soon.
 
 ## Architecture
 The app uses the MVVM architecture: A comprehensive architecture design is still WIP.
