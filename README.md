@@ -1,5 +1,5 @@
 # Ghala-Android
-This is an android version of a warehouse information system, which has processes and flows that take place on a typical work day in a warehouse.
+This is an android version of a warehouse management system, that helps in managing day-to-day operations in a warehouse.
 
 # Table Of Contents
 
@@ -91,8 +91,11 @@ Run the app on your emulator or device
 - [ ] Deploy app on [appetize.io](https://appetize.io/#howitworks)
 
 ## Contributors
-Auto-populated from:
+Auto-populated from:[contrib.rocks](https://contrib.rocks)
 
+<a href="https://github.com/Ultra-Techies/ghala-android/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Ultra-Techies/ghala-android" />
+</a>
 
 ## Contributing
 
