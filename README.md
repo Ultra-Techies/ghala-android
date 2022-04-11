@@ -12,7 +12,7 @@ This is an android version of a warehouse information system, which has processe
 
 * [Permissions](#permissions)
 
-* [Run Poject](#run-locally)
+* [Run Project](#run-project)
 
 * [Installation](#installation)
 
@@ -42,7 +42,7 @@ The app has the following key features:
 Designs coming soon
 
 ## Architecture
-The app uses the MVVM architecture: A comprehensive architecture design is coming soon.
+The app uses the MVVM architecture: A comprehensive architecture design is still WIP.
 
 ## Permissions
 You need to allow the following permissions before running the app:
@@ -50,8 +50,8 @@ You need to allow the following permissions before running the app:
 
 ## Run Project
 You can check out the compiled version of the app here: [appetize](https://appetize.io/#howitworks)
-## Installations
 
+## Installations
 Clone the project
 
 ```bash
