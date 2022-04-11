@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Ghala</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="nav_header_title">username</string>
+    <string name="nav_header_subtitle">user@ghala.app</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_warehouse">Warehouses</string>
+    <string name="menu_settings">Settings</string>
 </resources>
