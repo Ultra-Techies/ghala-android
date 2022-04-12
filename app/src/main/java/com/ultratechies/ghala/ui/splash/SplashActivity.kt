@@ -1,19 +1,21 @@
 package com.ultratechies.ghala.ui.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.databinding.ActivitySplashBinding
-import com.ultratechies.ghala.ui.main.MainActivity
+import com.ultratechies.ghala.ui.auth.AuthActivity
 import com.ultratechies.ghala.utils.isNetworkAvailable
 import com.ultratechies.ghala.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
@@ -22,7 +24,6 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -34,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
             binding.root.snackbar(getString(R.string.no_internet_connection))
             binding.progressBar.visibility = View.GONE
 
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 delay(15000)
                 if(!isNetworkAvailable(this@SplashActivity)){
                     binding.root.snackbar(getString(R.string.no_internet_connection))
@@ -44,7 +45,7 @@ class SplashActivity : AppCompatActivity() {
             }
 
         } else {
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 delay(3000)
                 runOnUiThread {
                     loadMainActivity()
@@ -55,7 +56,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun loadMainActivity(){
         binding.progressBar.visibility = View.GONE
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)
         finish()
     }
