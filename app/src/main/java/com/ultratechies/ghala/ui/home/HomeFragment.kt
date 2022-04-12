@@ -6,7 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ultratechies.ghala.R
+import android.widget.Toast
+import com.ultratechies.ghala.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
 
@@ -15,18 +16,37 @@ class HomeFragment : Fragment() {
     }
 
     private lateinit var viewModel: HomeViewModel
+    private lateinit var binding: HomeFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+
+        binding.card1.setOnClickListener {
+            Toast.makeText(context, "Card 1", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.card2.setOnClickListener {
+            Toast.makeText(context, "Card 2", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.card3.setOnClickListener {
+            Toast.makeText(context, "Card 3", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.card4.setOnClickListener {
+            Toast.makeText(context, "Card 4", Toast.LENGTH_SHORT).show()
+        }
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
+
     }
 
 }
