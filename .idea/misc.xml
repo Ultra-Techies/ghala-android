@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/drawable/one_rounded_corner_rectangle.xml" value="0.123" />
+        <entry key="app/src/main/res/drawable/rectangle.xml" value="0.2105" />
+        <entry key="app/src/main/res/drawable/white_circle.xml" value="0.2255" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.14427083333333332" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19722222222222222" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/fragment_otp_verification.xml" value="0.24203821656050956" />
+        <entry key="app/src/main/res/layout/fragment_phone_verification.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/fragment_setup_account.xml" value="0.2989583333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16_PREVIEW" project-jdk-name="corretto-16" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.2989583333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>
