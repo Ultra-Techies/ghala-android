@@ -7,12 +7,13 @@
         <entry key="app/src/main/res/drawable/one_rounded_corner_rectangle.xml" value="0.123" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.2105" />
         <entry key="app/src/main/res/drawable/white_circle.xml" value="0.2255" />
+        <entry key="app/src/main/res/font/open_sans_bold.xml" value="0.18489583333333334" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.14427083333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19722222222222222" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/fragment_otp_verification.xml" value="0.24203821656050956" />
         <entry key="app/src/main/res/layout/fragment_phone_verification.xml" value="0.2989583333333333" />
-        <entry key="app/src/main/res/layout/fragment_setup_account.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/fragment_setup_account.xml" value="0.25" />
       </map>
     </option>
   </component>
