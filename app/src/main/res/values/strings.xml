@@ -18,16 +18,22 @@
     <string name="second_name">Second Name</string>
     <string name="first_name">First Name</string>
     <string name="phone">phone</string>
+    <string name="otp_input">OTP Input</string>
     <string-array name="warehouses">
         <item>Select a warehouse</item>
-        <item>Venus</item>
-        <item>Mercury</item>
-        <item>Earth</item>
+        <item>Kawangware</item>
+        <item>Baba dogo</item>
+        <item>Ruiru</item>
     </string-array>
     <string-array name="department">
         <item>Select a department </item>
+        <item>Dispatch</item>
+        <item>Logistics</item>
     </string-array>
     <string-array name="role">
         <item>Select a role </item>
+        <item>Dispatcher Associate</item>
+        <item>Admin</item>
+        <item>Driver</item>
     </string-array>
 </resources>
