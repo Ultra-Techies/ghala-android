@@ -1,6 +1,41 @@
 <resources>
     <string name="app_name">Ghala</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="next">Next</string>
+    <string name="_722945678">722945678</string>
+    <string name="kenya_254">KENYA(+254)</string>
+    <string name="we_need_to_send_an_otp_to_authenticate_your_number">We need to send an OTP to authenticate your number</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="resend"><u>Resend</u></string>
+    <string name="please_enter_otp_code_sent_to_your_number">Please enter OTP code sent to your number</string>
+    <string name="otp_sms">OTP SMS</string>
+    <string name="verify">Verify</string>
+    <string name="did_not_receive_an_otp">Did not receive an OTP ?</string>
+    <string name="setup_account">Setup Account</string>
+    <string name="to_start_using_the_app">to start using the app.</string>
+    <string name="welcome_to_ghala_app_please_setup_your_account">Welcome to Ghala app. Please setup your account</string>
+    <string name="email_address">Email Address</string>
+    <string name="second_name">Second Name</string>
+    <string name="first_name">First Name</string>
+    <string name="phone">phone</string>
+    <string name="otp_input">OTP Input</string>
+    <string-array name="warehouses">
+        <item>Select a warehouse</item>
+        <item>Kawangware</item>
+        <item>Baba dogo</item>
+        <item>Ruiru</item>
+    </string-array>
+    <string-array name="department">
+        <item>Select a department </item>
+        <item>Dispatch</item>
+        <item>Logistics</item>
+    </string-array>
+    <string-array name="role">
+        <item>Select a role </item>
+        <item>Dispatcher Associate</item>
+        <item>Admin</item>
+        <item>Driver</item>
+    </string-array>
     <string name="nav_header_title">username</string>
     <string name="nav_header_subtitle">user@ghala.app</string>
     <string name="menu_home">Home</string>

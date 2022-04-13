@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav"
+    app:startDestination="@id/phoneVerificationFragment2">
+
+    <fragment
+        android:id="@+id/phoneVerificationFragment2"
+        android:name="com.ultratechies.ghala.ui.auth.PhoneVerificationFragment"
+        android:label="PhoneVerificationFragment"
+        tools:layout="@layout/fragment_phone_verification">
+        <action
+            android:id="@+id/action_phoneVerificationFragment2_to_otpVerificationFragment2"
+            app:destination="@id/otpVerificationFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/otpVerificationFragment2"
+        android:name="com.ultratechies.ghala.ui.auth.OtpVerificationFragment"
+        android:label="OtpVerificationFragment"
+        tools:layout="@layout/fragment_otp_verification">
+        <action
+            android:id="@+id/action_otpVerificationFragment2_to_setupAccountFragment2"
+            app:destination="@id/setupAccountFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupAccountFragment2"
+        android:name="com.ultratechies.ghala.ui.auth.SetupAccountFragment"
+        android:label="SetupAccountFragment"
+        tools:layout="@layout/fragment_setup_account">
+        <action
+            android:id="@+id/action_setupAccountFragment2_to_otpVerificationFragment2"
+            app:destination="@id/otpVerificationFragment2" />
+    </fragment>
+</navigation>
