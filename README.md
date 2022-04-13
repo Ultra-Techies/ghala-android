@@ -116,7 +116,7 @@ Please adhere to this project's `code of conduct`.
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -m 'Add some feature')
 4. Push your branch (git push origin my-new-feature)
-5. Create a new Pull Request
+5. Create a new Pull Request and set ```dev``` as the base branch
 
 ## Wiki
 
