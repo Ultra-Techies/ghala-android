@@ -32,8 +32,13 @@ class PhoneVerificationFragment : Fragment() {
         countryCodePicker.registerCarrierNumberEditText(binding.etPhoneNumber)
 
         binding.nextButton.setOnClickListener {
+            binding.pbPhoneVerification.visibility = View.VISIBLE
+            binding.nextButton.isEnabled = false
+
             if( !countryCodePicker.isValidFullNumber  ){
                 binding.etPhoneNumber.error = "Invalid phone number"
+                binding.pbPhoneVerification.visibility = View.GONE
+                binding.nextButton.isEnabled = true
                 return@setOnClickListener
             }
             findNavController().navigate(R.id.action_phoneVerificationFragment2_to_otpVerificationFragment2)
