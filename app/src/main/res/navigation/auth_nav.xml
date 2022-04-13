@@ -27,5 +27,9 @@
         android:id="@+id/setupAccountFragment2"
         android:name="com.ultratechies.ghala.ui.auth.SetupAccountFragment"
         android:label="SetupAccountFragment"
-        tools:layout="@layout/fragment_setup_account"/>
+        tools:layout="@layout/fragment_setup_account">
+        <action
+            android:id="@+id/action_setupAccountFragment2_to_otpVerificationFragment2"
+            app:destination="@id/otpVerificationFragment2" />
+    </fragment>
 </navigation>
