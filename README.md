@@ -39,7 +39,14 @@ The app has the following key features:
 - An admin can  view All Warehouses or Filter Warehouses
 
 ## General Preview
-Designs coming soon.
+More designs coming soon...
+
+<a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Splash%20Screen.jpg height="550"  ></a>
+<a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Phone%20Verification%20Screen.jpg height="550"  ></a>
+<a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20OTP%20Verification%20Screen.jpg height="550"  ></a>
+<a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Setup%20Account%20Screen.jpg height="550"  ></a>
+<a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Submitted%20Successfully%20Screen.jpg height="550"  ></a>
+<a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Home%20Screen.jpg height="550"  ></a>
 
 ## Architecture
 The app uses the MVVM architecture: A comprehensive architecture design is still WIP.
