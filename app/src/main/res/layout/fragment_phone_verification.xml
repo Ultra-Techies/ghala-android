@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rv_phone"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:visibility="gone"
         android:background="@drawable/logo"
+        android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/ll_phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="@string/we_need_to_send_an_otp_to_authenticate_your_number"
-        android:textColor="#85000000"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/ll_phone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +52,7 @@
     <LinearLayout
         android:id="@+id/ll_phone"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="450dp"
         android:background="@drawable/one_rounded_corner_rectangle"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,42 +60,45 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.hbb20.CountryCodePicker
-            android:padding="5dp"
             android:id="@+id/ccp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="70dp"
+            android:layout_marginRight="20dp"
+            android:padding="5dp"
             app:ccp_defaultNameCode="KE"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/view_ccp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ccp"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ccp"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_phone_number"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="40dp"
+            android:padding="10dp"
             android:layout_marginRight="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_ccp"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="@string/phone"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
             android:inputType="phone"
             android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_ccp"
             tools:ignore="Autofill" />
 
 
@@ -103,26 +107,26 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
-            android:padding="5dp"
             android:backgroundTint="@color/colorSecondary"
+            android:padding="5dp"
+            android:text="@string/next"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_phone_number"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/next" />
+            app:layout_constraintTop_toBottomOf="@id/et_phone_number" />
 
         <ProgressBar
             android:id="@+id/pb_phone_verification"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:progressTint="@color/colorSecondary"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/containedButton"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/nextButton" />
 
     </LinearLayout>
 
