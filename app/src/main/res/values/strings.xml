@@ -49,4 +49,6 @@
     <string name="menu_orders">Orders</string>
     <string name="menu_inventory">Inventory</string>
     <string name="menu_dispatch">Dispatch</string>
+    <string name="all_products_including_taxes">All products including Taxes</string>
+    <string name="_2022_statistics">2022 Statistics</string>
 </resources>

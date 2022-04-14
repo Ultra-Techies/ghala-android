@@ -33,7 +33,7 @@
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginBottom="30dp"
+                        android:layout_marginBottom="10dp"
                         app:srcCompat="@drawable/default_profile"
                         android:padding="10dp"/>
                     <LinearLayout
@@ -59,6 +59,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:clipToPadding="false"
                     android:orientation="horizontal"
@@ -69,10 +70,39 @@
                         android:clickable="true"
                         android:id="@+id/card1"
                         android:layout_width="match_parent"
-                        android:layout_height="190dp"
+                        android:layout_height="300dp"
                         android:layout_margin="5dp">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp">
 
+                            <TextView
+                                android:id="@+id/barChartTitleTV"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:text="@string/_2022_statistics"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="20sp"
+                                android:textStyle="normal" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:text="@string/all_products_including_taxes"
+                                android:textColor="@color/grey"
+                                android:textSize="20sp"
+                                android:textStyle="normal" />
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/barChart"
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                />
 
+                        </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
 
