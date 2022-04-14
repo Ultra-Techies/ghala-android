@@ -46,4 +46,15 @@
     <string name="dispatch">Dispatch</string>
     <string name="statistics">Statistics</string>
     <string name="hello">Hello,</string>
+    <string name="ruiru_wh">Ruiru WH</string>
+    <string name="your_registration_has_been_submitted_successfully">Your Registration has been submitted Successfully</string>
+    <string name="dispatch_associate">Dispatch Associate</string>
+    <string name="role">Role :</string>
+    <string name="warehouse">Warehouse :</string>
+    <string name="malcolmmaima_gmail_com">malcolmmaima@gmail.com</string>
+    <string name="account_holder_email_address">Email :</string>
+    <string name="malcom_maima">Malcom Maima</string>
+    <string name="account_holder">Account Holder :</string>
+    <string name="successfully">Successfully</string>
+    <string name="confirm">Confirm</string>
 </resources>
