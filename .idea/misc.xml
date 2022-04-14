@@ -11,14 +11,16 @@
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.14427083333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19722222222222222" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.309375" />
+        <entry key="app/src/main/res/layout/content_home.xml" value="0.309375" />
         <entry key="app/src/main/res/layout/fragment_otp_verification.xml" value="0.24203821656050956" />
         <entry key="app/src/main/res/layout/fragment_phone_verification.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/fragment_setup_account.xml" value="0.2989583333333333" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/activity_splash.xml" value="0.18" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/app_bar_home.xml" value="0.15" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/content_home.xml" value="0.1" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/home_fragment.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_successful_registration.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.309375" />
+        <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.309375" />
+        <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.309375" />
+        <entry key="app/src/main/res/layout/warehouses_fragment.xml" value="0.309375" />
       </map>
     </option>
   </component>
