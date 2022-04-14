@@ -51,4 +51,6 @@
     <string name="menu_dispatch">Dispatch</string>
     <string name="all_products_including_taxes">All products including Taxes</string>
     <string name="_2022_statistics">2022 Statistics</string>
+    <string name="tasks">Tasks</string>
+    <string name="warehouse_tasks">Warehouse tasks</string>
 </resources>
