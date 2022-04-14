@@ -46,4 +46,7 @@
     <string name="dispatch">Dispatch</string>
     <string name="statistics">Statistics</string>
     <string name="hello">Hello,</string>
+    <string name="menu_orders">Orders</string>
+    <string name="menu_inventory">Inventory</string>
+    <string name="menu_dispatch">Dispatch</string>
 </resources>
