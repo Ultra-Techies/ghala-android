@@ -35,7 +35,7 @@ class PhoneVerificationFragment : Fragment() {
             binding.pbPhoneVerification.visibility = View.VISIBLE
             binding.nextButton.isEnabled = false
 
-            if( !countryCodePicker.isValidFullNumber  ){
+            if (!countryCodePicker.isValidFullNumber) {
                 binding.etPhoneNumber.error = "Invalid phone number"
                 binding.pbPhoneVerification.visibility = View.GONE
                 binding.nextButton.isEnabled = true
