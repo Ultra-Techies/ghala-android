@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.databinding.FragmentSuccessfulRegistrationBinding
+import com.ultratechies.ghala.ui.auth.model.RegistrationUserDetails
+import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewmodel
 import com.ultratechies.ghala.utils.validateEmail
 
 class SuccessfulRegistrationFragment : Fragment() {
     private lateinit var binding: FragmentSuccessfulRegistrationBinding
+    private val setupAccountViewModel: SetupAccountViewmodel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,72 +28,92 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpUserData()
+        editFields()
+        validateFields()
+    }
 
-        var userName = "Malcolm Maina"
-        binding.editTextAccountHolder.setText(userName)
-
-        var userEmailAddress = "malcolm@gmail.com"
-        binding.editTextAccountEmailAddress.setText(userEmailAddress)
-
-        var userWarehouse = "Ruiru WH"
-        binding.editTextWarehouseDetails.setText(userWarehouse)
-
-        var userRole = "Dispatch Associate"
-        binding.editTextUserRole.setText(userRole)
-
-        binding.editButton.setOnClickListener {
-            binding.editTextAccountHolder.isEnabled = true
-            binding.editTextAccountHolder.requestFocus()
-        }
-        binding.emailAddressEditButton.setOnClickListener {
-            binding.editTextAccountEmailAddress.isEnabled = true
-            binding.editTextAccountEmailAddress.requestFocus()
-        }
-        binding.editWarehouseName.setOnClickListener {
-            binding.editTextWarehouseDetails.isEnabled = true
-            binding.editTextWarehouseDetails.requestFocus()
-        }
-        binding.editUserRole.setOnClickListener {
-            binding.editTextUserRole.isEnabled = true
-            binding.editTextUserRole.requestFocus()
-        }
-
-        binding.registrationConfirmButton.setOnClickListener {
-
-            binding.pbRegistrationSuccessful.visibility = View.VISIBLE
-            binding.registrationConfirmButton.isEnabled = false
-
-            if (binding.editTextAccountHolder.text.trim().isNullOrEmpty()) {
-                binding.editTextAccountHolder.error = "Please Enter Name "
-                binding.pbRegistrationSuccessful.visibility = View.GONE
-                binding.registrationConfirmButton.isEnabled = true
-                return@setOnClickListener
-            }
-            if (binding.editTextAccountEmailAddress.text.trim().isNullOrEmpty()) {
-                binding.editTextAccountEmailAddress.error = "Please enter email address"
-                binding.pbRegistrationSuccessful.visibility = View.GONE
-                binding.registrationConfirmButton.isEnabled = true
-                return@setOnClickListener
-            }
-            if (!validateEmail((binding.editTextAccountEmailAddress.text.trim().toString()))) {
-                binding.editTextAccountEmailAddress.error = "Enter a valid email"
-                binding.pbRegistrationSuccessful.visibility = View.GONE
-                binding.registrationConfirmButton.isEnabled = true
-            }
-            if (binding.editTextWarehouseDetails.text.trim().isNullOrEmpty()) {
-                binding.editTextWarehouseDetails.error = "Please enter warehouse name"
-                binding.pbRegistrationSuccessful.visibility = View.GONE
-                binding.registrationConfirmButton.isEnabled = true
-                return@setOnClickListener
-            }
-            if (binding.editTextUserRole.text.trim().isNullOrEmpty()) {
-                binding.editTextUserRole.error = "Please Enter a role"
-                binding.pbRegistrationSuccessful.visibility = View.GONE
-                binding.registrationConfirmButton.isEnabled = true
-                return@setOnClickListener
-            }
-            findNavController().navigate(R.id.mainActivity)
+    private fun setUpUserData() {
+        setupAccountViewModel.userRegistrationUserDetails.observe(viewLifecycleOwner) { data ->
+            setDataToUi(data)
         }
     }
+
+    fun editFields() {
+        binding.apply {
+            editButton.setOnClickListener {
+                editTextAccountHolder.isEnabled = true
+                editTextAccountHolder.requestFocus()
+            }
+            emailAddressEditButton.setOnClickListener {
+                editTextAccountEmailAddress.isEnabled = true
+                editTextAccountEmailAddress.requestFocus()
+            }
+            editWarehouseName.setOnClickListener {
+                editTextWarehouseDetails.isEnabled = true
+                editTextWarehouseDetails.requestFocus()
+            }
+            editUserRole.setOnClickListener {
+                editTextUserRole.isEnabled = true
+                editTextUserRole.requestFocus()
+            }
+            editUserRole.setOnClickListener {
+                editTextUserRole.isEnabled = true
+                editTextUserRole.requestFocus()
+            }
+
+        }
+    }
+
+    private fun validateFields() {
+        binding.apply {
+            registrationConfirmButton.setOnClickListener {
+
+                pbRegistrationSuccessful.visibility = View.VISIBLE
+                registrationConfirmButton.isEnabled = false
+
+                if (editTextAccountHolder.text.trim().isNullOrEmpty()) {
+                    editTextAccountHolder.error = "Please Enter Name "
+                    pbRegistrationSuccessful.visibility = View.GONE
+                    registrationConfirmButton.isEnabled = true
+                    return@setOnClickListener
+                }
+                if (editTextAccountEmailAddress.text.trim().isNullOrEmpty()) {
+                    editTextAccountEmailAddress.error = "Please enter email address"
+                    pbRegistrationSuccessful.visibility = View.GONE
+                    registrationConfirmButton.isEnabled = true
+                    return@setOnClickListener
+                }
+                if (!validateEmail((binding.editTextAccountEmailAddress.text.trim().toString()))) {
+                    editTextAccountEmailAddress.error = "Enter a valid email"
+                    pbRegistrationSuccessful.visibility = View.GONE
+                    registrationConfirmButton.isEnabled = true
+                }
+                if (editTextWarehouseDetails.text.trim().isNullOrEmpty()) {
+                    editTextWarehouseDetails.error = "Please enter warehouse name"
+                    pbRegistrationSuccessful.visibility = View.GONE
+                    registrationConfirmButton.isEnabled = true
+                    return@setOnClickListener
+                }
+                if (editTextUserRole.text.trim().isNullOrEmpty()) {
+                    editTextUserRole.error = "Please Enter a role"
+                    pbRegistrationSuccessful.visibility = View.GONE
+                    registrationConfirmButton.isEnabled = true
+                    return@setOnClickListener
+                }
+                findNavController().navigate(R.id.mainActivity)
+            }
+        }
+    }
+
+    private fun setDataToUi(data: RegistrationUserDetails) {
+        binding.apply {
+            editTextAccountHolder.setText(data.firstName + " " + data.secondName)
+            editTextAccountEmailAddress.setText(data.email)
+            editTextWarehouseDetails.setText(data.warehouse)
+            editTextUserRole.setText(data.role)
+        }
+    }
+
 
 }
