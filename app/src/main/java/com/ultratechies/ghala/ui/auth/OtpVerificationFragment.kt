@@ -12,7 +12,7 @@ import com.poovam.pinedittextfield.SquarePinField
 import com.ultratechies.ghala.databinding.FragmentOtpVerificationBinding
 
 
-class OtpVerificationFragment: Fragment() {
+class OtpVerificationFragment : Fragment() {
     private lateinit var binding: FragmentOtpVerificationBinding
 
     override fun onCreateView(
@@ -37,8 +37,8 @@ class OtpVerificationFragment: Fragment() {
             binding.pbOtpVerification.visibility = View.VISIBLE
             binding.verifyButton.isEnabled = false
 
-            if (binding.squareField.text.isNullOrEmpty()){
-                Toast.makeText(requireContext(),"Please Enter OTP",Toast.LENGTH_SHORT).show()
+            if (binding.squareField.text.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Please Enter OTP", Toast.LENGTH_SHORT).show()
                 binding.pbOtpVerification.visibility = View.GONE
                 binding.verifyButton.isEnabled = true
                 return@setOnClickListener
@@ -47,7 +47,7 @@ class OtpVerificationFragment: Fragment() {
         }
     }
 
-    private fun getOTP(){
+    private fun getOTP() {
         val squarePinField: SquarePinField = binding.squareField
         squarePinField.onTextCompleteListener = object : PinField.OnTextCompleteListener {
             override fun onTextComplete(enteredText: String): Boolean {

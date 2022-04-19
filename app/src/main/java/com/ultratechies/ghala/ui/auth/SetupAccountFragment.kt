@@ -32,31 +32,33 @@ class SetupAccountFragment : Fragment() {
             binding.pbSetupVerification.visibility = View.VISIBLE
             binding.setUpNextButton.isEnabled = false
 
-            if (binding.editTextTextFirstName.text.trim().isNullOrEmpty()){
-                binding.editTextTextFirstName.error ="Please Enter Name "
+            if (binding.editTextTextFirstName.text.trim().isNullOrEmpty()) {
+                binding.editTextTextFirstName.error = "Please Enter Name "
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.editTextTextFirstName.text.trim().length <=2 ){
-                binding.editTextTextFirstName.error = "Please enter a name with more than 2 characters"
+            if (binding.editTextTextFirstName.text.trim().length <= 2) {
+                binding.editTextTextFirstName.error =
+                    "Please enter a name with more than 2 characters"
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.editTextTextSecondName.text.trim().isNullOrEmpty()){
-                binding.editTextTextSecondName.error ="Please Enter Name "
+            if (binding.editTextTextSecondName.text.trim().isNullOrEmpty()) {
+                binding.editTextTextSecondName.error = "Please Enter Name "
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.editTextTextSecondName.text.trim().length <=2 ){
-                binding.editTextTextSecondName.error = "Please enter a name with more than 2 characters"
+            if (binding.editTextTextSecondName.text.trim().length <= 2) {
+                binding.editTextTextSecondName.error =
+                    "Please enter a name with more than 2 characters"
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.editTextEmailAddress.text.trim().isNullOrEmpty()){
+            if (binding.editTextEmailAddress.text.trim().isNullOrEmpty()) {
                 binding.editTextEmailAddress.error = "Please Enter an email address"
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
@@ -68,25 +70,27 @@ class SetupAccountFragment : Fragment() {
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.warehouseSpinner.selectedItemPosition == 0){
-                Toast.makeText(requireContext(),"Please Select a warehouse",Toast.LENGTH_SHORT).show()
+            if (binding.warehouseSpinner.selectedItemPosition == 0) {
+                Toast.makeText(requireContext(), "Please Select a warehouse", Toast.LENGTH_SHORT)
+                    .show()
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.departmentSpinner.selectedItemPosition == 0){
-                Toast.makeText(requireContext(),"Please Select a Department",Toast.LENGTH_SHORT).show()
+            if (binding.departmentSpinner.selectedItemPosition == 0) {
+                Toast.makeText(requireContext(), "Please Select a Department", Toast.LENGTH_SHORT)
+                    .show()
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-            if (binding.roleSpinner.selectedItemPosition == 0){
-                Toast.makeText(requireContext(),"Please Select a Role",Toast.LENGTH_SHORT).show()
+            if (binding.roleSpinner.selectedItemPosition == 0) {
+                Toast.makeText(requireContext(), "Please Select a Role", Toast.LENGTH_SHORT).show()
                 binding.pbSetupVerification.visibility = View.GONE
                 binding.setUpNextButton.isEnabled = true
                 return@setOnClickListener
             }
-
+            findNavController().navigate(R.id.action_setupAccountFragment2_to_successfulRegistrationFragment2)
         }
 
         binding.toolbarWelcome.setNavigationOnClickListener {
