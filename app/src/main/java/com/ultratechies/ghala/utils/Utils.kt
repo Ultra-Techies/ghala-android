@@ -4,6 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.ultratechies.ghala.data.repository.APIResource
 
 const val BASE_URL = "#"
 
@@ -28,4 +31,45 @@ private const val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
 fun validateEmail(email: String): Boolean {
     return email.matches(emailPattern.toRegex())
+}
+
+fun View.handleApiError(
+    failure: APIResource.Error,
+    action: (() -> Unit)? = null
+) {
+    when {
+        failure.isNetworkError -> snackbar("Network Error", action)
+        failure.errorCode == 401 -> {
+            snackbar("Unauthorized request", action)
+        }
+        failure.errorCode == 404 -> {
+            snackbar("Resource not found", action)
+        }
+        failure.errorCode == 422 -> {
+            snackbar("Validation error", action)
+        }
+        failure.errorCode == 500 -> {
+            try {
+                val errorBody =
+                    Gson().fromJson(failure.errorBody?.string(), JsonObject::class.java)
+                snackbar(errorBody.get("message").asString, action)
+            } catch (e: Exception) {
+                snackbar("Internal server error", action)
+            }
+
+        }
+        failure.errorCode == 503 -> {
+            snackbar("Service unavailable", action)
+        }
+        failure.errorCode == 504 -> {
+            snackbar("Gateway timeout", action)
+        }
+        failure.errorCode == 0 -> {
+            snackbar("Unknown error", action)
+        }
+        else -> {
+            val error = failure.errorBody?.string().toString()
+            snackbar(error, action)
+        }
+    }
 }

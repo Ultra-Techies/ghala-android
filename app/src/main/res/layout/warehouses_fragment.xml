@@ -5,10 +5,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.warehouses.WarehousesFragment">
 
-    <TextView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Warehouses" />
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/warehousesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emptyWarehouseTV"
+        android:text="No warehouses found"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
 
 </FrameLayout>
