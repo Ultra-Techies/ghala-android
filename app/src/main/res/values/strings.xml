@@ -36,6 +36,11 @@
         <item>Admin</item>
         <item>Driver</item>
     </string-array>
+    <string-array name="status">
+        <item>All</item>
+        <item>Pending</item>
+        <item>Processed</item>
+    </string-array>
     <string name="nav_header_title">username</string>
     <string name="nav_header_subtitle">user@ghala.app</string>
     <string name="menu_home">Home</string>
@@ -64,4 +69,12 @@
     <string name="_2022_statistics">2022 Statistics</string>
     <string name="tasks">Tasks</string>
     <string name="warehouse_tasks">Warehouse tasks</string>
+    <string name="status_all">Status: All</string>
+    <string name="filter">filter</string>
+    <string name="uliza_shop">Uliza shop</string>
+    <string name="price_600_000">Price: 600,000</string>
+    <string name="delivery_date_feb_19_2022">Delivery Date: Feb 19, 2022</string>
+    <string name="pending">Pending</string>
+    <string name="order_id_gj301">Order Id : GJ301</string>
+    <string name="_12">12</string>
 </resources>
