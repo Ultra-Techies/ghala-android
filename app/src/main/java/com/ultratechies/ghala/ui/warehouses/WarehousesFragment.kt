@@ -1,11 +1,11 @@
 package com.ultratechies.ghala.ui.warehouses
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.Warehouse
@@ -19,7 +19,7 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private val warehouses = arrayListOf<Warehouse>()
 
-    private lateinit var viewModel: WarehousesViewModel
+    private val viewModel by viewModels<WarehousesViewModel>()
     private lateinit var binding: WarehousesFragmentBinding
 
     override fun onCreateView(
@@ -47,7 +47,6 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(WarehousesViewModel::class.java)
 
         viewModel.warehouses.observe(viewLifecycleOwner) {
             when (it) {
@@ -57,7 +56,7 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     }
                 }
                 is APIResource.Loading -> {
-
+                    binding.swipeContainer.isRefreshing = true
                 }
                 is APIResource.Error -> {
                     binding.root.handleApiError(it)
