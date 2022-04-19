@@ -10,12 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.databinding.FragmentSuccessfulRegistrationBinding
 import com.ultratechies.ghala.ui.auth.model.RegistrationUserDetails
-import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewmodel
+import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewModel
 import com.ultratechies.ghala.utils.validateEmail
 
 class SuccessfulRegistrationFragment : Fragment() {
     private lateinit var binding: FragmentSuccessfulRegistrationBinding
-    private val setupAccountViewModel: SetupAccountViewmodel by activityViewModels()
+    private val setupAccountViewModel: SetupAccountViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

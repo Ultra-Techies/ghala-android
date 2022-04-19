@@ -12,13 +12,13 @@ import androidx.navigation.fragment.findNavController
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.databinding.FragmentSetupAccountBinding
 import com.ultratechies.ghala.ui.auth.model.RegistrationUserDetails
-import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewmodel
+import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewModel
 import com.ultratechies.ghala.utils.validateEmail
 
 
 class SetupAccountFragment : Fragment() {
     private lateinit var binding: FragmentSetupAccountBinding
-    private val setUpAccountViewModel: SetupAccountViewmodel by activityViewModels()
+    private val setUpAccountViewModel: SetupAccountViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
