@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,21 +57,25 @@
 
         <EditText
             android:id="@+id/editTextAccountHolder"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:layout_marginStart="5dp"
+            android:layout_weight="1"
             android:autofillHints="@null"
             android:background="@color/transparent"
             android:hint="@string/malcom_maima"
             android:inputType="none" />
 
-        <RelativeLayout
+        <ImageButton
             android:id="@+id/edit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/outline_edit_black_18" />
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/outline_edit_black_18"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/editIcon" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,21 +100,21 @@
 
         <EditText
             android:id="@+id/editTextAccountEmailAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:layout_weight="1"
             android:autofillHints="@null"
             android:background="@color/transparent"
-            android:hint="@string/malcolmmaima_gmail_com"
+            android:hint="@string/user_gmail_com"
             android:inputType="textEmailAddress" />
 
-        <RelativeLayout
+        <ImageButton
             android:id="@+id/emailAddressEditButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/outline_edit_black_18" />
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/outline_edit_black_18"
+            android:contentDescription="@string/editIcon" />
     </LinearLayout>
 
     <LinearLayout
@@ -117,6 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,21 +139,21 @@
 
         <EditText
             android:id="@+id/editTextWarehouseDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:layout_weight="1"
             android:autofillHints="@null"
             android:background="@color/transparent"
             android:hint="@string/ruiru_wh"
             android:inputType="text" />
 
-        <RelativeLayout
+        <ImageButton
             android:id="@+id/editWarehouseName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/outline_edit_black_18" />
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/outline_edit_black_18"
+            android:contentDescription="@string/editIcon" />
     </LinearLayout>
 
     <LinearLayout
@@ -155,6 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -170,21 +178,23 @@
 
         <EditText
             android:id="@+id/editTextUserRole"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:layout_weight="1"
             android:autofillHints="@null"
             android:background="@color/transparent"
             android:hint="@string/dispatch_associate"
             android:inputType="text" />
 
-        <RelativeLayout
+        <ImageButton
             android:id="@+id/editUserRole"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/outline_edit_black_18" />
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/outline_edit_black_18"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:contentDescription="@string/editIcon" />
     </LinearLayout>
 
     <Button

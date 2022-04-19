@@ -56,9 +56,9 @@
     <string name="dispatch_associate">Dispatch Associate</string>
     <string name="role">Role :</string>
     <string name="warehouse">Warehouse :</string>
-    <string name="malcolmmaima_gmail_com">malcolmmaima@gmail.com</string>
+    <string name="user_gmail_com">user@gmail.com</string>
     <string name="account_holder_email_address">Email :</string>
-    <string name="malcom_maima">Malcom Maima</string>
+    <string name="malcom_maima">name</string>
     <string name="account_holder">Account Holder :</string>
     <string name="successfully">Successfully</string>
     <string name="confirm">Confirm</string>
@@ -77,4 +77,6 @@
     <string name="pending">Pending</string>
     <string name="order_id_gj301">Order Id : GJ301</string>
     <string name="_12">12</string>
+    <string name="editicon">editIcon</string>
+    <string name="editIcon">edit icon</string>
 </resources>
