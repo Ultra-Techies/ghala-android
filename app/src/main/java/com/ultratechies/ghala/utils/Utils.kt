@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.ultratechies.ghala.data.repository.APIResource
 
-const val BASE_URL = "#"
+const val BASE_URL = "https://625ebdf6873d6798e2ad24eb.mockapi.io/api/v1/"
 
 fun isNetworkAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
