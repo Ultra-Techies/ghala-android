@@ -3,7 +3,6 @@ package com.ultratechies.ghala.ui.warehouses
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
