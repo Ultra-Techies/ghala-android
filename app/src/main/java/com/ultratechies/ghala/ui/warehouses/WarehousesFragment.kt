@@ -52,6 +52,7 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             when (it) {
                 is APIResource.Success -> {
                     it.value.warehouses.forEach { it ->
+                        binding.swipeContainer.isRefreshing = false
                         warehouses.add(it)
                     }
                 }
