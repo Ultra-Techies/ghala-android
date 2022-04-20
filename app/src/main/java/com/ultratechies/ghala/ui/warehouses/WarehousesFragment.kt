@@ -61,6 +61,10 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     }
 
                     showEmptyState(View.GONE)
+                    if(warehouses.isEmpty()) {
+                        showEmptyState(View.VISIBLE)
+                    }
+
                     var warehouseAdapter = WarehouseAdapter(warehouses)
                     binding.warehousesRecycler.itemAnimator = DefaultItemAnimator()
                     binding.warehousesRecycler.adapter = warehouseAdapter
