@@ -1,7 +1,6 @@
 package com.ultratechies.ghala.ui.warehouses
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -63,7 +62,6 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
                     showEmptyState(View.GONE)
                     var warehouseAdapter = WarehouseAdapter(warehouses)
-                    Log.d("WarehousesFragment", "WarehouseAdapter: $warehouseAdapter")
                     binding.warehousesRecycler.itemAnimator = DefaultItemAnimator()
                     binding.warehousesRecycler.adapter = warehouseAdapter
                 }

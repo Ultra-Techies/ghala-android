@@ -3,7 +3,6 @@ package com.ultratechies.ghala.ui.warehouses
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,7 +32,6 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>) :
         val warehouseModel: Warehouse = listdata[position]
 
         if(warehouseModel != null){
-            Log.d("WarehouseAdapter", warehouseModel.toString())
             /**
              * Adapter animation
              */
