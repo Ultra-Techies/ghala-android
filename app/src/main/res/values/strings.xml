@@ -40,6 +40,7 @@
         <item>All</item>
         <item>Pending</item>
         <item>Processed</item>
+
     </string-array>
     <string name="nav_header_title">username</string>
     <string name="nav_header_subtitle">user@ghala.app</string>
@@ -69,7 +70,7 @@
     <string name="_2022_statistics">2022 Statistics</string>
     <string name="tasks">Tasks</string>
     <string name="warehouse_tasks">Warehouse tasks</string>
-    <string name="status_all">Status: All</string>
+    <string name="status_all">Status:</string>
     <string name="filter">filter</string>
     <string name="uliza_shop">Uliza shop</string>
     <string name="price_600_000">Price: 600,000</string>
