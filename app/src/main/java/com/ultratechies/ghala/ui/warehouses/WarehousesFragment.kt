@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.Warehouse
@@ -42,27 +44,43 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel.getWarehouses()
 
+        binding.warehousesRecycler.layoutManager = LinearLayoutManager(context)
+
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.warehouses.observe(viewLifecycleOwner) {
+        viewModel.warehouses.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is APIResource.Success -> {
-                    it.value.warehouses.forEach { it ->
+                    it.value.forEach {
                         binding.swipeContainer.isRefreshing = false
                         warehouses.add(it)
                     }
+
+                    showEmptyState(View.GONE)
+                    if(warehouses.isEmpty()) {
+                        showEmptyState(View.VISIBLE)
+                    }
+
+                    var warehouseAdapter = WarehouseAdapter(warehouses)
+                    binding.warehousesRecycler.itemAnimator = DefaultItemAnimator()
+                    binding.warehousesRecycler.adapter = warehouseAdapter
                 }
                 is APIResource.Loading -> {
                     binding.swipeContainer.isRefreshing = true
+                    warehouses.clear()
                 }
                 is APIResource.Error -> {
                     binding.root.handleApiError(it)
                     binding.swipeContainer.isRefreshing = false
                     showEmptyState(View.VISIBLE)
+                    warehouses.clear()
+                    var warehouseAdapter = WarehouseAdapter(warehouses)
+                    binding.warehousesRecycler.itemAnimator = DefaultItemAnimator()
+                    binding.warehousesRecycler.adapter = warehouseAdapter
                 }
             }
         }
