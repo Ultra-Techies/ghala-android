@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,13 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         viewModel.getWarehouses()
 
         binding.warehousesRecycler.layoutManager = LinearLayoutManager(context)
+
+        binding.addNewWarehouseFAB.setOnClickListener {
+            val addNewWarehouseBottomSheet = NewWarehouseBottomSheetFragment{
+                onRefresh()
+            }
+            addNewWarehouseBottomSheet.show(childFragmentManager, NewWarehouseBottomSheetFragment.TAG)
+        }
 
         return binding.root
     }
