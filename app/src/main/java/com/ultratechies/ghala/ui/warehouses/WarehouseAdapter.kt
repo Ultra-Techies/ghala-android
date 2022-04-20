@@ -4,6 +4,7 @@ package com.ultratechies.ghala.ui.warehouses
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.Warehouse
 
-class WarehouseAdapter(context: Context, listdata: List<Warehouse>) :
+class WarehouseAdapter(listdata: ArrayList<Warehouse>) :
     RecyclerView.Adapter<WarehouseAdapter.MyHolder>() {
-    var context: Context = context
     var listdata: List<Warehouse> = listdata
     private var DURATION: Long = 200
 
@@ -33,6 +33,7 @@ class WarehouseAdapter(context: Context, listdata: List<Warehouse>) :
         val warehouseModel: Warehouse = listdata[position]
 
         if(warehouseModel != null){
+            Log.d("WarehouseAdapter", warehouseModel.toString())
             /**
              * Adapter animation
              */
@@ -47,7 +48,11 @@ class WarehouseAdapter(context: Context, listdata: List<Warehouse>) :
              * Click listener on our card
              */
             holder.cardView.setOnClickListener {
-                Toast.makeText(context, warehouseModel.name, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    holder.itemView.context,
+                    "Clicked on ${warehouseModel.name}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -75,13 +80,11 @@ class WarehouseAdapter(context: Context, listdata: List<Warehouse>) :
     }
 
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var warehouseName: TextView
-        var warehouseAddress: TextView
-        var cardView: CardView
+        var warehouseName: TextView = itemView.findViewById(R.id.warehouseNameTV)
+        var warehouseAddress: TextView = itemView.findViewById(R.id.warehouseAddressTV)
+        var cardView: CardView = itemView.findViewById(R.id.card_view)
 
         init {
-            cardView = itemView.findViewById(R.id.card_view)
-            warehouseName = itemView.findViewById(R.id.warehouseNameTV)
             warehouseAddress = itemView.findViewById(R.id.warehouseAddressTV)
         }
     }
