@@ -3,6 +3,8 @@ package com.ultratechies.ghala.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -71,5 +73,19 @@ fun View.handleApiError(
             val error = failure.errorBody?.string().toString()
             snackbar(error, action)
         }
+    }
+}
+
+fun View.hideKeyboard() {
+    val closeKeyboard =
+        this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    closeKeyboard.hideSoftInputFromWindow(this.windowToken, 0)
+}
+
+fun EditText.showKeyboard() {
+    if (requestFocus()) {
+        (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+        setSelection(text.length)
     }
 }
