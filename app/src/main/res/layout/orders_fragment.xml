@@ -43,21 +43,38 @@
             android:textSize="14sp" />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:entries="@array/status"/>
 
     </LinearLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        >
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewOrders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_orders"
         tools:listitem="@layout/list_item_orders" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvEmptyOrderItems"
+        android:text="@string/no_internet_connection"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
 
 
 </FrameLayout>
