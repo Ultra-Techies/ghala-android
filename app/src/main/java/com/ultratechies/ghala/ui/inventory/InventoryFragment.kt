@@ -89,7 +89,5 @@ class InventoryFragment : Fragment() {
         recyclerView.adapter = inventoryAdapter
     }
 
-   
-
 
 }
