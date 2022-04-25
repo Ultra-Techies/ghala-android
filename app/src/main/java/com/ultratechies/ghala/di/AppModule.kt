@@ -1,10 +1,8 @@
 package com.ultratechies.ghala.di
 
-import androidx.viewbinding.BuildConfig
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.ultratechies.ghala.data.repository.WarehouseApi
-import com.ultratechies.ghala.data.repository.WarehouseRepository
-import com.ultratechies.ghala.data.repository.WarehouseRepositoryImpl
+import com.ultratechies.ghala.BuildConfig
+import com.ultratechies.ghala.data.repository.*
 import com.ultratechies.ghala.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -53,5 +51,21 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun orderService(retrofit: Retrofit) :OrdersApi = retrofit.create(OrdersApi::class.java)
+
+    @Singleton
+    @Provides
+    fun inventoryService(retrofit: Retrofit): InventoryApi = retrofit.create(InventoryApi::class.java)
+
+    @Singleton
+    @Provides
     fun provideWarehouseRepo(warehouseAPI: WarehouseApi): WarehouseRepository = WarehouseRepositoryImpl(warehouseAPI)
+
+    @Singleton
+    @Provides
+    fun providesOrders(ordersApi: OrdersApi): OrdersRepository = OrdersRepositoryImpl(ordersApi)
+
+    @Singleton
+    @Provides
+    fun providesInventoryRepo(inventoryApi: InventoryApi): InventoryRepository = InventoryRepositoryImpl(inventoryApi)
 }
