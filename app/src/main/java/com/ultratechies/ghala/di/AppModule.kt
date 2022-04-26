@@ -46,7 +46,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun apiService(retrofit: Retrofit): WarehouseApi =
+    fun providesWarehouseAPI(retrofit: Retrofit): WarehouseApi =
         retrofit.create(WarehouseApi::class.java)
 
     @Singleton

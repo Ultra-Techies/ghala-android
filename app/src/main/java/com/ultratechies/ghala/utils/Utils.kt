@@ -7,6 +7,8 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -125,4 +127,18 @@ fun parseErrors(failure: APIResource.Error): String {
  fun getFormattedNumbers(amount:Int): String? {
 return NumberFormat.getNumberInstance().format(amount)
 
+}
+
+fun View.hideKeyboard() {
+    val closeKeyboard =
+        this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    closeKeyboard.hideSoftInputFromWindow(this.windowToken, 0)
+}
+
+fun EditText.showKeyboard() {
+    if (requestFocus()) {
+        (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+        setSelection(text.length)
+    }
 }

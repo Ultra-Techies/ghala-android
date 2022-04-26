@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
@@ -17,7 +18,7 @@ import com.ultratechies.ghala.utils.handleApiError
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class WarehousesFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private val warehouses = arrayListOf<Warehouse>()
 
@@ -46,6 +47,13 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         binding.warehousesRecycler.layoutManager = LinearLayoutManager(context)
 
+        binding.addNewWarehouseFAB.setOnClickListener {
+            val addNewWarehouseBottomSheet = NewWarehouseBottomSheetFragment{
+                onRefresh()
+            }
+            addNewWarehouseBottomSheet.show(childFragmentManager, NewWarehouseBottomSheetFragment.TAG)
+        }
+
         return binding.root
     }
 
@@ -65,7 +73,7 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                         showEmptyState(View.VISIBLE)
                     }
 
-                    var warehouseAdapter = WarehouseAdapter(warehouses)
+                    var warehouseAdapter = WarehouseAdapter(warehouses, this)
                     binding.warehousesRecycler.itemAnimator = DefaultItemAnimator()
                     binding.warehousesRecycler.adapter = warehouseAdapter
                 }
@@ -78,9 +86,25 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     binding.swipeContainer.isRefreshing = false
                     showEmptyState(View.VISIBLE)
                     warehouses.clear()
-                    var warehouseAdapter = WarehouseAdapter(warehouses)
+                    var warehouseAdapter = WarehouseAdapter(warehouses, this)
                     binding.warehousesRecycler.itemAnimator = DefaultItemAnimator()
                     binding.warehousesRecycler.adapter = warehouseAdapter
+                }
+            }
+        }
+
+        viewModel.deletedWarehouseResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is APIResource.Success -> {
+                    Snackbar.make(
+                        binding.root,
+                        "Warehouse deleted successfully",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    onRefresh()
+                }
+                is APIResource.Error -> {
+                    binding.root.handleApiError(it)
                 }
             }
         }
@@ -93,6 +117,10 @@ class WarehousesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         warehouses.clear()
         viewModel.getWarehouses()
+    }
+
+    fun deleteWarehouse(id: Int) {
+        viewModel.deleteWarehouse(id)
     }
 
 }

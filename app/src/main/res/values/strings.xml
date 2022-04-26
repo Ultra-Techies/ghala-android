@@ -90,4 +90,11 @@
     <string name="_12">12</string>
     <string name="editicon">editIcon</string>
     <string name="editIcon">edit icon</string>
+    <string name="add_new_warehouse">Add New Warehouse</string>
+    <string name="close">Close</string>
+    <string name="warehouse_name">Warehouse Name</string>
+    <string name="warehouse_address">Warehouse Location</string>
+    <string name="add">Add</string>
+    <string name="error_warehouse_title">Please enter warehouse name</string>
+    <string name="error_warehouse_address">Please enter warehouse location</string>
 </resources>

@@ -1,10 +1,14 @@
 package com.ultratechies.ghala.data.repository
 
+import com.ultratechies.ghala.data.models.responses.AddWarehouseResponse
+import com.ultratechies.ghala.data.models.responses.Warehouse
 import com.ultratechies.ghala.data.models.responses.WarehousesResponse
 import javax.inject.Inject
 
 interface WarehouseRepository {
     suspend fun getWarehouses(): APIResource<WarehousesResponse>
+    suspend fun addNewWarehouse(warehouse: Warehouse): APIResource<AddWarehouseResponse>
+    suspend fun deleteWarehouse(id: Int): APIResource<Unit>
 }
 
 class WarehouseRepositoryImpl @Inject constructor(
@@ -14,5 +18,13 @@ class WarehouseRepositoryImpl @Inject constructor(
 
     override suspend fun getWarehouses() = safeApiCall {
         warehouseApi.getWarehouses()
+    }
+
+    override suspend fun addNewWarehouse(warehouse: Warehouse) = safeApiCall {
+        warehouseApi.addNewWarehouse(warehouse)
+    }
+
+    override suspend fun deleteWarehouse(id: Int): APIResource<Unit> = safeApiCall {
+        warehouseApi.deleteWarehouse(id)
     }
 }
