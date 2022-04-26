@@ -19,8 +19,17 @@ class WarehousesViewModel @Inject constructor(
     val warehouses: LiveData<APIResource<WarehousesResponse>>
         get() = _warehouses
 
+    private val _deletedWarehouseResponse: MutableLiveData<APIResource<Unit>> = MutableLiveData()
+    val deletedWarehouseResponse: LiveData<APIResource<Unit>>
+        get() = _deletedWarehouseResponse
+
     fun getWarehouses() = viewModelScope.launch {
         _warehouses.value = APIResource.Loading
         _warehouses.value = repository.getWarehouses()
+    }
+
+    fun deleteWarehouse(id: Int) = viewModelScope.launch {
+        _deletedWarehouseResponse.value = APIResource.Loading
+        _deletedWarehouseResponse.value = repository.deleteWarehouse(id)
     }
 }

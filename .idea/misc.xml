@@ -4,17 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18888888888888888" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/drawable-v24/ic_assignment_black_24dp.xml" value="0.1155" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/drawable-v24/ic_list_black_24dp.xml" value="0.1155" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/activity_main.xml" value="0.13994565217391305" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/card_warehouse.xml" value="0.5" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/content_home.xml" value="0.10416666666666667" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/home_fragment.xml" value="0.1" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/warehouses_fragment.xml" value="0.2" />
-        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/menu/activity_main_drawer.xml" value="0.10416666666666667" />
+        <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/card_warehouse.xml" value="0.10416666666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_assignment_black_24dp.xml" value="0.159" />
         <entry key="app/src/main/res/drawable-v24/ic_clock_black_24dp.xml" value="0.159" />
         <entry key="app/src/main/res/drawable-v24/ic_list_black_24dp.xml" value="0.159" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1775" />
         <entry key="app/src/main/res/drawable/one_rounded_corner_rectangle.xml" value="0.123" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.2105" />
         <entry key="app/src/main/res/drawable/white_circle.xml" value="0.2255" />
@@ -23,11 +17,13 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19722222222222222" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/app_bar_home.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/card_warehouse.xml" value="0.22" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_otp_verification.xml" value="0.24203821656050956" />
         <entry key="app/src/main/res/layout/fragment_phone_verification.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/fragment_setup_account.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/fragment_successful_registration.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_wh_bottomsheet.xml" value="0.33" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.22" />
         <entry key="app/src/main/res/layout/nav_header_home.xml" value="0.309375" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.309375" />
