@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.OrderResponseItem
 import com.ultratechies.ghala.databinding.ListItemOrdersBinding
-import com.ultratechies.ghala.utils.getFormattedNumbers
 
 
 class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder>() {
@@ -54,27 +53,37 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
         val context = holder.binding.root.context
         holder.binding.apply {
             tvShopName.text = ordersData.customerId
-            textViewOrderAmount.text = StringBuilder(context.getString(R.string.price,getFormattedNumbers( ordersData.items.fold( 0 ) { initialAmount, item ->
-                initialAmount + item.totalPrice
-            }).toString()))
-           textViewOrderId.text = StringBuilder(context.getString(R.string.txt_orderId,ordersData.id.toString()))
-            textViewOrderStatus.text = ordersData.status.lowercase().replaceFirstChar { it.uppercase() }
-            textViewOrderDeliveryDate.text = StringBuilder(context.getString(R.string.txt_delivery_date,ordersData.due))
-            textViewOrderQuantity.text = StringBuilder(context.getString(R.string.items,ordersData.items.fold(0){ initialQuantity, item ->
-                initialQuantity + item.quantity
-            }.toString()))
+            /*  textViewOrderAmount.text = StringBuilder(context.getString(R.string.price,getFormattedNumbers( ordersData.items.fold( 0 ) { initialAmount, item ->
+                  initialAmount + item.totalPrice
+              }).toString()))*/
+            textViewOrderAmount.text =
+                StringBuilder(context.getString(R.string.price, ordersData.value.toString()))
+            textViewOrderId.text =
+                StringBuilder(context.getString(R.string.txt_orderId, ordersData.orderCode))
+            textViewOrderStatus.text =
+                ordersData.status.lowercase().replaceFirstChar { it.uppercase() }
+            textViewOrderDeliveryDate.text =
+                StringBuilder(context.getString(R.string.txt_delivery_date, ordersData.due))
+            textViewOrderQuantity.text = StringBuilder(
+                context.getString(
+                    R.string.items,
+                    ordersData.items.fold(0) { initialQuantity, item ->
+                        initialQuantity + item.quantity
+                    }.toString()
+                )
+            )
         }
-        when(ordersData.status){
-             "AVAILABLE" ->{
-                 holder.binding.textViewOrderStatus.setTextColor(
-                     ContextCompat.getColor(
-                         context,
-                         R.color.teal
-                     )
-                 )
+        when (ordersData.status) {
+            "AVAILABLE" -> {
+                holder.binding.textViewOrderStatus.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.teal
+                    )
+                )
 
             }
-            "PENDING" ->{
+            "PENDING" -> {
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -82,7 +91,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
                     )
                 )
             }
-            "CANCELLED"->{
+            "CANCELLED" -> {
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,

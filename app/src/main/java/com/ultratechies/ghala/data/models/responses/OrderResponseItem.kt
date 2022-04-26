@@ -10,6 +10,7 @@ data class OrderResponseItem(
     val route: String,
     val status: String,
     val value: Int,
+    val orderCode: String,
     val warehouseId: Int
 )
 data class Item(
