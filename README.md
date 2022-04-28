@@ -41,6 +41,8 @@ The app has the following key features:
 ## General Preview
 More designs coming soon...
 
+[Designs in progress...](https://miro.com/app/board/uXjVOKTf9mk=/?share_link_id=657041887226)
+
 <a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Splash%20Screen.jpg height="550"  ></a>
 <a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20Phone%20Verification%20Screen.jpg height="550"  ></a>
 <a href="url"><img src=https://raw.githubusercontent.com/Ultra-Techies/ghala-android/main/designs/Ghala%20-%20OTP%20Verification%20Screen.jpg height="550"  ></a>
