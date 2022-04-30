@@ -23,8 +23,9 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center"
+            android:clickable="false"
             android:background="@drawable/outline_filter_alt_black_24"
-            android:contentDescription="@string/filter" />
+            android:contentDescription="@string/filter_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,6 +48,7 @@
             android:textSize="16sp" />
 
         <Spinner
+            android:id="@+id/spinner_category_status"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:entries="@array/category"/>
@@ -74,10 +76,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvEmptyInventoryItems"
-        android:text="@string/no_internet_connection"
+        android:text="@string/no_inventory_created"
         android:layout_gravity="center"
         android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:contentDescription="@string/add_new_inventory"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        android:layout_margin="16dp"
+        android:tint="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_add_white_36dp"
         />
 
 </FrameLayout>
