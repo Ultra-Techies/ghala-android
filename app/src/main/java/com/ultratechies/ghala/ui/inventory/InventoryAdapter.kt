@@ -103,14 +103,15 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
         }
 
         holder.binding.inventoryCard.setOnLongClickListener(View.OnLongClickListener {
-            MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_FullWidthButtons)
+            MaterialAlertDialogBuilder(context)
                 .setTitle("Delete ${inventoryData.name} ")
                 .setMessage("Are you sure you want to delete ${inventoryData.name} from the Inventory?")
-                .setPositiveButton("Yes") { dialog, which ->
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
                     deleteInventoryCallback?.invoke(inventoryData)
                 }
-                .setNegativeButton("No") { dialog, which ->
-                    //do nothing
+                .setNegativeButton("No") { dialog, _ ->
+                   dialog.dismiss()
                 }
                 .show()
             return@OnLongClickListener true
