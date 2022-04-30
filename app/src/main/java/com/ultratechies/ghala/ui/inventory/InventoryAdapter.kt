@@ -2,20 +2,32 @@ package com.ultratechies.ghala.ui.inventory
 
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ultratechies.ghala.R
-import com.ultratechies.ghala.data.models.responses.InventoryResponseItem
+import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
 import com.ultratechies.ghala.databinding.ListItemInventoryBinding
 import com.ultratechies.ghala.utils.getFormattedNumbers
 
 
-
 class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>() {
+    private var editInventoryCallback: ((InventoryResponseItem) -> Unit)? = null
+    private var deleteInventoryCallback: ((InventoryResponseItem)->Unit)? = null
+
+    fun onItemDelete(onDeleteClick:(InventoryResponseItem) ->Unit){
+        this.deleteInventoryCallback = onDeleteClick
+    }
+
+    fun onItemClick(onItemClick: (InventoryResponseItem) -> Unit) {
+        this.editInventoryCallback = onItemClick
+    }
+
     class InventoryViewHolder(val binding: ListItemInventoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -30,7 +42,7 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
             oldItem: InventoryResponseItem,
             newItem: InventoryResponseItem
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.sku == newItem.sku
         }
 
         override fun areContentsTheSame(
@@ -55,13 +67,20 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
             val totalPrice = inventoryData.quantity * inventoryData.ppu
 
             tvItemName.text = inventoryData.name.replaceFirstChar { it.uppercase() }
-            textViewOrderQuantity.text = StringBuilder(context.getString(R.string.items,inventoryData.quantity.toString()))
+            textViewOrderQuantity.text =
+                StringBuilder(context.getString(R.string.items, inventoryData.quantity.toString()))
             textViewCategory.text =
                 StringBuilder(context.getString(R.string.txt_category, inventoryData.category))
             textViewItemId.text =
-                StringBuilder(context.getString(R.string.sku, inventoryData.warehouseId.toString()))
-            textViewItemAmount.text =StringBuilder(context.getString(R.string.price,getFormattedNumbers(totalPrice).toString()))
-            textViewItemStatus.text = inventoryData.status.lowercase().replaceFirstChar { it.uppercase() }
+                StringBuilder(context.getString(R.string.sku, inventoryData.skuCode))
+            textViewItemAmount.text = StringBuilder(
+                context.getString(
+                    R.string.price,
+                    getFormattedNumbers(totalPrice).toString()
+                )
+            )
+            textViewItemStatus.text =
+                inventoryData.status.lowercase().replaceFirstChar { it.uppercase() }
 
         }
         if (inventoryData.status == "AVAILABLE") {
@@ -79,7 +98,23 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
                 )
             )
         }
+        holder.binding.inventoryCard.setOnClickListener {
+            editInventoryCallback?.invoke(inventoryData)
+        }
 
+        holder.binding.inventoryCard.setOnLongClickListener(View.OnLongClickListener {
+            MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_FullWidthButtons)
+                .setTitle("Delete ${inventoryData.name} ")
+                .setMessage("Are you sure you want to delete ${inventoryData.name} from the Inventory?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    deleteInventoryCallback?.invoke(inventoryData)
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    //do nothing
+                }
+                .show()
+            return@OnLongClickListener true
+        })
 
     }
 
