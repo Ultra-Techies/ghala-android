@@ -1,6 +1,6 @@
 package com.ultratechies.ghala.data.repository
 
-import com.ultratechies.ghala.data.models.responses.OrderResponseItem
+import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import javax.inject.Inject
 
 interface OrdersRepository {

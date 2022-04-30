@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Ghala</string>
-    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_orders_created">No Orders Available</string>
+    <string name="no_inventory_created">No Inventory Available</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="txt_prev_category">Previous category: %s</string>
     <string name="next">Next</string>
     <string name="_722945678">722945678</string>
     <string name="kenya_254">KENYA(+254)</string>
@@ -25,6 +28,18 @@
         <item>Baba dogo</item>
         <item>Ruiru</item>
     </string-array>
+    <string-array name="category_items">
+        <item>Select A Category</item>
+        <item>Drinks</item>
+        <item>Detergents</item>
+        <item>Household Items</item>
+    </string-array>
+    <string-array name="new_category_items">
+        <item>Select A  New Category</item>
+        <item>Drinks</item>
+        <item>Detergents</item>
+        <item>Household Items</item>
+    </string-array>
     <string-array name="department">
         <item>Select a department </item>
         <item>Dispatch</item>
@@ -42,6 +57,7 @@
         <item>Processed</item>
     </string-array>
     <string-array name="category">
+        <item>All</item>
         <item>Available</item>
         <item>Out Of Stock</item>
     </string-array>
@@ -97,4 +113,12 @@
     <string name="add">Add</string>
     <string name="error_warehouse_title">Please enter warehouse name</string>
     <string name="error_warehouse_address">Please enter warehouse location</string>
+    <string name="add_new_inventory">Add New Inventory</string>
+    <string name="filter_icon">filter_icon</string>
+    <string name="product_price">Price</string>
+    <string name="add_new_inventory_item">Add New Inventory Item</string>
+    <string name="product_name">Product Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="edit">EDIT</string>
+    <string name="edit_inventory_item">Edit Inventory Item</string>
 </resources>

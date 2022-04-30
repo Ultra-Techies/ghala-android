@@ -1,4 +1,4 @@
-package com.ultratechies.ghala.data.models.responses
+package com.ultratechies.ghala.data.models.responses.orders
 
 data class OrderResponseItem(
     val created: String,

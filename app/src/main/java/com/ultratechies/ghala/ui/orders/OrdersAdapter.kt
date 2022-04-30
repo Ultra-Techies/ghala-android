@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ultratechies.ghala.R
-import com.ultratechies.ghala.data.models.responses.OrderResponseItem
+import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import com.ultratechies.ghala.databinding.ListItemOrdersBinding
 
 

@@ -2,7 +2,7 @@ package com.ultratechies.ghala.ui.orders
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ultratechies.ghala.data.models.responses.OrderResponseItem
+import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.OrdersRepository
 import com.ultratechies.ghala.utils.parseErrors
