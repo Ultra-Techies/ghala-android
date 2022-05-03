@@ -3,13 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/cl_root"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
     android:layout_marginTop="20dp"
     android:layout_marginEnd="10dp">
 
+    <CheckBox
+        android:id="@+id/checkbox_orders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:visibility="gone"
+        android:padding="10dp"
+        app:layout_constraintEnd_toStartOf="@id/order_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+        android:id="@+id/order_card"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:clickable="true"
@@ -18,7 +31,7 @@
         app:cardCornerRadius="0dp"
         app:cardElevation="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/checkbox_orders"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="#1B808080"
         app:strokeWidth="1dp">
