@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,7 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.ultratechies.ghala.data.models.requests.deliverynotes.CreateDeliveryNoteRequest
+import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import com.ultratechies.ghala.databinding.OrdersFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,7 +25,10 @@ import kotlinx.coroutines.launch
 class OrdersFragment : Fragment() {
     private lateinit var binding: OrdersFragmentBinding
     private val viewModel: OrdersViewModel by viewModels()
+    private val deliveryNoteViewModel: CreateDeliveryNotesViewModel by viewModels()
     private lateinit var ordersAdapter: OrdersAdapter
+
+    private var data = mutableListOf<OrderResponseItem>()
 
     companion object {
         fun newInstance() = OrdersFragment()
@@ -43,16 +51,90 @@ class OrdersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getOrders()
+        filterOrdersByStatus()
         setUpOrderAdapter()
-
-        binding.swipeContainer.isRefreshing = true
-        viewModel.fetchOrders()
+        onRefresh()
 
         fetchOrdersListeners()
         fetchOrdersErrorListener()
-        onRefresh()
+
+        createDeliveryNoteListeners()
+        createDeliveryNoteErrorListeners()
 
 
+    }
+
+    private fun getOrders() {
+        binding.swipeContainer.isRefreshing = true
+        viewModel.fetchOrders()
+    }
+
+
+    private fun filterOrdersByStatus() {
+        binding.spinnerOrderStatus.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    if (p2 == 0) {
+                        displayData(data)
+                    } else {
+                        val filter = data.filter {
+                            it.status.lowercase() == binding.spinnerOrderStatus.selectedItem.toString()
+                                .lowercase()
+                        }
+                        displayData(filter)
+                    }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+            
+                }
+
+            }
+    }
+
+    private fun setUpOrderAdapter() {
+        ordersAdapter = OrdersAdapter()
+        ordersAdapter.onItemClick { orderResponseItem ->
+        }
+
+        val recyclerView = binding.recyclerViewOrders
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        recyclerView.adapter = ordersAdapter
+
+        generateDeliveryNote()
+
+    }
+
+    private fun generateDeliveryNote() {
+        binding.DeliveryNoteButton.setOnClickListener {
+            val list = ordersAdapter.returnDeliveryNotesModels()
+            if (list.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "Select Orders to create delivery note",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            } else
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Create Delivery Note ")
+                    .setMessage("Create Delivery Note Containing Selected Orders")
+                    .setPositiveButton("Yes") { dialog, _ ->
+                        dialog.dismiss()
+                        val addDeliveryNote = CreateDeliveryNoteRequest(
+                            deliverWindow = list[0].deliveryWindow,
+                            orderIds = list.map { it.id },
+                            route = list[0].route,
+                            warehouseId = list[0].warehouseId
+
+                        )
+                        createDeliveryNote(addDeliveryNote)
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+        }
     }
 
     private fun onRefresh() {
@@ -61,28 +143,27 @@ class OrdersFragment : Fragment() {
         }
     }
 
-
-    private fun setUpOrderAdapter() {
-        ordersAdapter = OrdersAdapter()
-        val recyclerView = binding.recyclerViewOrders
-        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        recyclerView.adapter = ordersAdapter
-
-    }
-
     private fun fetchOrdersListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getOrders.collect {
                     binding.swipeContainer.isRefreshing = false
-                    if (it.isEmpty()) {
-                        binding.tvEmptyOrderItems.visibility = View.VISIBLE
-                    } else {
-                        ordersAdapter.saveData(it)
-                    }
-
+                    data.clear()
+                    data.addAll(it)
+                    displayData(it)
                 }
             }
+        }
+    }
+
+    private fun displayData(list: List<OrderResponseItem>) {
+        if (list.isEmpty()) {
+            binding.tvEmptyOrderItems.visibility = View.VISIBLE
+            binding.recyclerViewOrders.visibility = View.GONE
+        } else {
+            ordersAdapter.saveData(list)
+            binding.tvEmptyOrderItems.visibility = View.GONE
+            binding.recyclerViewOrders.visibility = View.VISIBLE
         }
     }
 
@@ -98,6 +179,43 @@ class OrdersFragment : Fragment() {
                     )
                         .show()
                 }
+            }
+        }
+    }
+
+    private fun createDeliveryNote(createDeliveryNotes: CreateDeliveryNoteRequest) {
+        binding.pbOrders.visibility = View.VISIBLE
+        deliveryNoteViewModel.createDeliveryNote(createDeliveryNotes)
+    }
+
+    private fun createDeliveryNoteListeners() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                deliveryNoteViewModel.createDeliveryNotes.collect {
+                    ordersAdapter.clearSelectedItems()
+                    viewModel.fetchOrders()
+                    binding.pbOrders.visibility = View.GONE
+                    Snackbar.make(
+                        binding.root,
+                        "Delivery Note Created Successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+
+                }
+            }
+        }
+    }
+
+    private fun createDeliveryNoteErrorListeners() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {}
+            deliveryNoteViewModel.errorResponse.collect {
+                Snackbar.make(
+                    binding.root,
+                    it,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .show()
             }
         }
     }
