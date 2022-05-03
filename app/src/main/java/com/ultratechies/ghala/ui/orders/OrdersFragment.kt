@@ -87,7 +87,7 @@ class OrdersFragment : Fragment() {
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-            
+
                 }
 
             }
