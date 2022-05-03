@@ -1,7 +1,7 @@
 package com.ultratechies.ghala.data.repository
 
-import com.ultratechies.ghala.data.models.requests.AddInventoryRequest
-import com.ultratechies.ghala.data.models.requests.EditInventoryRequest
+import com.ultratechies.ghala.data.models.requests.inventory.AddInventoryRequest
+import com.ultratechies.ghala.data.models.requests.inventory.EditInventoryRequest
 import com.ultratechies.ghala.data.models.responses.inventory.AddNewInventoryResponse
 import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
 import retrofit2.http.*

@@ -15,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
-import com.ultratechies.ghala.data.models.requests.EditInventoryRequest
+import com.ultratechies.ghala.data.models.requests.inventory.EditInventoryRequest
 import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
 import com.ultratechies.ghala.databinding.FragmentInventoryEditBottomsheetBinding
 import com.ultratechies.ghala.utils.hideKeyboard

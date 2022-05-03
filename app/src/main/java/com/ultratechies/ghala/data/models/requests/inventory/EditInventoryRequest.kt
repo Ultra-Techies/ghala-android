@@ -1,4 +1,4 @@
-package com.ultratechies.ghala.data.models.requests
+package com.ultratechies.ghala.data.models.requests.inventory
 
 data class EditInventoryRequest(
     val category: String,

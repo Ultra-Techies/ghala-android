@@ -2,7 +2,7 @@ package com.ultratechies.ghala.ui.inventory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ultratechies.ghala.data.models.requests.EditInventoryRequest
+import com.ultratechies.ghala.data.models.requests.inventory.EditInventoryRequest
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.InventoryRepository
 import com.ultratechies.ghala.utils.parseErrors
