@@ -59,6 +59,10 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun deliveryNotesService(retrofit: Retrofit): DeliveryNotesApi = retrofit.create(DeliveryNotesApi::class.java)
+
+    @Singleton
+    @Provides
     fun provideWarehouseRepo(warehouseAPI: WarehouseApi): WarehouseRepository = WarehouseRepositoryImpl(warehouseAPI)
 
     @Singleton
@@ -68,4 +72,8 @@ object AppModule {
     @Singleton
     @Provides
     fun providesInventoryRepo(inventoryApi: InventoryApi): InventoryRepository = InventoryRepositoryImpl(inventoryApi)
+
+    @Singleton
+    @Provides
+    fun providesDeliveryNotes( deliveryNotesApi: DeliveryNotesApi): DeliveryNotesRepository = DeliveryNotesRepositoryImpl(deliveryNotesApi)
 }
