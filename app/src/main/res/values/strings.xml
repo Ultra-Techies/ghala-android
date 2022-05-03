@@ -52,8 +52,9 @@
         <item>Driver</item>
     </string-array>
     <string-array name="status">
-        <item>Pending</item>
         <item>All</item>
+        <item>Submitted</item>
+        <item>Pending</item>
         <item>Processed</item>
     </string-array>
     <string-array name="category">
@@ -121,4 +122,5 @@
     <string name="quantity">Quantity</string>
     <string name="edit">EDIT</string>
     <string name="edit_inventory_item">Edit Inventory Item</string>
+    <string name="create_delivery_note">Create Delivery Note</string>
 </resources>
