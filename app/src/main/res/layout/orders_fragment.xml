@@ -11,8 +11,8 @@
         android:id="@+id/ll_orders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,38 +43,77 @@
             android:textSize="14sp" />
 
         <Spinner
+            android:id="@+id/spinner_order_status"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:entries="@array/status"/>
+            android:entries="@array/status" />
 
     </LinearLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="40dp"
-        >
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewOrders"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginBottom="65dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_orders"
-        tools:listitem="@layout/list_item_orders" />
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/list_item_orders" />
+
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
     <TextView
+        android:id="@+id/tvEmptyOrderItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvEmptyOrderItems"
-        android:text="@string/no_orders_created"
         android:layout_gravity="center"
-        android:visibility="gone"
+        android:text="@string/no_orders_created"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/pbOrders"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/DeliveryNoteButton"
         />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/DeliveryNoteButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/create_delivery_note"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </FrameLayout>
