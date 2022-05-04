@@ -1,6 +1,8 @@
 package com.ultratechies.ghala.ui.warehouses
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ultratechies.ghala.data.models.responses.AddWarehouseResponse
@@ -18,6 +20,10 @@ class BottomSheetViewModel @Inject constructor(private val warehouseRepo: Wareho
 
     private val _newWarehouseResponse = MutableSharedFlow<AddWarehouseResponse>()
     val newWarehouseResponse = _newWarehouseResponse.asSharedFlow()
+
+    private val _editWarehouseResponse: MutableLiveData<APIResource<Any>> = MutableLiveData()
+    val editWarehouseResponse: LiveData<APIResource<Any>>
+        get() = _editWarehouseResponse
 
     private val _errorResponse = MutableSharedFlow<String>()
     val errorResponse = _errorResponse.asSharedFlow()
@@ -37,4 +43,8 @@ class BottomSheetViewModel @Inject constructor(private val warehouseRepo: Wareho
         }
     }
 
+    fun editWarehouse(editWarehouseRequest: Warehouse) = viewModelScope.launch {
+        _editWarehouseResponse.value = APIResource.Loading
+        _editWarehouseResponse.value = warehouseRepo.editWarehouse(editWarehouseRequest)
+    }
 }

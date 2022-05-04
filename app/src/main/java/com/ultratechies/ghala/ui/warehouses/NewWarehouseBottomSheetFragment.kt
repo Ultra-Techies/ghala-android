@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
-
 @AndroidEntryPoint
 class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) : BottomSheetDialogFragment(), View.OnClickListener {
 

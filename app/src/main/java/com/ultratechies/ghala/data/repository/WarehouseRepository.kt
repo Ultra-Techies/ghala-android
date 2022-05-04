@@ -9,12 +9,12 @@ interface WarehouseRepository {
     suspend fun getWarehouses(): APIResource<WarehousesResponse>
     suspend fun addNewWarehouse(warehouse: Warehouse): APIResource<AddWarehouseResponse>
     suspend fun deleteWarehouse(id: Int): APIResource<Unit>
+    suspend fun editWarehouse(editWarehouseRequest: Warehouse): APIResource<Unit>
 }
 
 class WarehouseRepositoryImpl @Inject constructor(
     private val warehouseApi: WarehouseApi
 ) : WarehouseRepository, BaseRepo() {
-
 
     override suspend fun getWarehouses() = safeApiCall {
         warehouseApi.getWarehouses()
@@ -26,5 +26,9 @@ class WarehouseRepositoryImpl @Inject constructor(
 
     override suspend fun deleteWarehouse(id: Int): APIResource<Unit> = safeApiCall {
         warehouseApi.deleteWarehouse(id)
+    }
+
+    override suspend fun editWarehouse(editWarehouseRequest: Warehouse): APIResource<Unit> = safeApiCall {
+        warehouseApi.editWarehouse(editWarehouseRequest)
     }
 }

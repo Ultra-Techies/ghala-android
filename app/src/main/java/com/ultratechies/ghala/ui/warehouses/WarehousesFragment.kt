@@ -60,6 +60,8 @@ class WarehousesFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        warehouses.clear()
+
         viewModel.warehouses.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is APIResource.Success -> {

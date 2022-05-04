@@ -19,6 +19,7 @@ import com.ultratechies.ghala.data.models.responses.Warehouse
 
 class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
     RecyclerView.Adapter<WarehouseAdapter.MyHolder>() {
+    var onEditWarehouseCallback : (() -> Unit)? = null
     var listdata: List<Warehouse> = listdata
     val mfragment = mfragment
     private var DURATION: Long = 200
@@ -35,7 +36,7 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val warehouseModel: Warehouse = listdata[position]
 
-        if(warehouseModel != null){
+        if(warehouseModel != null && holder is MyHolder) {
             /**
              * Adapter animation
              */
@@ -50,7 +51,12 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
              * Click listener on our card
              */
             holder.cardView.setOnClickListener {
-                //do something
+                val editWarehouseBottomSheet = EditWarehouseBottomSheetFragment.newInstance(
+                    warehouseModel
+                ){
+                    onEditWarehouseCallback?.invoke()
+                }
+                editWarehouseBottomSheet.show(mfragment.requireActivity().supportFragmentManager, "edit_warehouse")
             }
 
             // Long click listener on our card
