@@ -107,7 +107,6 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
                 }
                 is APIResource.Error -> {
                     binding.root.handleApiError(it)
-                    Log.d("editerror", it.toString())
                 }
             }
         }

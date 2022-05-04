@@ -10,10 +10,11 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.ultratechies.ghala.utils.isNetworkAvailable
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.Warehouse
 
@@ -51,12 +52,22 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
              * Click listener on our card
              */
             holder.cardView.setOnClickListener {
-                val editWarehouseBottomSheet = EditWarehouseBottomSheetFragment.newInstance(
-                    warehouseModel
-                ){
-                    onEditWarehouseCallback?.invoke()
+
+                if(!isNetworkAvailable(mfragment.requireContext())) {
+                    Snackbar.make(
+                        mfragment.requireView(),
+                        "No internet connection",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                } else {
+                    val editWarehouseBottomSheet = EditWarehouseBottomSheetFragment.newInstance(
+                        warehouseModel
+                    ){
+                        onEditWarehouseCallback?.invoke()
+                    }
+                    editWarehouseBottomSheet.show(mfragment.requireActivity().supportFragmentManager, "edit_warehouse")
                 }
-                editWarehouseBottomSheet.show(mfragment.requireActivity().supportFragmentManager, "edit_warehouse")
             }
 
             // Long click listener on our card
@@ -65,7 +76,22 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
                     .setTitle("Delete ${warehouseModel.name}")
                     .setMessage("Are you sure you want to delete ${warehouseModel.name}?")
                     .setPositiveButton("Yes") { dialog, which ->
-                        (mfragment as WarehousesFragment).deleteWarehouse(warehouseModel.id)
+                        if(!isNetworkAvailable(mfragment.requireContext())) {
+                            Snackbar.make(
+                                mfragment.requireView(),
+                                "No internet connection",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            return@setPositiveButton
+                        } else {
+                            Toast.makeText(
+                                mfragment.requireContext(),
+                                "Deleting ${warehouseModel.name}...",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            (mfragment as WarehousesFragment).deleteWarehouse(warehouseModel.id)
+                        }
                     }
                     .setNegativeButton("No") { dialog, which ->
                         //do nothing
