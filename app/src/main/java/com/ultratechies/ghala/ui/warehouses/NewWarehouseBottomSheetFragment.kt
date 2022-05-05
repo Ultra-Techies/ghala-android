@@ -90,12 +90,12 @@ class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) :
 
     private fun addNewWarehouse() {
         if (binding.etWarehouseName.text.isNullOrEmpty()) {
-            binding.etWarehouseLocation.error = getString(R.string.error_warehouse_title)
+            binding.etWarehouseLocation.error = getString(R.string.error_warehouse_name)
             return
         }
 
         if (binding.etWarehouseName.text.isNullOrEmpty()) {
-            binding.etWarehouseLocation.error = getString(R.string.error_warehouse_address)
+            binding.etWarehouseLocation.error = getString(R.string.error_warehouse_location)
             return
         }
 

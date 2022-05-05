@@ -71,8 +71,6 @@
     <string name="warehouse_name">Warehouse Name</string>
     <string name="warehouse_address">Warehouse Location</string>
     <string name="add">Add</string>
-    <string name="error_warehouse_title">Please enter warehouse name</string>
-    <string name="error_warehouse_address">Please enter warehouse location</string>
     <string name="error_warehouse_name">Please enter warehouse name</string>
     <string name="error_warehouse_location">Please enter warehouse location</string>
     <string name="save">Save</string>

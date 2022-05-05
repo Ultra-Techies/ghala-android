@@ -165,7 +165,7 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
     private fun submitEditedWarehouse() {
         // validate
         if (binding.etWarehouseName.text.isNullOrEmpty()) {
-            binding.etWarehouseName.error = getString(R.string.error_warehouse_name)
+            binding.etWarehouseName.error = getString(R.string.err)
             return
         }
 
