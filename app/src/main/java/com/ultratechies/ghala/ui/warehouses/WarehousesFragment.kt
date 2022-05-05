@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.ultratechies.ghala.data.models.responses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.WarehousesFragmentBinding
 import com.ultratechies.ghala.utils.handleApiError
+import com.ultratechies.ghala.utils.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,10 +50,19 @@ class WarehousesFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         binding.warehousesRecycler.layoutManager = LinearLayoutManager(context)
 
         binding.addNewWarehouseFAB.setOnClickListener {
-            val addNewWarehouseBottomSheet = NewWarehouseBottomSheetFragment{
-                onRefresh()
+            //check if network is available first
+            if (!isNetworkAvailable(requireContext())) {
+                Snackbar.make(
+                    binding.root,
+                    "No internet connection",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                val addNewWarehouseBottomSheet = NewWarehouseBottomSheetFragment{
+                    onRefresh()
+                }
+                addNewWarehouseBottomSheet.show(childFragmentManager, NewWarehouseBottomSheetFragment.TAG)
             }
-            addNewWarehouseBottomSheet.show(childFragmentManager, NewWarehouseBottomSheetFragment.TAG)
         }
 
         return binding.root
@@ -59,6 +70,8 @@ class WarehousesFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        warehouses.clear()
 
         viewModel.warehouses.observe(viewLifecycleOwner) { it ->
             when (it) {
