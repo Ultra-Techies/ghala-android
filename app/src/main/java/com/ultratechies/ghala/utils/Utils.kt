@@ -15,7 +15,8 @@ import com.google.gson.JsonObject
 import com.ultratechies.ghala.data.repository.APIResource
 import java.text.SimpleDateFormat
 
-const val BASE_URL = "http://192.168.0.135:8080/api/"
+const val BASE_URL = "http://192.168.0.108:8080/api/"
+
 
 fun isNetworkAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -141,4 +142,8 @@ fun EditText.showKeyboard() {
             .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
         setSelection(text.length)
     }
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
 }
