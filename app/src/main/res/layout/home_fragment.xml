@@ -50,10 +50,11 @@
                             android:textSize="20sp"
                             android:textStyle="normal" />
                         <TextView
+                            android:id="@+id/user_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:text="John Doe"
+                            tools:text="John Doe"
                             android:textColor="@color/colorSecondary"
                             android:textSize="20sp"
                             android:textStyle="bold" />
