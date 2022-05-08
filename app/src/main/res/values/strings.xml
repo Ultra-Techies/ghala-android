@@ -80,7 +80,8 @@
     <string name="user_gmail_com">user@gmail.com</string>
     <string name="account_holder_email_address">Email :</string>
     <string name="malcom_maima">name</string>
-    <string name="account_holder">Account Holder :</string>
+    <string name="account_first_name">First Name :</string>
+    <string name="account_secons_name">Second Name :</string>
     <string name="successfully">Successfully</string>
     <string name="confirm">Confirm</string>
     <string name="menu_orders">Orders</string>
@@ -123,4 +124,9 @@
     <string name="edit">EDIT</string>
     <string name="edit_inventory_item">Edit Inventory Item</string>
     <string name="create_delivery_note">Create Delivery Note</string>
+    <string name="enter_pin">Enter pin</string>
+    <string name="confirm_pin">Confirm pin</string>
+    <string name="enter_your_pin">ENTER YOUR PIN</string>
+    <string name="please_enter_your_pin">Please Enter Your Pin</string>
+    <string name="login">LOGIN</string>
 </resources>
