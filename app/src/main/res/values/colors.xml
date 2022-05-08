@@ -9,4 +9,5 @@
     <color name="teal">#21BCAA</color>
     <color name="background_color">#fcfcfc</color>
     <color name="transparent">#00000000</color>
+    <color name="red">#88FF0000</color>
 </resources>

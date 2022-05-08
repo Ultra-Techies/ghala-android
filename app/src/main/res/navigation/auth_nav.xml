@@ -10,15 +10,42 @@
         android:name="com.ultratechies.ghala.ui.auth.PhoneVerificationFragment"
         android:label="PhoneVerificationFragment"
         tools:layout="@layout/fragment_phone_verification">
+
+        <argument
+            android:name="otpCode"
+            app:argType="string" />
         <action
             android:id="@+id/action_phoneVerificationFragment2_to_otpVerificationFragment2"
             app:destination="@id/otpVerificationFragment2" />
+        <!--<action
+            android:id="@+id/action_phoneVerificationFragment2_to_passwordVerificationFragment"
+            app:destination="@id/otpVerificationFragment2" />-->
+        <action
+            android:id="@+id/action_phoneVerificationFragment2_to_passwordVerificationFragment2"
+            app:destination="@id/passwordVerificationFragment" />
+        <action
+            android:id="@+id/action_phoneVerificationFragment2_to_successfulRegistrationFragment2"
+            app:destination="@id/successfulRegistrationFragment2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/passwordVerificationFragment"
+        android:name="com.ultratechies.ghala.ui.auth.PasswordVerificationFragment"
+        android:label="PasswordVerificationFragment"
+        tools:layout="@layout/fragment_password_verification">
+
+        <action
+            android:id="@+id/action_passwordVerificationFragment_to_mainActivity"
+            app:destination="@+id/mainActivity"/>
     </fragment>
     <fragment
         android:id="@+id/otpVerificationFragment2"
         android:name="com.ultratechies.ghala.ui.auth.OtpVerificationFragment"
         android:label="OtpVerificationFragment"
         tools:layout="@layout/fragment_otp_verification">
+        <argument
+            android:name="otpCode"
+            app:argType="string" />
         <action
             android:id="@+id/action_otpVerificationFragment2_to_setupAccountFragment2"
             app:destination="@id/setupAccountFragment2" />

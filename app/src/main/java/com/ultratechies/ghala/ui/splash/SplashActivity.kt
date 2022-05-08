@@ -30,16 +30,16 @@ class SplashActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.VISIBLE
 
         //check network connectivity
-        if(!isNetworkAvailable(this)){
+        if (!isNetworkAvailable(this)) {
             //show error
             binding.root.snackbar(getString(R.string.no_internet_connection))
             binding.progressBar.visibility = View.GONE
 
             lifecycleScope.launch {
                 delay(15000)
-                if(!isNetworkAvailable(this@SplashActivity)){
+                if (!isNetworkAvailable(this@SplashActivity)) {
                     binding.root.snackbar(getString(R.string.no_internet_connection))
-                }else{
+                } else {
                     loadMainActivity()
                 }
             }
@@ -54,7 +54,7 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadMainActivity(){
+    private fun loadMainActivity() {
         binding.progressBar.visibility = View.GONE
         val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)

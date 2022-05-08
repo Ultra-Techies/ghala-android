@@ -4,17 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.databinding.HomeFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -36,6 +42,9 @@ class HomeFragment : Fragment() {
     private val BAR_WIDTH = 0.2f
     private var chart: BarChart? = null
 
+    @Inject
+    lateinit var appDatasource: AppDatasource
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,6 +63,20 @@ class HomeFragment : Fragment() {
         prepareChartData(data)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // set data
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                    binding.userName.text = user.firstName + " " + user.lastName
+                }
+            }
+        }
+
     }
 
 
@@ -79,8 +102,18 @@ class HomeFragment : Fragment() {
         val values1: ArrayList<BarEntry> = ArrayList()
         val values2: ArrayList<BarEntry> = ArrayList()
         for (i in 0 until MAX_X_VALUE) {
-            values1.add(BarEntry(i.toFloat(), (Math.random() * (MAX_Y_VALUE - MIN_Y_VALUE) + MIN_Y_VALUE).toFloat()))
-            values2.add(BarEntry(i.toFloat(), (Math.random() * (MAX_Y_VALUE - MIN_Y_VALUE) + MIN_Y_VALUE).toFloat()))
+            values1.add(
+                BarEntry(
+                    i.toFloat(),
+                    (Math.random() * (MAX_Y_VALUE - MIN_Y_VALUE) + MIN_Y_VALUE).toFloat()
+                )
+            )
+            values2.add(
+                BarEntry(
+                    i.toFloat(),
+                    (Math.random() * (MAX_Y_VALUE - MIN_Y_VALUE) + MIN_Y_VALUE).toFloat()
+                )
+            )
         }
         val set1 = BarDataSet(values1, GROUP_1_LABEL)
         val set2 = BarDataSet(values2, GROUP_2_LABEL)
