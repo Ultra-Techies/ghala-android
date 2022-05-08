@@ -14,13 +14,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.inventory.AddInventoryRequest
 import com.ultratechies.ghala.databinding.FragmentInventoryBottomsheetBinding
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
@@ -32,6 +35,10 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
     companion object {
         const val TAG = "AddInventoryBottomSheetFragment"
     }
+
+
+    @Inject
+    lateinit var appDatasource: AppDatasource
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,16 +123,19 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
                 return
             }
 
-            val addInventoryRequest = AddInventoryRequest(
-                category = itemCategory as String,
-                name = productName.toString(),
-                ppu = productPrice.toString(),
-                quantity = productQuantity.toString(),
-                status = "AVAILABLE",
-                warehouseId = "4"
-            )
-
-            addInventoryItem(addInventoryRequest)
+            viewLifecycleOwner.lifecycleScope.launch {
+                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                    val addInventoryRequest = AddInventoryRequest(
+                        category = itemCategory as String,
+                        name = productName.toString(),
+                        ppu = productPrice.toString(),
+                        quantity = productQuantity.toString(),
+                        status = "AVAILABLE",
+                        warehouseId = user.assignedWarehouse.toString()
+                    )
+                    addInventoryItem(addInventoryRequest)
+                }
+            }
 
         }
     }
