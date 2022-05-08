@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // set data
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appDatasource.getUserFromPreferencesStore().collectLatest { user ->
                     binding.userName.text = user.firstName + " " + user.lastName
