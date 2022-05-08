@@ -117,8 +117,6 @@ class PasswordVerificationFragment : Fragment() {
         val squarePinField: SquarePinField = binding.squareField
         squarePinField.onTextCompleteListener = object : PinField.OnTextCompleteListener {
             override fun onTextComplete(enteredText: String): Boolean {
-                Toast.makeText(context, enteredText, Toast.LENGTH_SHORT).show()
-
                 return true
             }
         }
