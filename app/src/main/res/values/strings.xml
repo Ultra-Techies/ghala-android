@@ -129,4 +129,8 @@
     <string name="enter_your_pin">ENTER YOUR PIN</string>
     <string name="please_enter_your_pin">Please Enter Your Pin</string>
     <string name="login">LOGIN</string>
+    <string name="error_warehouse_name">Please enter warehouse name</string>
+    <string name="error_warehouse_location">Please enter warehouse location</string>
+    <string name="save">Save</string>
+    <string name="edit_warehouse">Edit Warehouse</string>
 </resources>

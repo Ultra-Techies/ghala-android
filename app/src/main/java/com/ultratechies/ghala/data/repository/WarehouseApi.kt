@@ -19,4 +19,9 @@ interface WarehouseApi {
 
     @DELETE("warehouse/{id}")
     suspend fun deleteWarehouse(@Path("id") id: Int): Response<Unit>
+
+    @PUT("warehouse")
+    suspend fun editWarehouse(
+        @Body editWarehouseRequest: Warehouse
+    ): Response<Unit>
 }
