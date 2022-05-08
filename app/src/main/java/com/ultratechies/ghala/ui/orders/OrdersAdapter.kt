@@ -53,7 +53,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
     fun clearSelectedItems() {
-        if (deliveryNotesModels.isNotEmpty()){
+        if (deliveryNotesModels.isNotEmpty()) {
             deliveryNotesModels.clear()
             notifyDataSetChanged()
         }
@@ -91,7 +91,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
 
         }
         when (ordersData.status) {
-            "Processed" -> {
+            "PROCESSED" -> {
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -100,7 +100,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
                 )
 
             }
-            "Pending" -> {
+            "PENDING" -> {
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -108,7 +108,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
                     )
                 )
             }
-            "Submitted" -> {
+            "DISPATCHED" -> {
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -119,11 +119,11 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
         }
 
         holder.binding.orderCard.setOnClickListener {
-          createDeliveryNoteCallback?.invoke(ordersData)
+            createDeliveryNoteCallback?.invoke(ordersData)
         }
 
-        holder.binding.checkboxOrders.setOnCheckedChangeListener(null)
-        holder.binding.orderCard.setOnLongClickListener(null)
+         holder.binding.checkboxOrders.setOnCheckedChangeListener(null)
+         holder.binding.orderCard.setOnLongClickListener(null)
 
         if (deliveryNotesModels.contains(ordersData)) {
             holder.binding.checkboxOrders.visibility = View.VISIBLE
