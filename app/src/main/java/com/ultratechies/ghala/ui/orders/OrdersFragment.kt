@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.deliverynotes.CreateDeliveryNoteRequest
 import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import com.ultratechies.ghala.databinding.OrdersFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OrdersFragment : Fragment() {
@@ -29,6 +32,9 @@ class OrdersFragment : Fragment() {
     private lateinit var ordersAdapter: OrdersAdapter
 
     private var data = mutableListOf<OrderResponseItem>()
+
+    @Inject
+    lateinit var appDatasource: AppDatasource
 
     companion object {
         fun newInstance() = OrdersFragment()
@@ -41,12 +47,6 @@ class OrdersFragment : Fragment() {
         binding = OrdersFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
-/*
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(OrdersViewModel::class.java)
-        // TODO: Use the ViewModel
-    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,6 +67,7 @@ class OrdersFragment : Fragment() {
 
     private fun getOrders() {
         binding.swipeContainer.isRefreshing = true
+
         viewModel.fetchOrders()
     }
 
@@ -95,7 +96,8 @@ class OrdersFragment : Fragment() {
 
     private fun setUpOrderAdapter() {
         ordersAdapter = OrdersAdapter()
-        ordersAdapter.onItemClick { orderResponseItem ->
+        ordersAdapter.onItemClick {
+
         }
 
         val recyclerView = binding.recyclerViewOrders
@@ -121,14 +123,19 @@ class OrdersFragment : Fragment() {
                     .setMessage("Create Delivery Note Containing Selected Orders")
                     .setPositiveButton("Yes") { dialog, _ ->
                         dialog.dismiss()
-                        val addDeliveryNote = CreateDeliveryNoteRequest(
-                            deliverWindow = list[0].deliveryWindow,
-                            orderIds = list.map { it.id },
-                            route = list[0].route,
-                            warehouseId = list[0].warehouseId
 
-                        )
-                        createDeliveryNote(addDeliveryNote)
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                                val addDeliveryNote = CreateDeliveryNoteRequest(
+                                    deliverWindow = list[0].deliveryWindow,
+                                    orderIds = list.map { it.id },
+                                    route = list[0].route,
+                                    warehouseId = user.assignedWarehouse
+                                )
+                                createDeliveryNote(addDeliveryNote)
+                            }
+                        }
+
                     }
                     .setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
