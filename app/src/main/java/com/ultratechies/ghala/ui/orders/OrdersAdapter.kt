@@ -116,6 +116,14 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
                     )
                 )
             }
+            "DELIVERED" ->{
+                holder.binding.textViewOrderStatus.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.teal
+                    )
+                )
+            }
         }
 
         holder.binding.orderCard.setOnClickListener {
