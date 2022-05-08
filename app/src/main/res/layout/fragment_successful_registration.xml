@@ -51,8 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
-            android:text="@string/account_holder"
+            android:text="@string/account_first_name"
             android:textColor="@color/black"
+            android:layout_gravity="bottom"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
@@ -79,7 +80,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_email_address"
+        android:id="@+id/ll_account_second_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -89,6 +90,49 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_account_holder">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/account_secons_name"
+            android:textColor="@color/black"
+            android:layout_gravity="bottom"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextSecondName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:autofillHints="@null"
+            android:background="@color/transparent"
+            android:hint="@string/malcom_maima"
+            android:inputType="none" />
+
+        <ImageButton
+            android:id="@+id/edit_second_button"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/outline_edit_black_18"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/editIcon" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_email_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_account_second_name">
 
         <TextView
             android:layout_width="wrap_content"
@@ -125,6 +169,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_email_address">
