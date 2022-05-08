@@ -20,7 +20,7 @@ interface InventoryRepository {
 
 class InventoryRepositoryImpl @Inject constructor(
     private val inventoryApi: InventoryApi,
-    val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) :
     InventoryRepository, BaseRepo() {
 
