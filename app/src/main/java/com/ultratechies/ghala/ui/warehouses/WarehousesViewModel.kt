@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-
 @HiltViewModel
 class WarehousesViewModel @Inject constructor(
     private val repository: WarehouseRepository
@@ -23,13 +22,13 @@ class WarehousesViewModel @Inject constructor(
         get() = _warehouses
 
     private val _errorMessage: MutableLiveData<String> = MutableLiveData()
-     val errorMessage: LiveData<String> get() =  _errorMessage
+    val errorMessage: LiveData<String> get() = _errorMessage
 
     private val _deletedWarehouseResponse: MutableLiveData<APIResource<Unit>> = MutableLiveData()
-    val deletedWarehouseResponse: LiveData<APIResource<Unit>>
-    private val _deletedWarehouseResponse: MutableLiveData<APIResource<Any>> = MutableLiveData()
-    val deletedWarehouseResponse: LiveData<APIResource<Any>>
-        get() = _deletedWarehouseResponse
+    val deletedWarehouseResponse: LiveData<APIResource<Unit>> get() = _deletedWarehouseResponse
+
+    private val _deletedWhResponse: MutableLiveData<APIResource<Any>> = MutableLiveData()
+    val deletedWhResponse: LiveData<APIResource<Any>> get() = _deletedWhResponse
 
     fun getWarehouses() = viewModelScope.launch {
         _warehouses.value = APIResource.Loading
@@ -54,7 +53,7 @@ class WarehousesViewModel @Inject constructor(
     }
 
     fun deleteWarehouse(id: Int) = viewModelScope.launch {
-        _deletedWarehouseResponse.value = APIResource.Loading
-        _deletedWarehouseResponse.value = repository.deleteWarehouse(id)
+        _deletedWhResponse.value = APIResource.Loading
+        _deletedWhResponse.value = repository.deleteWarehouse(id)
     }
 }
