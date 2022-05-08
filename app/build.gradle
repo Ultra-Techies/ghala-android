@@ -62,7 +62,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01"
 
     //Retrofit and GSON
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -87,6 +87,9 @@ dependencies {
 
     //country code picker
     implementation 'com.hbb20:ccp:2.6.0'
+
+    //datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
 
 }

@@ -6,16 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
+import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
 import com.ultratechies.ghala.databinding.FragmentSuccessfulRegistrationBinding
-import com.ultratechies.ghala.ui.auth.model.RegistrationUserDetails
-import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewModel
+import com.ultratechies.ghala.domain.models.UserModel
+import com.ultratechies.ghala.ui.auth.viewmodels.UserViewModel
 import com.ultratechies.ghala.utils.validateEmail
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SuccessfulRegistrationFragment : Fragment() {
     private lateinit var binding: FragmentSuccessfulRegistrationBinding
-    private val setupAccountViewModel: SetupAccountViewModel by activityViewModels()
+
+    private val userViewModel: UserViewModel by activityViewModels()
+
+    private var userModel: UserModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,18 +38,82 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpUserData()
+        /*   setUpUserData()*/
         editFields()
         validateFields()
+        getUserByIdListener()
+        getUserByIdErrorListener()
+        updateUserListener()
+        updateUserErrorListener()
     }
 
-    private fun setUpUserData() {
-        setupAccountViewModel.userRegistrationUserDetails.observe(viewLifecycleOwner) { data ->
-            setDataToUi(data)
+    private fun toggleLoading(displayLoading: Boolean) {
+        if (displayLoading) {
+            binding.pbRegistrationSuccessful.visibility = View.VISIBLE
+            binding.pbRegistrationSuccessful.isEnabled = false
+        } else {
+            binding.pbRegistrationSuccessful.visibility = View.GONE
+            binding.pbRegistrationSuccessful.isEnabled = true
         }
     }
 
-    fun editFields() {
+    private fun updateUserErrorListener() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.errorMessage.collectLatest {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun updateUserListener() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.updateUser.collect {
+                    toggleLoading(false)
+                    findNavController().navigate(R.id.mainActivity)
+                }
+            }
+        }
+    }
+
+    private fun updateUser(updateUserRequest: UpdateUserRequest) {
+        toggleLoading(true)
+        userViewModel.updateUser(updateUserRequest)
+    }
+
+
+    private fun getUserByIdErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.errorMessage.collect {
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun getUserByIdListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.user.collect {
+                    userModel = it
+                    binding.apply {
+                        editTextAccountHolder.setText(it.firstName)
+                        editTextSecondName.setText(it.lastName)
+                        editTextAccountEmailAddress.setText(it.email)
+                        editTextUserRole.setText(it.role)
+                        /*   editTextWarehouseDetails.setText(it.assignedWarehouse)*/
+                        /* editTextWarehouseDetails.setText(it.assignedWarehouse)*/
+                    }
+                }
+            }
+        }
+    }
+
+    private fun editFields() {
         binding.apply {
             editButton.setOnClickListener {
                 editTextAccountHolder.isEnabled = true
@@ -68,50 +142,43 @@ class SuccessfulRegistrationFragment : Fragment() {
     private fun validateFields() {
         binding.apply {
             registrationConfirmButton.setOnClickListener {
-
-                pbRegistrationSuccessful.visibility = View.VISIBLE
-                registrationConfirmButton.isEnabled = false
-
-                if (editTextAccountHolder.text.trim().isNullOrEmpty()) {
-                    editTextAccountHolder.error = "Please Enter Name "
-                    pbRegistrationSuccessful.visibility = View.GONE
-                    registrationConfirmButton.isEnabled = true
+                if (editTextAccountHolder.text.trim().isEmpty()) {
+                    editTextAccountHolder.error = "Please Enter First Name "
                     return@setOnClickListener
                 }
-                if (editTextAccountEmailAddress.text.trim().isNullOrEmpty()) {
+                if (editTextSecondName.text.trim().isEmpty()) {
+                    editTextSecondName.error = "Please Enter Second Name "
+                    return@setOnClickListener
+                }
+                if (editTextAccountEmailAddress.text.trim().isEmpty()) {
                     editTextAccountEmailAddress.error = "Please enter email address"
-                    pbRegistrationSuccessful.visibility = View.GONE
-                    registrationConfirmButton.isEnabled = true
+                    toggleLoading(true)
                     return@setOnClickListener
                 }
                 if (!validateEmail((binding.editTextAccountEmailAddress.text.trim().toString()))) {
                     editTextAccountEmailAddress.error = "Enter a valid email"
-                    pbRegistrationSuccessful.visibility = View.GONE
-                    registrationConfirmButton.isEnabled = true
-                }
-                if (editTextWarehouseDetails.text.trim().isNullOrEmpty()) {
-                    editTextWarehouseDetails.error = "Please enter warehouse name"
-                    pbRegistrationSuccessful.visibility = View.GONE
-                    registrationConfirmButton.isEnabled = true
                     return@setOnClickListener
                 }
-                if (editTextUserRole.text.trim().isNullOrEmpty()) {
-                    editTextUserRole.error = "Please Enter a role"
-                    pbRegistrationSuccessful.visibility = View.GONE
-                    registrationConfirmButton.isEnabled = true
-                    return@setOnClickListener
-                }
-                findNavController().navigate(R.id.mainActivity)
-            }
-        }
-    }
 
-    private fun setDataToUi(data: RegistrationUserDetails) {
-        binding.apply {
-            editTextAccountHolder.setText(data.firstName + " " + data.secondName)
-            editTextAccountEmailAddress.setText(data.email)
-            editTextWarehouseDetails.setText(data.warehouse)
-            editTextUserRole.setText(data.role)
+                // check if data is the same
+                if ((userModel!!.firstName + " " + userModel!!.lastName) == editTextAccountHolder.text.trim()
+                        .toString()
+                    && userModel!!.email == editTextAccountEmailAddress.text.trim().toString()
+                ) {
+                    findNavController().navigate(R.id.mainActivity)
+                } else {
+                    toggleLoading(true)
+                    val updateUserRequest = UpdateUserRequest(
+                        id = userModel!!.id,
+                        firstName = editTextAccountHolder.text.toString(),
+                        lastName = editTextSecondName.text.toString(),
+                        email = editTextAccountEmailAddress.text.toString(),
+
+                        )
+                    updateUser(updateUserRequest)
+                }
+
+            }
         }
     }
 

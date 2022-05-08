@@ -1,24 +1,41 @@
 package com.ultratechies.ghala.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
+import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
+import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.FragmentSetupAccountBinding
-import com.ultratechies.ghala.ui.auth.model.RegistrationUserDetails
-import com.ultratechies.ghala.ui.auth.viewmodels.SetupAccountViewModel
+import com.ultratechies.ghala.ui.auth.viewmodels.UserViewModel
+import com.ultratechies.ghala.ui.warehouses.WarehousesViewModel
+import com.ultratechies.ghala.utils.gone
 import com.ultratechies.ghala.utils.validateEmail
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class SetupAccountFragment : Fragment() {
     private lateinit var binding: FragmentSetupAccountBinding
-    private val setUpAccountViewModel: SetupAccountViewModel by activityViewModels()
+
+    private val userViewmodel: UserViewModel by activityViewModels()
+    private val warehouseViewModel: WarehousesViewModel by viewModels()
+
+    private var phoneNumber: String? = null
+    private val wareHouses = mutableListOf<Warehouse>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,18 +49,65 @@ class SetupAccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpToolbar()
+        fetchWareHouses()
+        getPhoneNumber()
         validateUserInputFields()
+        fetchErrorListener()
+        registerUserListener()
+        registerUserErrorListener()
 
+
+
+        warehouseViewModel.fetchWarehouses()
         binding.toolbarWelcome.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_setupAccountFragment2_to_otpVerificationFragment2)
         }
     }
+    private fun setUpToolbar() {
+        (requireActivity() as AuthActivity).setSupportActionBar(binding.toolbarWelcome)
+        binding.toolbarWelcome.showOverflowMenu()
+        (requireActivity() as AuthActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as AuthActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (requireActivity() as AuthActivity).supportActionBar?.title = "Setup Account"
+    }
+    private fun fetchWareHouses() {
+        warehouseViewModel.warehouses.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is APIResource.Success -> {
+                    binding.apply {
+                        progressBarWarehouses.gone()
+
+                        wareHouses.apply {
+                            clear()
+                            addAll(state.value)
+                        }
+
+                        val adapter = ArrayAdapter(
+                            requireActivity(),
+                            android.R.layout.simple_spinner_dropdown_item,
+                            wareHouses.map { it.name })
+                        binding.warehouseSpinner.adapter = adapter
+                    }
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun getPhoneNumber() {
+        lifecycleScope.launchWhenCreated {
+            userViewmodel.phoneNumber.collectLatest {
+                phoneNumber = it
+            }
+        }
+    }
+
 
     private fun validateUserInputFields() {
         binding.apply {
             setUpNextButton.setOnClickListener {
-                pbSetupVerification.visibility = View.VISIBLE
-                setUpNextButton.isEnabled = false
 
                 if (editTextTextFirstName.text.trim().isNullOrEmpty()) {
                     editTextTextFirstName.error = "Please Enter Name "
@@ -83,7 +147,7 @@ class SetupAccountFragment : Fragment() {
                     setUpNextButton.isEnabled = true
                     return@setOnClickListener
                 }
-                if (warehouseSpinner.selectedItemPosition == 0) {
+              /*  if (warehouseSpinner.selectedItemPosition == 0) {
                     Toast.makeText(
                         requireContext(),
                         "Please Select a warehouse",
@@ -93,56 +157,81 @@ class SetupAccountFragment : Fragment() {
                     pbSetupVerification.visibility = View.GONE
                     setUpNextButton.isEnabled = true
                     return@setOnClickListener
-                }
-                if (departmentSpinner.selectedItemPosition == 0) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please Select a Department",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                }*/
+                if (editTextTextPin.text.trim().isNullOrEmpty()) {
+                    editTextTextPin.error = "Please Enter you Pin "
                     pbSetupVerification.visibility = View.GONE
                     setUpNextButton.isEnabled = true
                     return@setOnClickListener
                 }
-                if (roleSpinner.selectedItemPosition == 0) {
-                    Toast.makeText(requireContext(), "Please Select a Role", Toast.LENGTH_SHORT)
-                        .show()
+                if (editTextTextPin.text.trim() != editTextTextRepeatPin.text.trim()) {
+                    editTextTextPin.error = "Pins do not match "
                     pbSetupVerification.visibility = View.GONE
                     setUpNextButton.isEnabled = true
                     return@setOnClickListener
                 }
+
 
                 val firstName = editTextTextSecondName.text.trim().toString()
                 val secondName = editTextTextSecondName.text.trim().toString()
                 val email = editTextEmailAddress.text.trim().toString()
-                val warehouse = warehouseSpinner.selectedItem.toString()
-                val department = departmentSpinner.selectedItem.toString()
-                val role = roleSpinner.selectedItem.toString()
+  /*              val warehouse = warehouseSpinner.selectedItem.toString()*/
+                val password = binding.editTextTextPin.text.trim().toString()
 
-                val userDetails = RegistrationUserDetails(
-                    firstName = firstName,
-                    secondName = secondName,
+
+                val userDetails = CreateUserRequest(
+                    assignedWarehouse = wareHouses.find { it.name == binding.warehouseSpinner.selectedItem.toString() }!!.id,
                     email = email,
-                    warehouse = warehouse,
-                    department = department,
-                    role = role
-
+                    firstName = firstName,
+                    lastName = secondName,
+                    password = password,
+                    phoneNumber = phoneNumber,
+                    profilePhoto = listOf()
                 )
-                Log.d("--->", userDetails.toString())
-
-                setUpAccountViewModel.setData(userDetails)
-
-                findNavController().navigate(R.id.action_setupAccountFragment2_to_successfulRegistrationFragment2)
+                registerUser(createUserRequest = userDetails)
             }
         }
     }
 
-    private fun setUpToolbar() {
-        (requireActivity() as AuthActivity).setSupportActionBar(binding.toolbarWelcome)
-        binding.toolbarWelcome.showOverflowMenu()
-        (requireActivity() as AuthActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (requireActivity() as AuthActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
-        (requireActivity() as AuthActivity).supportActionBar?.title = "Setup Account"
+    private fun registerUser(createUserRequest: CreateUserRequest) {
+        toggleLoading(true)
+        userViewmodel.createUser(createUserRequest)
+    }
+
+
+    private fun fetchErrorListener() {
+        warehouseViewModel.errorMessage.observe(viewLifecycleOwner){
+            Snackbar.make(binding.root,it,Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun registerUserListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewmodel.createUser.collect {
+                    toggleLoading(true)
+                    findNavController().navigate(R.id.action_setupAccountFragment2_to_successfulRegistrationFragment2)
+                }
+            }
+        }
+    }
+    private fun registerUserErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewmodel.errorMessage.collect {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    private fun toggleLoading(displayLoading: Boolean) {
+        if (displayLoading) {
+            binding.pbSetupVerification.visibility = View.VISIBLE
+            binding.pbSetupVerification.isEnabled = false
+        } else {
+            binding.pbSetupVerification.visibility = View.GONE
+            binding.pbSetupVerification.isEnabled = true
+        }
     }
 }

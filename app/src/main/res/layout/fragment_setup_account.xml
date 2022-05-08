@@ -98,16 +98,25 @@
 
     <Spinner
         android:id="@+id/warehouse_spinner"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:entries="@array/warehouses"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/progressBar_warehouses"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextEmailAddress" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_warehouses"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/warehouse_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/warehouse_spinner"
+        app:layout_constraintTop_toTopOf="@id/warehouse_spinner" />
 
     <View
         android:id="@+id/warehouse_view"
@@ -121,56 +130,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/warehouse_spinner" />
 
-    <Spinner
-        android:id="@+id/department_spinner"
+
+    <EditText
+        android:id="@+id/editTextTextPin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
-        android:entries="@array/department"
+        android:ems="10"
+        android:hint="@string/enter_pin"
+        android:importantForAutofill="no"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        android:textColorHint="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/warehouse_view" />
 
-    <View
-        android:id="@+id/department_view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="20dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/department_spinner" />
-
-    <Spinner
-        android:id="@+id/role_spinner"
+    <EditText
+        android:id="@+id/editTextTextRepeatPin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
-        android:entries="@array/role"
+        android:ems="10"
+        android:hint="@string/confirm_pin"
+        android:importantForAutofill="no"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        android:textColorHint="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/department_view" />
-
-    <View
-        android:id="@+id/role_view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="20dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/role_spinner" />
-
+        app:layout_constraintTop_toBottomOf="@id/editTextTextPin" />
 
     <Button
         android:id="@+id/setUpNextButton"
@@ -184,7 +179,8 @@
         android:text="@string/next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/role_spinner" />
+        app:layout_constraintTop_toBottomOf="@id/editTextTextRepeatPin" />
+
 
     <ProgressBar
         android:id="@+id/pb_setup_verification"
