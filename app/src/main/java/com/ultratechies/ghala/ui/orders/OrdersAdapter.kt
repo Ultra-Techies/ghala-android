@@ -68,7 +68,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
         val ordersData = asyncListDiffer.currentList[position]
         val context = holder.binding.root.context
         holder.binding.apply {
-            tvShopName.text = ordersData.customerId
+            tvShopName.text = ordersData.customerName
             /*  textViewOrderAmount.text = StringBuilder(context.getString(R.string.price,getFormattedNumbers( ordersData.items.fold( 0 ) { initialAmount, item ->
                   initialAmount + item.totalPrice
               }).toString()))*/
