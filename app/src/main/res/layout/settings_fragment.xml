@@ -1,14 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F7F7F8"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.SettingsFragment">
 
-    <TextView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/order_card"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Settings" />
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="5dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:strokeColor="#1B808080"
+        app:strokeWidth="1dp">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+
+            <EditText
+                android:id="@+id/editTextUpdateFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:ems="10"
+                android:hint="@string/first_name"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textColorHint="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextUpdateSecondName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:hint="@string/second_name"
+                android:inputType="textPersonName"
+                android:textColorHint="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextUpdateFirstName"
+                tools:ignore="Autofill" />
+
+            <EditText
+                android:id="@+id/editTextUpdateEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextUpdateSecondName"
+                tools:ignore="Autofill" />
+
+            <Spinner
+                android:id="@+id/update_warehouse_spinner"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/progressBar_warehouses"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextUpdateEmailAddress" />
+            <ProgressBar
+                android:id="@+id/progressBar_warehouses"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/update_warehouse_spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/update_warehouse_spinner"
+                app:layout_constraintTop_toTopOf="@id/update_warehouse_spinner" />
+            <View
+                android:id="@+id/warehouse_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/black"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_warehouse_spinner" />
+            <TextView
+                android:id="@+id/tv_previous_warehouses"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:gravity="top"
+                android:textColor="@android:color/black"
+                tools:text ="Previous Warehouses : Household"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/warehouse_view"
+                />
+
+
+
+            <EditText
+                android:id="@+id/editTextUpdatePin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:ems="10"
+                android:hint="@string/enter_pin"
+                android:importantForAutofill="no"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textColorHint="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_warehouse_spinner" />
+
+            <EditText
+                android:id="@+id/editTextUpdateRepeatPin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:ems="10"
+                android:hint="@string/confirm_pin"
+                android:importantForAutofill="no"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textColorHint="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextUpdatePin" />
+
+            <Button
+                android:id="@+id/updateUser"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:fontFamily="sans-serif"
+                android:text="@string/update"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextUpdateRepeatPin" />
+
+
+            <ProgressBar
+                android:id="@+id/pb_setup_verification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:progressTint="@color/colorSecondary"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/updateUser" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
