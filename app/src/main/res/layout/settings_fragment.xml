@@ -92,8 +92,8 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
-                android:entries="@array/warehouses"
                 android:textSize="18sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/progressBar_warehouses"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextUpdateEmailAddress" />
@@ -102,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/update_warehouse_spinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/update_warehouse_spinner"
@@ -114,9 +115,28 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/black"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/update_warehouse_spinner" />
+            <TextView
+                android:id="@+id/tv_previous_warehouses"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:gravity="top"
+                android:textColor="@android:color/black"
+                tools:text ="Previous Warehouses : Household"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/warehouse_view"
+                />
+
+
 
             <EditText
                 android:id="@+id/editTextUpdatePin"
@@ -155,15 +175,15 @@
                 app:layout_constraintTop_toBottomOf="@id/editTextUpdatePin" />
 
             <Button
-                android:id="@+id/setUpNextButton"
+                android:id="@+id/updateUser"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/colorSecondary"
                 android:fontFamily="sans-serif"
-                android:text="@string/next"
+                android:text="@string/update"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextUpdateRepeatPin" />
@@ -179,7 +199,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/setUpNextButton" />
+                app:layout_constraintTop_toBottomOf="@id/updateUser" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
