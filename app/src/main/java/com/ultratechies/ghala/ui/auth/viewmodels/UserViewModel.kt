@@ -9,6 +9,7 @@ import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
 import com.ultratechies.ghala.data.models.requests.user.VerifyUserRequest
 import com.ultratechies.ghala.data.models.responses.auth.CheckUserExistsResponse
 import com.ultratechies.ghala.data.models.responses.auth.GetOTPResponse
+import com.ultratechies.ghala.data.models.responses.auth.LoginResponse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.domain.models.UserModel
 import com.ultratechies.ghala.domain.repository.UserRepository
