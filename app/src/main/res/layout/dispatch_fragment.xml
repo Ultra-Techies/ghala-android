@@ -1,13 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dispatch.DispatchFragment">
+    android:background="#F7F7F8"
+    tools:context=".ui.orders.OrdersFragment">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_dispatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/filter"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/outline_filter_alt_black_18" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="end"
+            android:text="@string/status_all"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinner_order_status"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:entries="@array/status" />
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="65dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDispatch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/list_item_dispatch" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <TextView
+        android:id="@+id/tvEmptyDispatchItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/no_orders_created"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/pbDispatch"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/DeliveryNoteButton"
+        />
+
+
+
 
 </FrameLayout>
