@@ -49,18 +49,37 @@ class UserRepositoryImpl @Inject constructor(
         return@safeApiCall response
     }
 
+    /*   override suspend fun verifyUser(verifyUserRequest: VerifyUserRequest) = safeApiCall {
+           val response = userApi.verifyUser(verifyUserRequest)
+           if (response.has("verified")) {
+               return@safeApiCall false
+           } else {
+               // convert json to user model
+               val userModel = gson.fromJson(response, UserModel::class.java)
+               // store it
+               userPrefs.saveUserToPreferencesStore(userModel)
+               // return true
+               return@safeApiCall true
+           }
+       }*/
     override suspend fun verifyUser(verifyUserRequest: VerifyUserRequest) = safeApiCall {
-        val response = userApi.verifyUser(verifyUserRequest)
-        if (response.has("verified")) {
-            return@safeApiCall false
-        } else {
-            // convert json to user model
-            val userModel = gson.fromJson(response, UserModel::class.java)
-            // store it
-            userPrefs.saveUserToPreferencesStore(userModel)
-            // return true
-            return@safeApiCall true
+       val res = userApi.verifyUser(verifyUserRequest)
+        withContext(dispatcher){
+            userPrefs.saveAccessToken(res.accessToken)
+            userPrefs.saveRefreshToken(res.refreshToken)
+            userPrefs.saveUserToPreferencesStore(UserModel(
+                assignedWarehouse = 1,
+                email = "mama@gmail.com",
+                firstName = "Flo",
+                id = 2,
+                lastName = "mama",
+                password = "mama",
+                phoneNumber = "+254725878563",
+                profilePhoto = listOf(),
+                role = "ADMIN"
+            ))
         }
+        true
     }
 
     override suspend fun updateUser(updateUserRequest: UpdateUserRequest): APIResource<String> {

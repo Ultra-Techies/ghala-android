@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface WarehouseApi {
 
-    @HTTP(method = "GET", path = "warehouses", hasBody = false)
+    @HTTP(method = "GET", path = "warehouse/all", hasBody = false)
     suspend fun getWarehouses(
     ) : WarehousesResponse
 
