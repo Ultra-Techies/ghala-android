@@ -2,10 +2,12 @@ package com.ultratechies.ghala.data.repository
 
 import com.ultratechies.ghala.data.models.requests.deliverynotes.CreateDeliveryNoteRequest
 import com.ultratechies.ghala.data.models.responses.deliverynotes.CreateDeliveryNoteResponse
+import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponse
 import javax.inject.Inject
 
 interface DeliveryNotesRepository {
     suspend fun createDeliveryNotes(createDeliveryNotes: CreateDeliveryNoteRequest): APIResource<CreateDeliveryNoteResponse>
+    suspend fun fetchDeliveryNotes(): APIResource<List<FetchDeliveryNotesResponse>>
 }
 
 class DeliveryNotesRepositoryImpl @Inject constructor(private val deliveryNotesApi: DeliveryNotesApi) :
@@ -14,4 +16,7 @@ class DeliveryNotesRepositoryImpl @Inject constructor(private val deliveryNotesA
         safeApiCall {
             deliveryNotesApi.createDeliveryNotes(createDeliveryNotes)
         }
+    override suspend fun fetchDeliveryNotes() = safeApiCall {
+        deliveryNotesApi.getAllDeliveryNotes()
+    }
 }
