@@ -173,8 +173,8 @@ open class HomeFragment : Fragment() {
         val set1 = BarDataSet(orderData, GROUP_1_LABEL)
         val set2 = BarDataSet(inventoryData, GROUP_2_LABEL) //add other data to compare with: when backend is ready
 
-        set1.color = ColorTemplate.rgb(getString(R.color.red))
-        set2.color = ColorTemplate.rgb(getString(R.color.teal))
+        set1.color = ColorTemplate.rgb(R.color.red.toString())
+        set2.color = ColorTemplate.rgb(R.color.teal.toString())
 
         val dataSets: ArrayList<IBarDataSet> = ArrayList()
 
