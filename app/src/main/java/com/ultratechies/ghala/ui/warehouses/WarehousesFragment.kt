@@ -5,14 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
-import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.WarehousesFragmentBinding
 import com.ultratechies.ghala.utils.handleApiError

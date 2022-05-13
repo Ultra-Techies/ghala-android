@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
-import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.FragmentSetupAccountBinding
 import com.ultratechies.ghala.ui.auth.viewmodels.UserViewModel

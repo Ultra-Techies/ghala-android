@@ -66,4 +66,10 @@ object NetworkModule {
     fun deliveryNotesService(retrofit: Retrofit): DeliveryNotesApi = retrofit.create(
         DeliveryNotesApi::class.java
     )
+
+    @Singleton
+    @Provides
+    fun getStats(retrofit: Retrofit): HomeStatsApi = retrofit.create(
+        HomeStatsApi::class.java
+    )
 }

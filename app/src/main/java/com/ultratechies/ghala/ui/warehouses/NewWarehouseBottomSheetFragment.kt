@@ -15,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
-import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.databinding.FragmentWhBottomsheetBinding
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
@@ -23,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) : BottomSheetDialogFragment(), View.OnClickListener {

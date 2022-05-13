@@ -46,4 +46,9 @@ object RepositoryModule {
     fun providesDeliveryNotes(deliveryNotesApi: DeliveryNotesApi): DeliveryNotesRepository =
         DeliveryNotesRepositoryImpl(deliveryNotesApi)
 
+    @Singleton
+    @Provides
+    fun providesHomeStats(homeStatsApi: HomeStatsApi): HomeStatsRepository =
+        HomeStatsRepositoryImpl(homeStatsApi)
+
 }
