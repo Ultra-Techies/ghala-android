@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_color"
+    android:background="@color/fragment_background"
     tools:context=".ui.home.HomeFragment">
 
     <ScrollView
@@ -94,7 +94,8 @@
                                 android:gravity="left"
                                 android:text="@string/all_products_including_taxes"
                                 android:textColor="@color/grey"
-                                android:textSize="20sp"
+                                android:textSize="15sp"
+                                android:layout_marginBottom="10dp"
                                 android:textStyle="normal" />
                             <com.github.mikephil.charting.charts.BarChart
                                 android:id="@+id/barChart"
@@ -128,24 +129,20 @@
                             android:layout_margin="8dp">
 
                             <TextView
-                                android:id="@+id/tasksTitleTV"
+                                android:id="@+id/warehouseStatisticsTitleTV"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
-                                android:text="@string/tasks"
+                                android:text="@string/warehouseStatsTitle"
                                 android:textColor="@color/colorSecondary"
                                 android:textSize="20sp"
                                 android:textStyle="normal" />
-                            <TextView
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/pieChart"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="left"
-                                android:text="@string/warehouse_tasks"
-                                android:textColor="@color/grey"
-                                android:textSize="20sp"
-                                android:textStyle="normal" />
-
-
+                                android:layout_height="match_parent"
+                                android:layout_above="@+id/seekBar1" />
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>

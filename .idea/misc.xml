@@ -8,7 +8,13 @@
         <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/fragment_ewh_bottomsheet.xml" value="0.2" />
         <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/fragment_wh_bottomsheet.xml" value="0.2" />
         <entry key="..\:/Users/Malcom Miyare/Git/Work/ghala-android/app/src/main/res/layout/home_fragment.xml" value="0.25" />
-        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/home_fragment.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/dispatch_fragment.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/home_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/inventory_fragment.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/list_item_inventory.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/orders_fragment.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/settings_fragment.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/malco/Git/work/ghala-android/app/src/main/res/layout/warehouses_fragment.xml" value="0.13020833333333334" />
         <entry key="app/src/main/res/drawable-v24/ic_assignment_black_24dp.xml" value="0.159" />
         <entry key="app/src/main/res/drawable-v24/ic_clock_black_24dp.xml" value="0.159" />
         <entry key="app/src/main/res/drawable-v24/ic_list_black_24dp.xml" value="0.159" />
