@@ -1,12 +1,11 @@
 package com.ultratechies.ghala.ui.warehouses
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ultratechies.ghala.data.models.responses.AddWarehouseResponse
-import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.AddWarehouseResponse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.WarehouseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -15,7 +15,7 @@ import com.google.gson.JsonObject
 import com.ultratechies.ghala.data.repository.APIResource
 import java.text.SimpleDateFormat
 
-const val BASE_URL = "http://192.168.0.108:8080/api/"
+const val BASE_URL = "http://192.168.0.52:8080/api/"
 
 
 fun isNetworkAvailable(context: Context): Boolean {

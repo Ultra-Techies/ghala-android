@@ -88,8 +88,8 @@
     <string name="menu_inventory">Inventory</string>
     <string name="menu_dispatch">Dispatch</string>
     <string name="all_products_including_taxes">All products including Taxes</string>
-    <string name="_2022_statistics">2022 Statistics</string>
-    <string name="tasks">Tasks</string>
+    <string name="_2022_statistics">2022 Sales</string>
+    <string name="warehouseStatsTitle">Warehouse Statistics</string>
     <string name="warehouse_tasks">Warehouse tasks</string>
     <string name="status_all">Status:</string>
     <string name="category">Category: </string>
@@ -134,4 +134,5 @@
     <string name="save">Save</string>
     <string name="edit_warehouse">Edit Warehouse</string>
     <string name="update">Update</string>
+    <string name="warehouseStatsDesc">Inventory vs Orders statistics</string>
 </resources>
