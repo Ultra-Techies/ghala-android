@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.databinding.FragmentOtpVerificationBinding
@@ -52,22 +51,18 @@ class OtpVerificationFragment : Fragment() {
 
     private fun fetchOTPlistener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getOTP.collect { otpResponse ->
-                    toggleLoading(false)
-                    showMessage("OTP resent successfully")
-                }
+            viewModel.getOTP.collect { otpResponse ->
+                toggleLoading(false)
+                showMessage("OTP resent successfully")
             }
         }
     }
 
     private fun fetchOTPErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.errorMessage.collect {
-                    toggleLoading(false)
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-                }
+            viewModel.errorMessage.collect {
+                toggleLoading(false)
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -92,11 +87,9 @@ class OtpVerificationFragment : Fragment() {
 
     private fun otpResponseListener() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.otpListener.collect { valid ->
-                    if (valid) {
-                        findNavController().navigate(com.ultratechies.ghala.R.id.action_otpVerificationFragment2_to_setupAccountFragment2)
-                    }
+            viewModel.otpListener.collect { valid ->
+                if (valid) {
+                    findNavController().navigate(com.ultratechies.ghala.R.id.action_otpVerificationFragment2_to_setupAccountFragment2)
                 }
             }
         }

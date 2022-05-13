@@ -118,7 +118,7 @@ class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) :
     private fun addWarehouseListener(){
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.newWarehouseResponse.collectLatest {
-                if (!it.message.isNullOrBlank()) {
+                if (it.id > 0) {
                     binding.pbBottomSheet.visibility = GONE
                     Snackbar.make(
                         dialog?.window!!.decorView,

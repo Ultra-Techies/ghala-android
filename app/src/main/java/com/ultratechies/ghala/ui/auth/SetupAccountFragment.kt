@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
@@ -207,21 +206,17 @@ class SetupAccountFragment : Fragment() {
 
     private fun registerUserListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userViewmodel.createUser.collect {
-                    toggleLoading(true)
-                    findNavController().navigate(R.id.action_setupAccountFragment2_to_successfulRegistrationFragment2)
-                }
+            userViewmodel.createUser.collect {
+                toggleLoading(true)
+                findNavController().navigate(R.id.action_setupAccountFragment2_to_successfulRegistrationFragment2)
             }
         }
     }
     private fun registerUserErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userViewmodel.errorMessage.collect {
-                    toggleLoading(false)
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-                }
+            userViewmodel.errorMessage.collect {
+                toggleLoading(false)
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
             }
         }
     }

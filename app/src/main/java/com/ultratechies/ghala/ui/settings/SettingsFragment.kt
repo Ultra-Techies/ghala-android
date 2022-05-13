@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
@@ -167,22 +166,18 @@ class SettingsFragment : Fragment() {
 
     private fun updateUserErrorListener() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.errorMessage.collectLatest {
-                    toggleLoading(false)
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-                }
+            viewModel.errorMessage.collectLatest {
+                toggleLoading(false)
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun updateUserListener() {
        lifecycleScope.launch {
-           repeatOnLifecycle(Lifecycle.State.STARTED){
-               viewModel.updateUser.collect{
-                   toggleLoading(false)
-                   Snackbar.make(binding.root,"Use Updated successfully",Snackbar.LENGTH_SHORT).show()
-               }
+           viewModel.updateUser.collect{
+               toggleLoading(false)
+               Snackbar.make(binding.root,"Use Updated successfully",Snackbar.LENGTH_SHORT).show()
            }
        }
     }

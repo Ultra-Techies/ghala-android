@@ -14,6 +14,7 @@ import com.ultratechies.ghala.utils.isNetworkAvailable
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
@@ -70,12 +71,11 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
                 }
             }
 
-            // Long click listener on our card
-            holder.cardView.setOnLongClickListener(OnLongClickListener {
-                AlertDialog.Builder(holder.itemView.context)
+            holder.cardView.setOnLongClickListener(View.OnLongClickListener {
+                MaterialAlertDialogBuilder(holder.itemView.context)
                     .setTitle("Delete ${warehouseModel.name}")
                     .setMessage("Are you sure you want to delete ${warehouseModel.name}?")
-                    .setPositiveButton("Yes") { dialog, which ->
+                    .setPositiveButton("Yes") { dialog, _ ->
                         if(!isNetworkAvailable(mfragment.requireContext())) {
                             Snackbar.make(
                                 mfragment.requireView(),
@@ -84,6 +84,7 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
                             ).show()
                             return@setPositiveButton
                         } else {
+                            dialog.dismiss()
                             Toast.makeText(
                                 mfragment.requireContext(),
                                 "Deleting ${warehouseModel.name}...",
@@ -93,8 +94,8 @@ class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
                             (mfragment as WarehousesFragment).deleteWarehouse(warehouseModel.id)
                         }
                     }
-                    .setNegativeButton("No") { dialog, which ->
-                        //do nothing
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
                     }
                     .show()
                 return@OnLongClickListener true

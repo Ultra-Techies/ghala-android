@@ -1,17 +1,17 @@
 package com.ultratechies.ghala.ui.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -26,6 +26,7 @@ import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.responses.home.HomeStatsResponse
 import com.ultratechies.ghala.data.models.responses.home.OrderValueResponse
 import com.ultratechies.ghala.databinding.HomeFragmentBinding
+import com.ultratechies.ghala.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -83,17 +84,24 @@ open class HomeFragment : Fragment() {
     }
 
     private fun getStats() {
-        viewModel.getStats(1) //TODO: get user id from shared preferences and pass it here
+        viewLifecycleOwner.lifecycleScope.launch {
+            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                if (user.assignedWarehouse != null) {
+                    viewModel.getStats(user.assignedWarehouse)
+                } else {
+                    binding.root.snackbar("No warehouse assigned. Contact your administrator.",
+                        { getStats() })
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    binding.userName.text = user.firstName + " " + user.lastName
-                }
+            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                binding.userName.text = user.firstName + " " + user.lastName
             }
         }
     }
@@ -173,8 +181,11 @@ open class HomeFragment : Fragment() {
         val set1 = BarDataSet(orderData, GROUP_1_LABEL)
         val set2 = BarDataSet(inventoryData, GROUP_2_LABEL) //add other data to compare with: when backend is ready
 
-        set1.color = ColorTemplate.rgb(R.color.red.toString())
-        set2.color = ColorTemplate.rgb(R.color.teal.toString())
+        @SuppressLint("ResourceType")
+        set1.color = ColorTemplate.rgb(getString(R.color.red))
+
+        @SuppressLint("ResourceType")
+        set2.color = ColorTemplate.rgb(getString(R.color.teal))
 
         val dataSets: ArrayList<IBarDataSet> = ArrayList()
 
@@ -184,6 +195,7 @@ open class HomeFragment : Fragment() {
         return BarData(dataSets)
     }
 
+    @SuppressLint("ResourceType")
     private fun setPieChartData(homeStatsResponse: HomeStatsResponse) {
         val entries: ArrayList<PieEntry> = ArrayList()
 
@@ -218,8 +230,10 @@ open class HomeFragment : Fragment() {
 
         // add colors
         val colors: ArrayList<Int> = ArrayList()
+
         colors.add(ColorTemplate.rgb(getString(R.color.red)))
         colors.add(ColorTemplate.rgb(getString(R.color.blue)))
+
         colors.add(ColorTemplate.getHoloBlue())
         dataSet.colors = colors
         //dataSet.setSelectionShift(0f);
@@ -237,35 +251,33 @@ open class HomeFragment : Fragment() {
 
     private fun getStatsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stats.collect { it ->
-                    if (it != null) {
-                        val values1: ArrayList<BarEntry> = ArrayList()
-                        finalValues.clear()
-                        for (i in 0 until MAX_X_VALUE) {
-                            if (i < it.orderValue.size) {
-                                finalValues.add(it.orderValue[i])
-                            } else {
-                                if(!checkIfExists(finalValues, OrderValueResponse(month = i.toDouble(), monthName = getMonthName(i), sum = 0, year = year.toDouble(), yearName = year.toString()))) {
-                                    finalValues.add(OrderValueResponse(month = i.toDouble(), monthName = getMonthName(i), sum = 0, year = year.toDouble(), yearName = year.toString()))
-                                }
+            viewModel.stats.collect { it ->
+                if (it != null) {
+                    val values1: ArrayList<BarEntry> = ArrayList()
+                    finalValues.clear()
+                    for (i in 0 until MAX_X_VALUE) {
+                        if (i < it.orderValue.size) {
+                            finalValues.add(it.orderValue[i])
+                        } else {
+                            if(!checkIfExists(finalValues, OrderValueResponse(month = i.toDouble(), monthName = getMonthName(i), sum = 0, year = year.toDouble(), yearName = year.toString()))) {
+                                finalValues.add(OrderValueResponse(month = i.toDouble(), monthName = getMonthName(i), sum = 0, year = year.toDouble(), yearName = year.toString()))
                             }
                         }
+                    }
 
-                        finalValues.sortBy { it.month }
-                        for (i in 0 until finalValues.size) {
-                            values1.add(
-                                BarEntry(
-                                    i.toFloat(),
-                                    finalValues[i].sum.toFloat()
-                                )
+                    finalValues.sortBy { it.month }
+                    for (i in 0 until finalValues.size) {
+                        values1.add(
+                            BarEntry(
+                                i.toFloat(),
+                                finalValues[i].sum.toFloat()
                             )
-                        }
+                        )
+                    }
 
-                        displayData(values1, it)
-                    }
-                    }
+                    displayData(values1, it)
                 }
+            }
             }
         }
 

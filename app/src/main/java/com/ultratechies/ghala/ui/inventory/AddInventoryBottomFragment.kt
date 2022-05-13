@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -150,19 +149,17 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.addInventoryItem.collect {
-                    binding.pbBottomSheet.visibility = View.GONE
-                    Snackbar.make(
-                        dialog?.window!!.decorView,
-                        "Task added successfully",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                    addNewInventoryCallback.invoke()
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        delay(1000)
-                        dismiss()
-                    }
+            viewModel.addInventoryItem.collect {
+                binding.pbBottomSheet.visibility = View.GONE
+                Snackbar.make(
+                    dialog?.window!!.decorView,
+                    "Task added successfully",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                addNewInventoryCallback.invoke()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(1000)
+                    dismiss()
                 }
             }
         }
@@ -170,7 +167,6 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {}
             viewModel.errorMessage.collect {
                 Snackbar.make(
                     dialog?.window!!.decorView,
