@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateDeliveryNotesViewModel @Inject constructor(val deliveryNotesRepository: DeliveryNotesRepository) :ViewModel(){
+class CreateDeliveryNotesViewModel @Inject constructor(private val deliveryNotesRepository: DeliveryNotesRepository) :ViewModel(){
 
     private val _createDeliveryNotes= MutableSharedFlow<CreateDeliveryNoteResponse>()
     val createDeliveryNotes = _createDeliveryNotes.asSharedFlow()
@@ -24,8 +24,7 @@ class CreateDeliveryNotesViewModel @Inject constructor(val deliveryNotesReposito
 
     fun createDeliveryNote(createDeliveryNotes: CreateDeliveryNoteRequest) {
         viewModelScope.launch {
-            val createDeliveryNoteResponse = deliveryNotesRepository.createDeliveryNotes(createDeliveryNotes)
-            when (createDeliveryNoteResponse) {
+            when (val createDeliveryNoteResponse = deliveryNotesRepository.createDeliveryNotes(createDeliveryNotes)) {
                 is APIResource.Success -> {
                     _createDeliveryNotes.emit(createDeliveryNoteResponse.value)
                 }

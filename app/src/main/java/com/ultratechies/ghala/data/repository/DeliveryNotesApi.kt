@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface DeliveryNotesApi {
 
-    @POST("api/deliveryNote")
+    @POST("api/deliverynotes")
     suspend fun createDeliveryNotes(
         @Body createDeliveryNote: CreateDeliveryNoteRequest
     ): CreateDeliveryNoteResponse

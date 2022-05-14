@@ -33,8 +33,8 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesOrders(ordersApi: OrdersApi): OrdersRepository =
-        OrdersRepositoryImpl(ordersApi)
+    fun providesOrders(ordersApi: OrdersApi, appDatasource: AppDatasource): OrdersRepository =
+        OrdersRepositoryImpl(ordersApi, appDatasource = appDatasource)
 
     @Singleton
     @Provides

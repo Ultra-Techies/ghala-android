@@ -1,7 +1,9 @@
 package com.ultratechies.ghala.data.repository
 
+import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import com.ultratechies.ghala.domain.models.UserModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 interface OrdersRepository {
@@ -9,16 +11,15 @@ interface OrdersRepository {
 
 }
 
-class OrdersRepositoryImpl @Inject constructor(private val ordersApi: OrdersApi) : OrdersRepository,
+class OrdersRepositoryImpl @Inject constructor(
+    private val ordersApi: OrdersApi,
+    val appDatasource: AppDatasource
+) : OrdersRepository,
     BaseRepo() {
 
     override suspend fun getOrders(value: UserModel) = safeApiCall {
-        if(value.role == "BASIC"){
-            ordersApi.getOrdersByWarehouseId(value.assignedWarehouse!!)
-        }else{
-            ordersApi.getOrders()
-        }
-
+        val user = appDatasource.getUserFromPreferencesStore().first()
+        ordersApi.getOrdersByWarehouseId(user.assignedWarehouse)
     }
 
 
