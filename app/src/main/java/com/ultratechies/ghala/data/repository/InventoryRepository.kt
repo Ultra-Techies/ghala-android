@@ -1,18 +1,22 @@
 package com.ultratechies.ghala.data.repository
 
 import android.util.Log
+import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.inventory.AddInventoryRequest
 import com.ultratechies.ghala.data.models.requests.inventory.EditInventoryRequest
 import com.ultratechies.ghala.data.models.responses.inventory.AddNewInventoryResponse
 import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
+import com.ultratechies.ghala.domain.models.UserModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
 
 interface InventoryRepository {
     suspend fun getInventory(): APIResource<List<InventoryResponseItem>>
+    suspend fun getInventoryByWarehouseId(value: UserModel): APIResource<List<InventoryResponseItem>>
     suspend fun addInventoryItem(addInventoryRequest: AddInventoryRequest): APIResource<AddNewInventoryResponse>
     suspend fun editInventoryItem(editInventoryRequest: EditInventoryRequest): APIResource<String>
     suspend fun deleteInventoryItem(sku: Int): APIResource<String>
@@ -20,12 +24,18 @@ interface InventoryRepository {
 
 class InventoryRepositoryImpl @Inject constructor(
     private val inventoryApi: InventoryApi,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val appDatasource: AppDatasource
 ) :
     InventoryRepository, BaseRepo() {
 
     override suspend fun getInventory() = safeApiCall {
         inventoryApi.getInventory()
+    }
+
+    override suspend fun getInventoryByWarehouseId(value: UserModel)= safeApiCall {
+        val user = appDatasource.getUserFromPreferencesStore().first()
+        inventoryApi.getInventoryByWarehouseId(user.assignedWarehouse)
     }
 
     override suspend fun addInventoryItem(addInventoryRequest: AddInventoryRequest) = safeApiCall {

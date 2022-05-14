@@ -11,6 +11,10 @@ interface InventoryApi {
     @GET("api/inventory/all")
     suspend fun getInventory(): List<InventoryResponseItem>
 
+    @GET("api/inventory/wh/{id}")
+    suspend fun getInventoryByWarehouseId(@Path("id") sku: Int?
+    ): List<InventoryResponseItem>
+
     @POST("api/inventory")
     suspend fun addInventoryItem(
         @Body addInventoryItem: AddInventoryRequest

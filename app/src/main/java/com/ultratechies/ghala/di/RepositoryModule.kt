@@ -38,8 +38,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesInventoryRepo(inventoryApi: InventoryApi): InventoryRepository =
-        InventoryRepositoryImpl(inventoryApi)
+    fun providesInventoryRepo(
+        inventoryApi: InventoryApi,
+        appDatasource: AppDatasource
+    ): InventoryRepository =
+        InventoryRepositoryImpl(inventoryApi, appDatasource = appDatasource)
 
     @Singleton
     @Provides

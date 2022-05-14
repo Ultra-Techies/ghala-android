@@ -12,7 +12,9 @@ class AccessTokenInterceptor(val appDatasource: AppDatasource) : Interceptor {
     // TODO: call refresh token
     override fun intercept(chain: Interceptor.Chain): Response {
         // exclude endpoints
-        if (chain.request().url.encodedPath.contains("api/users/exists")) {
+        if (chain.request().url.encodedPath.contains("api/users/exists")
+            || (chain.request().url.encodedPath.contains("/login"))
+        ) {
             appDatasource.clear()
             return chain.proceed(chain.request())
         }
