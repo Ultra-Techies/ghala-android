@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponse
+import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponseItem
 import com.ultratechies.ghala.databinding.ListItemDispatchBinding
 
 
@@ -23,17 +23,17 @@ class DispatchAdapter  : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder
         return DispatchViewHolder(binding)
     }
 
-    private val diffUtil = object : DiffUtil.ItemCallback<FetchDeliveryNotesResponse>() {
+    private val diffUtil = object : DiffUtil.ItemCallback<FetchDeliveryNotesResponseItem>() {
         override fun areItemsTheSame(
-            oldItem: FetchDeliveryNotesResponse,
-            newItem: FetchDeliveryNotesResponse
+            oldItem: FetchDeliveryNotesResponseItem,
+            newItem: FetchDeliveryNotesResponseItem
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem:FetchDeliveryNotesResponse ,
-            newItem: FetchDeliveryNotesResponse
+            oldItem:FetchDeliveryNotesResponseItem ,
+            newItem: FetchDeliveryNotesResponseItem
         ): Boolean {
             return oldItem == newItem
         }
@@ -41,19 +41,18 @@ class DispatchAdapter  : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder
     }
     private val asyncListDiffer = AsyncListDiffer(this, diffUtil)
 
-    fun saveData(dispatchResponse: List<FetchDeliveryNotesResponse>) {
+    fun saveData(dispatchResponse: List<FetchDeliveryNotesResponseItem>) {
         asyncListDiffer.submitList(dispatchResponse)
     }
 
 
     override fun onBindViewHolder(holder: DispatchViewHolder, position: Int) {
         val dispatchData = asyncListDiffer.currentList[position]
-        val context = holder.binding.root.context
         holder.binding.apply {
             tvDispatchCode.text = dispatchData.noteCode
             textViewOrderQuantity.text = dispatchData.orders.size.toString()
-            textViewRoute.text = dispatchData.route.toString()
-            textViewOrderDeliveryWindow.text = dispatchData.deliveryWindow.toString()
+            textViewRoute.text = dispatchData.route
+            textViewOrderDeliveryWindow.text = dispatchData.deliveryWindow
             textViewDispatchStatus.text = dispatchData.status
         }
 

@@ -59,7 +59,7 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     private fun updateUserErrorListener() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.errorMessage.collectLatest {
                     toggleLoading(false)
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
@@ -70,7 +70,7 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     private fun updateUserListener() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.updateUser.collect {
                     toggleLoading(false)
                     findNavController().navigate(R.id.mainActivity)
@@ -87,7 +87,7 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     private fun getUserByIdErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.errorMessage.collect {
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
@@ -97,7 +97,7 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     private fun getUserByIdListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.user.collect {
                     userModel = it
                     binding.apply {

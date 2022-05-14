@@ -150,7 +150,7 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.addInventoryItem.collect {
                     binding.pbBottomSheet.visibility = View.GONE
                     Snackbar.make(
@@ -170,7 +170,7 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {}
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {}
             viewModel.errorMessage.collect {
                 Snackbar.make(
                     dialog?.window!!.decorView,

@@ -1,6 +1,7 @@
 package com.ultratechies.ghala.ui.dispatch
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponse
-import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
+import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponseItem
 import com.ultratechies.ghala.databinding.DispatchFragmentBinding
-import com.ultratechies.ghala.ui.inventory.InventoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,18 +27,21 @@ class DispatchFragment : Fragment() {
 
     private val viewModel: DispatchViewModel by viewModels()
 
-    private var data = mutableListOf<FetchDeliveryNotesResponse>()
+    private var data = mutableListOf<FetchDeliveryNotesResponseItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DispatchFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getDispatch()
+        onRefresh()
         setUpAdapter()
         fetchDeliveryNotesListener()
         fetchDeliveryNotesErrorListener()
@@ -47,6 +49,23 @@ class DispatchFragment : Fragment() {
 
     }
 
+    private fun getDispatch() {
+        viewModel.getFetchDeliveryNotes()
+    }
+
+    private fun onRefresh() {
+        binding.swipeContainer.setOnRefreshListener {
+            getDispatch()
+        }
+    }
+    private fun setUpAdapter() {
+        dispatchAdapter = DispatchAdapter()
+        binding.recyclerViewDispatch.apply {
+            adapter = DispatchAdapter()
+            layoutManager =
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        }
+    }
     private fun fetchDeliveryNotesErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -64,38 +83,25 @@ class DispatchFragment : Fragment() {
 
     private fun fetchDeliveryNotesListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.fetchDeliveryNotes.collect {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.fetchDeliveryNotes.collect {list->
                     binding.swipeContainer.isRefreshing = false
-                    data.clear()
-                    data.addAll(it)
-                    displayData(it)
+                    if (list.isEmpty()) {
+                        binding.tvEmptyDispatchItems.visibility = View.VISIBLE
+                        binding.recyclerViewDispatch.visibility = View.GONE
+                    } else {
+                        binding.recyclerViewDispatch.visibility = View.VISIBLE
+                        binding.tvEmptyDispatchItems.visibility = View.GONE
+                        dispatchAdapter.saveData(list)
+                        Log.d("-----",list.toString())
+                    }
                 }
             }
         }
     }
-    private fun displayData(list: List<FetchDeliveryNotesResponse>) {
-        if (list.isEmpty()) {
-            binding.tvEmptyDispatchItems.visibility = View.VISIBLE
-            binding.recyclerViewDispatch.visibility = View.GONE
-        } else {
-            binding.recyclerViewDispatch.visibility = View.VISIBLE
-            binding.tvEmptyDispatchItems.visibility = View.GONE
-            dispatchAdapter.saveData(list)
-            binding.recyclerViewDispatch.scrollToPosition(
-                0
-            )
-        }
-    }
 
 
-    private fun setUpAdapter() {
-        dispatchAdapter = DispatchAdapter()
-        binding.recyclerViewDispatch.apply {
-            adapter = DispatchAdapter()
-            layoutManager =
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        }
-    }
+
+
 
 }

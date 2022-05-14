@@ -8,19 +8,19 @@ import retrofit2.http.*
 
 interface WarehouseApi {
 
-    @HTTP(method = "GET", path = "warehouse/all", hasBody = false)
+    @HTTP(method = "GET", path = "api/warehouse/all", hasBody = false)
     suspend fun getWarehouses(
     ) : WarehousesResponse
 
-    @POST("warehouse")
+    @POST("api/warehouse")
     suspend fun addNewWarehouse(
         @Body warehouse: Warehouse
     ): AddWarehouseResponse
 
-    @DELETE("warehouse/{id}")
+    @DELETE("api/warehouse/{id}")
     suspend fun deleteWarehouse(@Path("id") id: Int): Response<Unit>
 
-    @PUT("warehouse")
+    @PUT("api/warehouse")
     suspend fun editWarehouse(
         @Body editWarehouseRequest: Warehouse
     ): Response<Unit>

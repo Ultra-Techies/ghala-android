@@ -1,13 +1,14 @@
 package com.ultratechies.ghala.data.repository
 
+import android.util.Log
 import com.google.gson.Gson
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.auth.CheckUserExistsRequest
+import com.ultratechies.ghala.data.models.requests.auth.FetchUserByPhoneNumber
 import com.ultratechies.ghala.data.models.requests.auth.GetOTPRequest
 import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
 import com.ultratechies.ghala.data.models.requests.user.VerifyUserRequest
-import com.ultratechies.ghala.domain.models.UserModel
 import com.ultratechies.ghala.domain.repository.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -32,13 +33,8 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createUser(createUserRequest: CreateUserRequest) = safeApiCall {
-        val userId = userApi.createUser(createUserRequest)
-        val response = getUserById(userId.id)
-        if (response is APIResource.Success) {
-            return@safeApiCall response.value
-        } else {
-            throw Exception("Unable to create user")
-        }
+        userApi.createUser(createUserRequest)
+        true
     }
 
     override suspend fun getUserById(id: Int) = safeApiCall {
@@ -63,24 +59,25 @@ class UserRepositoryImpl @Inject constructor(
            }
        }*/
     override suspend fun verifyUser(verifyUserRequest: VerifyUserRequest) = safeApiCall {
-       val res = userApi.verifyUser(verifyUserRequest)
-        withContext(dispatcher){
+        val res = userApi.verifyUser(verifyUserRequest)
+        Log.d("---->", verifyUserRequest.toString())
+        withContext(dispatcher) {
             userPrefs.saveAccessToken(res.accessToken)
             userPrefs.saveRefreshToken(res.refreshToken)
-            userPrefs.saveUserToPreferencesStore(UserModel(
-                assignedWarehouse = 1,
-                email = "mama@gmail.com",
-                firstName = "Flo",
-                id = 2,
-                lastName = "mama",
-                password = "mama",
-                phoneNumber = "+254725878563",
-                profilePhoto = listOf(),
-                role = "ADMIN"
-            ))
         }
+        fetchUserByPhoneNumber(FetchUserByPhoneNumber(phoneNumber = verifyUserRequest.phoneNumber))
         true
     }
+
+    override suspend fun fetchUserByPhoneNumber(fetchUserByPhoneNumber: FetchUserByPhoneNumber) =
+        safeApiCall {
+           val response = userApi.fetchUser(fetchUserByPhoneNumber)
+            Log.d("fetch user number", fetchUserByPhoneNumber.toString())
+            withContext(dispatcher){
+                userPrefs.saveUserToPreferencesStore(response)
+            }
+            return@safeApiCall response
+        }
 
     override suspend fun updateUser(updateUserRequest: UpdateUserRequest): APIResource<String> {
         return withContext(dispatcher) {

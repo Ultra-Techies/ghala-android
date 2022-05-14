@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_setupAccountFragment2_to_successfulRegistrationFragment2"
             app:destination="@id/successfulRegistrationFragment2" />
+        <action
+            android:id="@+id/action_setupAccountFragment2_to_passwordVerificationFragment2"
+            app:destination="@id/passwordVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/successfulRegistrationFragment2"

@@ -8,20 +8,20 @@ import retrofit2.http.*
 
 interface InventoryApi {
 
-    @GET("allinventory")
+    @GET("api/inventory/all")
     suspend fun getInventory(): List<InventoryResponseItem>
 
-    @POST("inventory")
+    @POST("api/inventory")
     suspend fun addInventoryItem(
         @Body addInventoryItem: AddInventoryRequest
     ): AddNewInventoryResponse
 
-    @PUT("inventory")
+    @PUT("api/inventory")
     suspend fun editInventoryItem(
         @Body editInventoryRequest: EditInventoryRequest
     )
 
-    @DELETE("inventory/{sku}")
+    @DELETE("api/inventory/{sku}")
     suspend fun deleteInventoryItem(
         @Path("sku") sku: Int
     )

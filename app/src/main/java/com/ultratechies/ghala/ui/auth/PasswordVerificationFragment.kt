@@ -1,6 +1,7 @@
 package com.ultratechies.ghala.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +62,7 @@ class PasswordVerificationFragment : Fragment() {
 
     private fun verifyPinErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.errorMessage.collect {
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
@@ -71,7 +72,7 @@ class PasswordVerificationFragment : Fragment() {
 
     private fun verifyPinListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.verifyUser.collect { isUserVerified ->
                     if (isUserVerified) {
                         findNavController().navigate(R.id.action_passwordVerificationFragment_to_mainActivity)
@@ -106,6 +107,7 @@ class PasswordVerificationFragment : Fragment() {
 
             )
             verifyExistingUser(verifyUser)
+            Log.d("User",verifyUser.toString())
         }
     }
 

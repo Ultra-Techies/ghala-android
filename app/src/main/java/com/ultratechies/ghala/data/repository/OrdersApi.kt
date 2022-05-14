@@ -6,10 +6,10 @@ import retrofit2.http.Path
 
 interface OrdersApi {
 
-    @GET("orders")
+    @GET("api/order/all")
     suspend fun getOrders():List<OrderResponseItem>
 
-    @GET("warehouseorders/{id}")
+    @GET("api/order/wh/{id}")
     suspend fun  getOrdersByWarehouseId(
         @Path("id") warehouseId: Int
     ): List<OrderResponseItem>
