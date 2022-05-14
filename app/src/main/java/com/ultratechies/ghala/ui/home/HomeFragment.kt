@@ -1,5 +1,7 @@
 package com.ultratechies.ghala.ui.home
 
+import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,8 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.databinding.HomeFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +47,8 @@ class HomeFragment : Fragment() {
     private val BAR_WIDTH = 0.2f
     private var chart: BarChart? = null
 
+    private val pDialog: ProgressDialog by lazy { ProgressDialog(requireActivity()) }
+
     @Inject
     lateinit var appDatasource: AppDatasource
 
@@ -69,6 +75,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fetchErrorListener()
+
         // set data
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -83,19 +91,57 @@ class HomeFragment : Fragment() {
 
     }
 
+
     private fun displayAssignWarehouseDialog() {
-        MaterialAlertDialogBuilder(requireActivity())
+       val alert =  MaterialAlertDialogBuilder(requireActivity())
             .setTitle("Unavailable warehouse")
             .setMessage("Reach out admin to assign you a warehouse")
-            .setPositiveButton("Check Again") { p0, p1 ->
-                // refersh user details
-            }
+            .setPositiveButton("Check Again", null)
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
                 requireActivity().finish()
             }
             .setCancelable(false)
             .show()
+
+        alert.getButton( DialogInterface.BUTTON_POSITIVE ).setOnClickListener {
+            refreshUserDetails(alert)
+        }
+    }
+
+    private fun refreshUserDetails(p0: DialogInterface) {
+        pDialog.setMessage("Checking...")
+        pDialog.show()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getUserById.collect {
+                    pDialog.dismiss()
+                    if (it.assignedWarehouse == null) {
+                        Snackbar.make(
+                            binding.root,
+                            "Please contact admin and try again",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // dismiss dialog
+                        p0.dismiss()
+                    }
+                }
+            }
+        }
+        viewModel.getUserById()
+    }
+
+    private fun fetchErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collectLatest {
+                    pDialog.dismiss()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                }
+            }
+        }
     }
 
 

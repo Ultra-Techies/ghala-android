@@ -12,6 +12,7 @@ import com.ultratechies.ghala.data.models.requests.user.VerifyUserRequest
 import com.ultratechies.ghala.domain.repository.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -37,10 +38,14 @@ class UserRepositoryImpl @Inject constructor(
         true
     }
 
-    override suspend fun getUserById(id: Int) = safeApiCall {
-        val response = userApi.getUserById(id)
+    override suspend fun getUserById() = safeApiCall {
+        val user = userPrefs.getUserFromPreferencesStore().first()
+        val response = userApi.getUserById(user.id)
         withContext(dispatcher) {
-            userPrefs.saveUserToPreferencesStore(response)
+            // save details if assigned warehouse is not null
+            response.assignedWarehouse?.let {
+                userPrefs.saveUserToPreferencesStore(response)
+            }
         }
         return@safeApiCall response
     }
@@ -69,7 +74,8 @@ class UserRepositoryImpl @Inject constructor(
             userPrefs.saveAccessToken(res.accessToken)
             userPrefs.saveRefreshToken(res.refreshToken)
             // fetch user by phone
-            val response = userApi.fetchUser(FetchUserByPhoneNumber(phoneNumber = verifyUserRequest.phoneNumber))
+            val response =
+                userApi.fetchUser(FetchUserByPhoneNumber(phoneNumber = verifyUserRequest.phoneNumber))
             userPrefs.saveUserToPreferencesStore(response)
             true
         }
@@ -106,6 +112,4 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
     }
-
-
 }

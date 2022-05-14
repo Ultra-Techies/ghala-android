@@ -29,15 +29,10 @@ interface UserApi {
         @Body createUseRequest: CreateUserRequest
     ): CreateUserResponse
 
-    @GET("api/users/{id}")
+    @GET("api/users/get/{id}")
     suspend fun getUserById(
         @Path("id") id: Int
     ): UserModel
-
-    /*  @PUT("login")
-      suspend fun verifyUser(
-          @Body verifyUserRequest: VerifyUserRequest
-      ): JsonObject*/
 
     @POST("login")
     @FormUrlEncoded
@@ -45,7 +40,6 @@ interface UserApi {
         @Field("password") password: String,
         @Field("phoneNumber") phoneNumber: String
     ): LoginResponse
-
 
     @PUT("api/users")
     suspend fun updateUser(
