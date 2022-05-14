@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.databinding.HomeFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,10 +74,28 @@ class HomeFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appDatasource.getUserFromPreferencesStore().collectLatest { user ->
                     binding.userName.text = user.firstName + " " + user.lastName
+                    if (user.assignedWarehouse == null) {
+                        displayAssignWarehouseDialog()
+                    }
                 }
             }
         }
 
+    }
+
+    private fun displayAssignWarehouseDialog() {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle("Unavailable warehouse")
+            .setMessage("Reach out admin to assign you a warehouse")
+            .setPositiveButton("Check Again") { p0, p1 ->
+                // refersh user details
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 
 

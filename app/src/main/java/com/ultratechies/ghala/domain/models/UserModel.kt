@@ -1,7 +1,7 @@
 package com.ultratechies.ghala.domain.models
 
 data class UserModel(
-    val assignedWarehouse: Int,
+    val assignedWarehouse: Int?,
     val email: String,
     val firstName: String,
     val id: Int,

@@ -76,6 +76,7 @@ class PasswordVerificationFragment : Fragment() {
                 userViewModel.verifyUser.collect { isUserVerified ->
                     if (isUserVerified) {
                         findNavController().navigate(R.id.action_passwordVerificationFragment_to_mainActivity)
+                        requireActivity().finish()
                     } else {
                         binding.pbOtpVerification.visibility = View.GONE
                         binding.loginButton.isEnabled = true
@@ -107,7 +108,7 @@ class PasswordVerificationFragment : Fragment() {
 
             )
             verifyExistingUser(verifyUser)
-            Log.d("User",verifyUser.toString())
+            Log.d("User", verifyUser.toString())
         }
     }
 

@@ -14,7 +14,7 @@ class OrdersRepositoryImpl @Inject constructor(private val ordersApi: OrdersApi)
 
     override suspend fun getOrders(value: UserModel) = safeApiCall {
         if(value.role == "BASIC"){
-            ordersApi.getOrdersByWarehouseId(value.assignedWarehouse)
+            ordersApi.getOrdersByWarehouseId(value.assignedWarehouse!!)
         }else{
             ordersApi.getOrders()
         }
