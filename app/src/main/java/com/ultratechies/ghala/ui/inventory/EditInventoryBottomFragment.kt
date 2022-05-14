@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -184,19 +185,21 @@ class EditInventoryBottomFragment :
 
     private fun editInventoryListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.editInventory.collect {
-                binding.pbBottomSheet.visibility = View.GONE
-                refreshListCallback?.invoke()
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    "Task edited successfully",
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.editInventory.collect {
+                    binding.pbBottomSheet.visibility = View.GONE
+                    refreshListCallback?.invoke()
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        "Task edited successfully",
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
 
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1000)
-                    dismiss()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        dismiss()
+                    }
                 }
             }
         }
@@ -204,14 +207,16 @@ class EditInventoryBottomFragment :
 
     private fun editInventoryErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collectLatest {
-                binding.pbBottomSheet.visibility = View.GONE
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                Log.d("--->", it)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collectLatest {
+                    binding.pbBottomSheet.visibility = View.GONE
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    Log.d("--->", it)
+                }
             }
         }
     }
@@ -220,6 +225,4 @@ class EditInventoryBottomFragment :
     private fun closeBottomSheet() {
         dismiss()
     }
-
-
 }

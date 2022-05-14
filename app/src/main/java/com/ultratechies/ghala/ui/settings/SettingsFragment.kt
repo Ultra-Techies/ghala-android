@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
@@ -63,15 +64,17 @@ class SettingsFragment : Fragment() {
 
     private fun displayUserData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-              binding.apply {
-                  userModel = user
-                  editTextUpdateFirstName.setText(user.firstName)
-                  editTextUpdateSecondName.setText(user.lastName)
-                  editTextUpdateEmailAddress.setText(user.email)
-                  editTextUpdatePin.setText(user.password)
-                  editTextUpdateRepeatPin.setText(user.password)
-              }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                    binding.apply {
+                        userModel = user
+                        editTextUpdateFirstName.setText(user.firstName)
+                        editTextUpdateSecondName.setText(user.lastName)
+                        editTextUpdateEmailAddress.setText(user.email)
+                        editTextUpdatePin.setText(user.password)
+                        editTextUpdateRepeatPin.setText(user.password)
+                    }
+                }
             }
         }
     }
@@ -166,18 +169,22 @@ class SettingsFragment : Fragment() {
 
     private fun updateUserErrorListener() {
         lifecycleScope.launch {
-            viewModel.errorMessage.collectLatest {
-                toggleLoading(false)
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collectLatest {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun updateUserListener() {
        lifecycleScope.launch {
-           viewModel.updateUser.collect{
-               toggleLoading(false)
-               Snackbar.make(binding.root,"Use Updated successfully",Snackbar.LENGTH_SHORT).show()
+           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+               viewModel.updateUser.collect{
+                   toggleLoading(false)
+                   Snackbar.make(binding.root,"Use Updated successfully",Snackbar.LENGTH_SHORT).show()
+               }
            }
        }
     }

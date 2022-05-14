@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -139,14 +141,16 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
 
     private fun errorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorResponse.collectLatest { message ->
-                binding.pbBottomSheet.visibility = View.GONE
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    message,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorResponse.collectLatest { message ->
+                    binding.pbBottomSheet.visibility = View.GONE
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        message,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
     }

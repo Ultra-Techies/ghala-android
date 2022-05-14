@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -124,14 +125,16 @@ class OrdersFragment : Fragment() {
                         dialog.dismiss()
 
                         viewLifecycleOwner.lifecycleScope.launch {
-                            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                                val addDeliveryNote = CreateDeliveryNoteRequest(
-                                    deliverWindow = list[0].deliveryWindow,
-                                    orderIds = list.map { it.id },
-                                    route = list[0].route,
-                                    warehouseId = user.assignedWarehouse
-                                )
-                                createDeliveryNote(addDeliveryNote)
+                            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                                    val addDeliveryNote = CreateDeliveryNoteRequest(
+                                        deliverWindow = list[0].deliveryWindow,
+                                        orderIds = list.map { it.id },
+                                        route = list[0].route,
+                                        warehouseId = user.assignedWarehouse
+                                    )
+                                    createDeliveryNote(addDeliveryNote)
+                                }
                             }
                         }
 
@@ -151,11 +154,13 @@ class OrdersFragment : Fragment() {
 
     private fun fetchOrdersListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getOrders.collect {
-                binding.swipeContainer.isRefreshing = false
-                data.clear()
-                data.addAll(it)
-                displayData(it)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getOrders.collect {
+                    binding.swipeContainer.isRefreshing = false
+                    data.clear()
+                    data.addAll(it)
+                    displayData(it)
+                }
             }
         }
     }
@@ -173,14 +178,16 @@ class OrdersFragment : Fragment() {
 
     private fun fetchOrdersErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorResponse.collect {
-                binding.swipeContainer.isRefreshing = false
-                Snackbar.make(
-                    binding.root,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorResponse.collect {
+                    binding.swipeContainer.isRefreshing = false
+                    Snackbar.make(
+                        binding.root,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
     }
@@ -192,29 +199,33 @@ class OrdersFragment : Fragment() {
 
     private fun createDeliveryNoteListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            deliveryNoteViewModel.createDeliveryNotes.collect {
-                ordersAdapter.clearSelectedItems()
-                viewModel.fetchOrders()
-                binding.pbOrders.visibility = View.GONE
-                Snackbar.make(
-                    binding.root,
-                    "Delivery Note Created Successfully",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                deliveryNoteViewModel.createDeliveryNotes.collect {
+                    ordersAdapter.clearSelectedItems()
+                    viewModel.fetchOrders()
+                    binding.pbOrders.visibility = View.GONE
+                    Snackbar.make(
+                        binding.root,
+                        "Delivery Note Created Successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
 
+                }
             }
         }
     }
 
     private fun createDeliveryNoteErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            deliveryNoteViewModel.errorResponse.collect {
-                Snackbar.make(
-                    binding.root,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                deliveryNoteViewModel.errorResponse.collect {
+                    Snackbar.make(
+                        binding.root,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.poovam.pinedittextfield.PinField
@@ -60,25 +61,29 @@ class PasswordVerificationFragment : Fragment() {
 
     private fun verifyPinErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            userViewModel.errorMessage.collect {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.errorMessage.collect {
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun verifyPinListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            userViewModel.verifyUser.collect { isUserVerified ->
-                if (isUserVerified) {
-                    findNavController().navigate(R.id.action_passwordVerificationFragment_to_mainActivity)
-                } else {
-                    binding.pbOtpVerification.visibility = View.GONE
-                    binding.loginButton.isEnabled = true
-                    Snackbar.make(binding.root, "pins do not match", Snackbar.LENGTH_SHORT)
-                        .show()
-                    return@collect
-                }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.verifyUser.collect { isUserVerified ->
+                    if (isUserVerified) {
+                        findNavController().navigate(R.id.action_passwordVerificationFragment_to_mainActivity)
+                    } else {
+                        binding.pbOtpVerification.visibility = View.GONE
+                        binding.loginButton.isEnabled = true
+                        Snackbar.make(binding.root, "pins do not match", Snackbar.LENGTH_SHORT)
+                            .show()
+                        return@collect
+                    }
 
+                }
             }
         }
     }

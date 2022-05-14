@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
@@ -58,18 +59,22 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     private fun updateUserErrorListener() {
         lifecycleScope.launch {
-            userViewModel.errorMessage.collectLatest {
-                toggleLoading(false)
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.errorMessage.collectLatest {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun updateUserListener() {
         lifecycleScope.launch {
-            userViewModel.updateUser.collect {
-                toggleLoading(false)
-                findNavController().navigate(R.id.mainActivity)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.updateUser.collect {
+                    toggleLoading(false)
+                    findNavController().navigate(R.id.mainActivity)
+                }
             }
         }
     }
@@ -82,23 +87,27 @@ class SuccessfulRegistrationFragment : Fragment() {
 
     private fun getUserByIdErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            userViewModel.errorMessage.collect {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.errorMessage.collect {
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun getUserByIdListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            userViewModel.user.collect {
-                userModel = it
-                binding.apply {
-                    editTextAccountHolder.setText(it.firstName)
-                    editTextSecondName.setText(it.lastName)
-                    editTextAccountEmailAddress.setText(it.email)
-                    editTextUserRole.setText(it.role)
-                    /*   editTextWarehouseDetails.setText(it.assignedWarehouse)*/
-                    /* editTextWarehouseDetails.setText(it.assignedWarehouse)*/
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userViewModel.user.collect {
+                    userModel = it
+                    binding.apply {
+                        editTextAccountHolder.setText(it.firstName)
+                        editTextSecondName.setText(it.lastName)
+                        editTextAccountEmailAddress.setText(it.email)
+                        editTextUserRole.setText(it.role)
+                        /*   editTextWarehouseDetails.setText(it.assignedWarehouse)*/
+                        /* editTextWarehouseDetails.setText(it.assignedWarehouse)*/
+                    }
                 }
             }
         }
@@ -172,6 +181,4 @@ class SuccessfulRegistrationFragment : Fragment() {
             }
         }
     }
-
-
 }

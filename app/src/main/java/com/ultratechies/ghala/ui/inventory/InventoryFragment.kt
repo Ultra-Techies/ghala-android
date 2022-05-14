@@ -9,7 +9,9 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -94,24 +96,28 @@ class InventoryFragment : Fragment() {
 
     private fun fetchInventoryErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect {
-                binding.swipeContainer.isRefreshing = false
-                Snackbar.make(
-                    binding.root,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                ).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    binding.swipeContainer.isRefreshing = false
+                    Snackbar.make(
+                        binding.root,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
 
     private fun fetchInventoryListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.fetchInventory.collect {
-                binding.swipeContainer.isRefreshing = false
-                data.clear()
-                data.addAll(it)
-                displayData(it)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.fetchInventory.collect {
+                    binding.swipeContainer.isRefreshing = false
+                    data.clear()
+                    data.addAll(it)
+                    displayData(it)
+                }
             }
         }
     }
@@ -159,27 +165,33 @@ class InventoryFragment : Fragment() {
 
     private fun deleteInventoryListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.deleteInventory.collect {
-                getInventory()
-                binding.swipeContainer.isRefreshing = false
-                Toast.makeText(
-                    requireContext(),
-                    "Task Deleted Successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.deleteInventory.collect {
+                        getInventory()
+                        binding.swipeContainer.isRefreshing = false
+                        Toast.makeText(
+                            requireContext(),
+                            "Task Deleted Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
     }
 
     private fun deleteInventoryErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect {
-                binding.swipeContainer.isRefreshing = false
-                Toast.makeText(
-                    requireContext(),
-                    it,
-                    Toast.LENGTH_SHORT
-                ).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    binding.swipeContainer.isRefreshing = false
+                    Toast.makeText(
+                        requireContext(),
+                        it,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
@@ -188,6 +200,4 @@ class InventoryFragment : Fragment() {
         super.onResume()
         getInventory()
     }
-
-
 }

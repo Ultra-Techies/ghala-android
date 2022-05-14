@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -34,7 +35,6 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
     companion object {
         const val TAG = "AddInventoryBottomSheetFragment"
     }
-
 
     @Inject
     lateinit var appDatasource: AppDatasource
@@ -123,16 +123,18 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
-                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    val addInventoryRequest = AddInventoryRequest(
-                        category = itemCategory as String,
-                        name = productName.toString(),
-                        ppu = productPrice.toString(),
-                        quantity = productQuantity.toString(),
-                        status = "AVAILABLE",
-                        warehouseId = user.assignedWarehouse.toString()
-                    )
-                    addInventoryItem(addInventoryRequest)
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                        val addInventoryRequest = AddInventoryRequest(
+                            category = itemCategory as String,
+                            name = productName.toString(),
+                            ppu = productPrice.toString(),
+                            quantity = productQuantity.toString(),
+                            status = "AVAILABLE",
+                            warehouseId = user.assignedWarehouse.toString()
+                        )
+                        addInventoryItem(addInventoryRequest)
+                    }
                 }
             }
 
@@ -149,17 +151,19 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.addInventoryItem.collect {
-                binding.pbBottomSheet.visibility = View.GONE
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    "Task added successfully",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                addNewInventoryCallback.invoke()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1000)
-                    dismiss()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.addInventoryItem.collect {
+                    binding.pbBottomSheet.visibility = View.GONE
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        "Task added successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    addNewInventoryCallback.invoke()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        dismiss()
+                    }
                 }
             }
         }
@@ -167,25 +171,24 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect {
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1000)
-                    dismiss()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        dismiss()
+                    }
                 }
             }
         }
     }
 
-
     private fun closeAddTaskBottomSheet() {
         dismiss()
     }
-
-
 }

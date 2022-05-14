@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.databinding.FragmentOtpVerificationBinding
@@ -51,9 +52,11 @@ class OtpVerificationFragment : Fragment() {
 
     private fun fetchOTPlistener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getOTP.collect { otpResponse ->
-                toggleLoading(false)
-                showMessage("OTP resent successfully")
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getOTP.collect { otpResponse ->
+                    toggleLoading(false)
+                    showMessage("OTP resent successfully")
+                }
             }
         }
     }

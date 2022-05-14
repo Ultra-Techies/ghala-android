@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hbb20.CountryCodePicker
@@ -86,12 +87,14 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun checkUserExistsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.userExists.collect {
-                if (it.exists) {
-                    toggleLoading(false)
-                    findNavController().navigate(R.id.action_phoneVerificationFragment2_to_passwordVerificationFragment2)
-                } else {
-                    fetchOTP()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userExists.collect {
+                    if (it.exists) {
+                        toggleLoading(false)
+                        findNavController().navigate(R.id.action_phoneVerificationFragment2_to_passwordVerificationFragment2)
+                    } else {
+                        fetchOTP()
+                    }
                 }
             }
         }
@@ -99,9 +102,11 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun checkUserErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect {
-                toggleLoading(false)
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -113,19 +118,23 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun fetchOTPlistener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getOTP.collect {
-                toggleLoading(false)
-                findNavController().navigate(
-                    R.id.action_phoneVerificationFragment2_to_otpVerificationFragment2
-                )
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getOTP.collect {
+                    toggleLoading(false)
+                    findNavController().navigate(
+                        R.id.action_phoneVerificationFragment2_to_otpVerificationFragment2
+                    )
+                }
             }
         }
     }
 
     private fun fetchOTPErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -138,5 +147,4 @@ class PhoneVerificationFragment : Fragment() {
         )
         viewModel.fetchOtp(getOTPRequest)
     }
-
 }
