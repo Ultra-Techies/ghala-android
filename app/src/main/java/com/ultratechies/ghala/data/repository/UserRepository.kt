@@ -59,21 +59,27 @@ class UserRepositoryImpl @Inject constructor(
            }
        }*/
     override suspend fun verifyUser(verifyUserRequest: VerifyUserRequest) = safeApiCall {
-        val res = userApi.verifyUser(verifyUserRequest)
-        Log.d("---->", verifyUserRequest.toString())
         withContext(dispatcher) {
+            // login
+            val res = userApi.verifyUser(
+                password = verifyUserRequest.password,
+                phoneNumber = verifyUserRequest.phoneNumber
+            )
+            // save access tokens
             userPrefs.saveAccessToken(res.accessToken)
             userPrefs.saveRefreshToken(res.refreshToken)
+            // fetch user by phone
+            val response = userApi.fetchUser(FetchUserByPhoneNumber(phoneNumber = verifyUserRequest.phoneNumber))
+            userPrefs.saveUserToPreferencesStore(response)
+            true
         }
-        fetchUserByPhoneNumber(FetchUserByPhoneNumber(phoneNumber = verifyUserRequest.phoneNumber))
-        true
     }
 
     override suspend fun fetchUserByPhoneNumber(fetchUserByPhoneNumber: FetchUserByPhoneNumber) =
         safeApiCall {
-           val response = userApi.fetchUser(fetchUserByPhoneNumber)
+            val response = userApi.fetchUser(fetchUserByPhoneNumber)
             Log.d("fetch user number", fetchUserByPhoneNumber.toString())
-            withContext(dispatcher){
+            withContext(dispatcher) {
                 userPrefs.saveUserToPreferencesStore(response)
             }
             return@safeApiCall response

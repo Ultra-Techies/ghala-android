@@ -5,7 +5,6 @@ import com.ultratechies.ghala.data.models.requests.auth.FetchUserByPhoneNumber
 import com.ultratechies.ghala.data.models.requests.auth.GetOTPRequest
 import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
-import com.ultratechies.ghala.data.models.requests.user.VerifyUserRequest
 import com.ultratechies.ghala.data.models.responses.auth.CheckUserExistsResponse
 import com.ultratechies.ghala.data.models.responses.auth.GetOTPResponse
 import com.ultratechies.ghala.data.models.responses.auth.LoginResponse
@@ -41,8 +40,10 @@ interface UserApi {
       ): JsonObject*/
 
     @POST("login")
+    @FormUrlEncoded
     suspend fun verifyUser(
-        @Body verifyUserRequest: VerifyUserRequest
+        @Field("password") password: String,
+        @Field("phoneNumber") phoneNumber: String
     ): LoginResponse
 
 
@@ -51,7 +52,7 @@ interface UserApi {
         @Body updateUserRequest: UpdateUserRequest
     )
 
-    @PUT("api/users/fetch")
+    @POST("api/users/fetch")
     suspend fun fetchUser(
         @Body fetchUserByPhoneNumber: FetchUserByPhoneNumber
     ): UserModel

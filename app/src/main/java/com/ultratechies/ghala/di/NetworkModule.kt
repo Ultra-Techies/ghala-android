@@ -2,6 +2,8 @@ package com.ultratechies.ghala.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.ultratechies.ghala.BuildConfig
+import com.ultratechies.ghala.data.AccessTokenInterceptor
+import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.repository.*
 import com.ultratechies.ghala.utils.BASE_URL
 import dagger.Module
@@ -20,15 +22,16 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun providesOkhttp(): OkHttpClient {
+    fun providesOkhttp(appDatasource: AppDatasource): OkHttpClient {
         val okhhtp = OkHttpClient.Builder()
 
         if (BuildConfig.DEBUG) {
             val logger = HttpLoggingInterceptor()
             logger.setLevel(HttpLoggingInterceptor.Level.BODY)
-
             okhhtp.addInterceptor(logger)
         }
+        // add interceptor
+        okhhtp.addInterceptor(AccessTokenInterceptor(appDatasource))
         return okhhtp.build()
     }
 

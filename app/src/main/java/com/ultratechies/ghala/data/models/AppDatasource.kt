@@ -11,6 +11,7 @@ import com.ultratechies.ghala.domain.models.UserModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "ghala_data")
@@ -47,6 +48,8 @@ class AppDatasource @Inject constructor(@ApplicationContext context: Context, va
         preferences[ACCESS_TOKEN]
     }
 
+    fun getPrefs() = applicationContext.dataStore.data
+
     suspend fun saveRefreshToken(refreshToken: String) {
         applicationContext.dataStore.edit { preferences ->
             preferences[REFRESH_TOKEN] = refreshToken
@@ -55,6 +58,12 @@ class AppDatasource @Inject constructor(@ApplicationContext context: Context, va
 
     fun getRefreshToken(): Flow<String?> = applicationContext.dataStore.data.map { preferences ->
         preferences[REFRESH_TOKEN]
+    }
+
+    fun clear() = runBlocking {
+        applicationContext.dataStore.edit {
+            it.clear()
+        }
     }
 
 }
