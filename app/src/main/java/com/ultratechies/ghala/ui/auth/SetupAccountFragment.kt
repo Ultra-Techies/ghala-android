@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,12 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
-import com.ultratechies.ghala.data.models.responses.Warehouse
-import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.FragmentSetupAccountBinding
 import com.ultratechies.ghala.ui.auth.viewmodels.UserViewModel
 import com.ultratechies.ghala.ui.warehouses.WarehousesViewModel
-import com.ultratechies.ghala.utils.gone
 import com.ultratechies.ghala.utils.validateEmail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,10 +27,8 @@ class SetupAccountFragment : Fragment() {
     private lateinit var binding: FragmentSetupAccountBinding
 
     private val userViewmodel: UserViewModel by activityViewModels()
-    private val warehouseViewModel: WarehousesViewModel by viewModels()
 
     private var phoneNumber: String? = null
-    private val wareHouses = mutableListOf<Warehouse>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,13 +45,9 @@ class SetupAccountFragment : Fragment() {
         setUpToolbar()
         getPhoneNumber()
         validateUserInputFields()
-        fetchErrorListener()
         registerUserListener()
         registerUserErrorListener()
 
-
-
-        warehouseViewModel.fetchWarehouses()
         binding.toolbarWelcome.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_setupAccountFragment2_to_otpVerificationFragment2)
         }
@@ -173,12 +163,6 @@ class SetupAccountFragment : Fragment() {
         userViewmodel.createUser(createUserRequest)
     }
 
-
-    private fun fetchErrorListener() {
-        warehouseViewModel.errorMessage.observe(viewLifecycleOwner) {
-            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-        }
-    }
 
     private fun registerUserListener() {
         viewLifecycleOwner.lifecycleScope.launch {
