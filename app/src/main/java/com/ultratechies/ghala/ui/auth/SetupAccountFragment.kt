@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,11 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
-import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
-import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.FragmentSetupAccountBinding
 import com.ultratechies.ghala.ui.auth.viewmodels.UserViewModel
-import com.ultratechies.ghala.ui.warehouses.WarehousesViewModel
 import com.ultratechies.ghala.utils.validateEmail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -142,12 +138,12 @@ class SetupAccountFragment : Fragment() {
                 val firstName = editTextTextSecondName.text.trim().toString()
                 val secondName = editTextTextSecondName.text.trim().toString()
                 val email = editTextEmailAddress.text.trim().toString()
-                /*              val warehouse = warehouseSpinner.selectedItem.toString()*/
+                /* val warehouse = warehouseSpinner.selectedItem.toString()*/
                 val password = binding.editTextTextPin.text.trim().toString()
 
 
                 val userDetails = CreateUserRequest(
-                    /*                assignedWarehouse = wareHouses.find { it.name == binding.warehouseSpinner.selectedItem.toString() }!!.id,*/
+                    /*assignedWarehouse = wareHouses.find { it.name == binding.warehouseSpinner.selectedItem.toString() }!!.id,*/
                     email = email,
                     firstName = firstName,
                     lastName = secondName,
@@ -168,7 +164,7 @@ class SetupAccountFragment : Fragment() {
 
     private fun registerUserListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewmodel.redirectUserToLogin.collect { redirect ->
                     if (redirect) {
                         toggleLoading(true)
@@ -181,7 +177,7 @@ class SetupAccountFragment : Fragment() {
 
     private fun registerUserErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewmodel.errorMessage.collect {
                     toggleLoading(false)
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()

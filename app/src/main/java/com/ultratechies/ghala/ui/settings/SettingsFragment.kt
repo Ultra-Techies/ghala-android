@@ -196,33 +196,33 @@ class SettingsFragment : Fragment() {
     }
 
 
-private fun updateUserErrorListener() {
-    lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.errorMessage.collectLatest {
-                toggleLoading(false)
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+    private fun updateUserErrorListener() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collectLatest {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
-}
 
-private fun updateUserListener() {
-    lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.updateUser.collect {
-                toggleLoading(false)
-                Snackbar.make(binding.root, "Use Updated successfully", Snackbar.LENGTH_SHORT)
-                    .show()
+    private fun updateUserListener() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updateUser.collect {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, "Use Updated successfully", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }
-}
 
-private fun updateUser(updateUserRequest: UpdateUserRequest) {
-    toggleLoading(true)
-    viewModel.updateUser(updateUserRequest)
-}
+    private fun updateUser(updateUserRequest: UpdateUserRequest) {
+        toggleLoading(true)
+        viewModel.updateUser(updateUserRequest)
+    }
 
 
 }

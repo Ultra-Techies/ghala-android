@@ -113,7 +113,7 @@ class DispatchFragment : Fragment() {
 
     private fun fetchDeliveryNotesListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.fetchDeliveryNotes.collect { list ->
                     binding.swipeContainer.isRefreshing = false
                     data.clear()

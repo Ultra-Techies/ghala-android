@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val userRepository: UserRepository,homeStatsRepo: HomeStatsRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(val userRepository: UserRepository,val homeStatsRepo: HomeStatsRepository) : ViewModel() {
 
     private val _getUserById = MutableSharedFlow<UserModel>()
     val getUserById = _getUserById.asSharedFlow()
@@ -26,6 +26,7 @@ class HomeViewModel @Inject constructor(val userRepository: UserRepository,homeS
 
     private val _stats = MutableSharedFlow<HomeStatsResponse>()
     val stats = _stats.asSharedFlow()
+
     private val _errorResponse = MutableSharedFlow<String>()
     val errorResponse = _errorResponse.asSharedFlow()
 
@@ -64,4 +65,4 @@ class HomeViewModel @Inject constructor(val userRepository: UserRepository,homeS
                 }
             }
         }
-    }
+    }}

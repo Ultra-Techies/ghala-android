@@ -22,10 +22,9 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
-import com.google.android.material.snackbar.Snackbar
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.responses.home.HomeStatsResponse
@@ -100,7 +99,7 @@ open class HomeFragment : Fragment() {
 
         // set data
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appDatasource.getUserFromPreferencesStore().collectLatest { user ->
                     binding.userName.text = user?.firstName + " " + user?.lastName
                     if (user?.assignedWarehouse == null) {
@@ -207,7 +206,7 @@ open class HomeFragment : Fragment() {
 
         pieChart!!.rotationAngle = 0.toFloat()
         // enable rotation of the chart by touch
-        pieChart!!.isRotationEnabled = true;
+        pieChart!!.isRotationEnabled = true
         pieChart!!.isHighlightPerTapEnabled = true
 
 
@@ -305,7 +304,7 @@ open class HomeFragment : Fragment() {
 
     private fun getStatsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stats.collect { it ->
                     if (it != null) {
                         val values1: ArrayList<BarEntry> = ArrayList()
