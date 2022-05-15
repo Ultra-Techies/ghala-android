@@ -112,4 +112,9 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun fetchAllUsers() = safeApiCall {
+        userApi.fetchAllUsers()
+    }
+
 }

@@ -139,4 +139,6 @@
     <string name="edit_warehouse">Edit Warehouse</string>
     <string name="update">Update</string>
     <string name="dispatch_status">Dispatch</string>
+    <string name="no_users_available">No Users Available</string>
+    <string name="space">\u0020</string>
 </resources>

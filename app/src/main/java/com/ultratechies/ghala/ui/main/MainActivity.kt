@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_orders,
                 R.id.nav_inventory,
                 R.id.nav_dispatch,
-                R.id.nav_settings
+                R.id.nav_settings,
+                R.id.nav_users
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
