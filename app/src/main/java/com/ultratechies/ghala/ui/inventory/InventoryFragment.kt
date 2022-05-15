@@ -1,7 +1,6 @@
 package com.ultratechies.ghala.ui.inventory
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,7 +147,6 @@ class InventoryFragment : Fragment() {
         }
         inventoryAdapter.onItemDelete {
             deleteInventoryItem(sku = it.sku)
-            Log.d("SKU", it.sku.toString())
         }
 
         binding.recyclerViewInventory.apply {

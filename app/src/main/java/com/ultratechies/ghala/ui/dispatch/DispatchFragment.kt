@@ -1,7 +1,6 @@
 package com.ultratechies.ghala.ui.dispatch
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -135,7 +134,6 @@ class DispatchFragment : Fragment() {
             binding.recyclerViewDispatch.scrollToPosition(
                 0
             )
-            Log.d("-----", list.toString())
         }
     }
 

@@ -1,6 +1,5 @@
 package com.ultratechies.ghala.data.repository
 
-import android.util.Log
 import com.google.gson.Gson
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.auth.CheckUserExistsRequest
@@ -84,7 +83,6 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun fetchUserByPhoneNumber(fetchUserByPhoneNumber: FetchUserByPhoneNumber) =
         safeApiCall {
             val response = userApi.fetchUser(fetchUserByPhoneNumber)
-            Log.d("fetch user number", fetchUserByPhoneNumber.toString())
             withContext(dispatcher) {
                 userPrefs.saveUserToPreferencesStore(response)
             }

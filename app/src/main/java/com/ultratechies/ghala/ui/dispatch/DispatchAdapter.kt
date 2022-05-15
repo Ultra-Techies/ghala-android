@@ -1,6 +1,5 @@
 package com.ultratechies.ghala.ui.dispatch
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class DispatchAdapter : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder>
 
     override fun onBindViewHolder(holder: DispatchViewHolder, position: Int) {
         val dispatchData = asyncListDiffer.currentList[position]
-        Log.d("---->", dispatchData.toString())
         val context = holder.binding.root.context
         holder.binding.apply {
             tvDispatchCode.text =
