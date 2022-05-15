@@ -96,6 +96,10 @@
     <string name="txt_category">Category: %s</string>
     <string name="txt_orderId">ORDER ID: %s</string>
     <string name="txt_delivery_date">Delivery Date: %s</string>
+    <string name="dispatch_code">Dispatch Code: %s</string>
+    <string name="route">Route: %s</string>
+    <string name="delivery_window">Delivery Window: %s</string>
+    <string name="order"> %s orders</string>
     <string name="sku">SKU: %s</string>
     <string name="price">Price: %s</string>
     <string name="items"> %s items</string>
@@ -134,4 +138,5 @@
     <string name="save">Save</string>
     <string name="edit_warehouse">Edit Warehouse</string>
     <string name="update">Update</string>
+    <string name="dispatch_status">Dispatch</string>
 </resources>

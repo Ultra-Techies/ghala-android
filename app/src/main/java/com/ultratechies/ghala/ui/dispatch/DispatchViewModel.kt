@@ -13,27 +13,48 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DispatchViewModel @Inject constructor(private val deliveryNotesRepository: DeliveryNotesRepository) : ViewModel() {
+class DispatchViewModel @Inject constructor(private val deliveryNotesRepository: DeliveryNotesRepository) :
+    ViewModel() {
 
     private val _fetchDeliveryNotes = MutableSharedFlow<List<FetchDeliveryNotesResponseItem>>()
     val fetchDeliveryNotes = _fetchDeliveryNotes.asSharedFlow()
+
+    private val _changeDeliveryNoteStatus = MutableSharedFlow<FetchDeliveryNotesResponseItem>()
+    val changeDeliveryNoteStatus = _changeDeliveryNoteStatus.asSharedFlow()
 
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
 
 
-    fun getFetchDeliveryNotes(){
+    fun getFetchDeliveryNotes() {
         viewModelScope.launch {
-            val fetchDeliveryNotesResponse = deliveryNotesRepository.fetchDeliveryNotes()
-            when(fetchDeliveryNotesResponse){
-                is APIResource.Success ->{
+            when (val fetchDeliveryNotesResponse = deliveryNotesRepository.fetchDeliveryNotes()) {
+                is APIResource.Success -> {
                     _fetchDeliveryNotes.emit(fetchDeliveryNotesResponse.value)
                 }
-                is APIResource.Loading ->{
+                is APIResource.Loading -> {
 
                 }
-                is APIResource.Error ->{
+                is APIResource.Error -> {
                     _errorMessage.emit(parseErrors(fetchDeliveryNotesResponse))
+                }
+            }
+        }
+    }
+
+    fun changeDeliveryNoteStatus(id: Int, state: Int) {
+        viewModelScope.launch {
+            when (val changeNoteStatus =
+                deliveryNotesRepository.changeDeliveryNoteStatus(id, state)) {
+                is APIResource.Success -> {
+                    getFetchDeliveryNotes()
+                    _changeDeliveryNoteStatus.emit(changeNoteStatus.value)
+                }
+                is APIResource.Loading -> {
+
+                }
+                is APIResource.Error -> {
+                    _errorMessage.emit(parseErrors(changeNoteStatus))
                 }
             }
         }

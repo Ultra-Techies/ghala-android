@@ -46,7 +46,7 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesDeliveryNotes(deliveryNotesApi: DeliveryNotesApi): DeliveryNotesRepository =
-        DeliveryNotesRepositoryImpl(deliveryNotesApi)
+    fun providesDeliveryNotes(deliveryNotesApi: DeliveryNotesApi,appDatasource: AppDatasource): DeliveryNotesRepository =
+        DeliveryNotesRepositoryImpl(deliveryNotesApi,appDatasource = appDatasource)
 
 }

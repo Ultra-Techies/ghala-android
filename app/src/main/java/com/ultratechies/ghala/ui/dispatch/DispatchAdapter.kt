@@ -1,18 +1,26 @@
 package com.ultratechies.ghala.ui.dispatch
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponseItem
 import com.ultratechies.ghala.databinding.ListItemDispatchBinding
 
 
+class DispatchAdapter : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder>() {
+    private var dispatchNoteCallback: ((FetchDeliveryNotesResponseItem) -> Unit)? = null
 
-class DispatchAdapter  : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder>(){
+    class DispatchViewHolder(val binding: ListItemDispatchBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    class DispatchViewHolder(val binding: ListItemDispatchBinding):  RecyclerView.ViewHolder(binding.root)
+    fun onItemClick(onItemClick: (FetchDeliveryNotesResponseItem) -> Unit) {
+        this.dispatchNoteCallback = onItemClick
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,7 +40,7 @@ class DispatchAdapter  : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder
         }
 
         override fun areContentsTheSame(
-            oldItem:FetchDeliveryNotesResponseItem ,
+            oldItem: FetchDeliveryNotesResponseItem,
             newItem: FetchDeliveryNotesResponseItem
         ): Boolean {
             return oldItem == newItem
@@ -48,12 +56,40 @@ class DispatchAdapter  : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder
 
     override fun onBindViewHolder(holder: DispatchViewHolder, position: Int) {
         val dispatchData = asyncListDiffer.currentList[position]
+        Log.d("---->", dispatchData.toString())
+        val context = holder.binding.root.context
         holder.binding.apply {
-            tvDispatchCode.text = dispatchData.noteCode
-            textViewOrderQuantity.text = dispatchData.orders.size.toString()
-            textViewRoute.text = dispatchData.route
-            textViewOrderDeliveryWindow.text = dispatchData.deliveryWindow
-            textViewDispatchStatus.text = dispatchData.status
+            tvDispatchCode.text =
+                StringBuilder(context.getString(R.string.dispatch_code, dispatchData.noteCode))
+            textViewOrderQuantity.text = StringBuilder(
+                context.getString(
+                    R.string.order,
+                    dispatchData.orders.size.toString()
+                )
+            )
+            textViewRoute.text =
+                StringBuilder(context.getString(R.string.route, dispatchData.route))
+            textViewOrderDeliveryWindow.text = StringBuilder(
+                context.getString(
+                    R.string.delivery_window,
+                    dispatchData.deliveryWindow
+                )
+            )
+            textViewDispatchStatus.text =
+                dispatchData.status.lowercase().replaceFirstChar { it.uppercase() }
+
+            if (textViewDispatchStatus.text == "Pending") {
+                textViewActions.text = StringBuilder(context.getString(R.string.dispatch_status))
+                llActionButton.visibility = View.VISIBLE
+            } else {
+                llActionButton.visibility = View.GONE
+            }
+
+            holder.binding.llActionButton.setOnClickListener {
+                dispatchNoteCallback?.invoke(dispatchData)
+            }
+
+
         }
 
     }

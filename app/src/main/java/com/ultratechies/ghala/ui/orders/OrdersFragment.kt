@@ -1,6 +1,7 @@
 package com.ultratechies.ghala.ui.orders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -133,6 +134,7 @@ class OrdersFragment : Fragment() {
                                     warehouseId = user.assignedWarehouse
                                 )
                                 createDeliveryNote(addDeliveryNote)
+                                Log.d("---->", addDeliveryNote.toString())
                             }
                         }
 

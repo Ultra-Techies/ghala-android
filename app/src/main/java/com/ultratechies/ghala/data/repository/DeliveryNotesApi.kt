@@ -3,9 +3,7 @@ package com.ultratechies.ghala.data.repository
 import com.ultratechies.ghala.data.models.requests.deliverynotes.CreateDeliveryNoteRequest
 import com.ultratechies.ghala.data.models.responses.deliverynotes.CreateDeliveryNoteResponse
 import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponseItem
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface DeliveryNotesApi {
 
@@ -14,6 +12,9 @@ interface DeliveryNotesApi {
         @Body createDeliveryNote: CreateDeliveryNoteRequest
     ): CreateDeliveryNoteResponse
 
-    @GET("api/deliverynotes/all")
-    suspend fun getAllDeliveryNotes(): List<FetchDeliveryNotesResponseItem>
+    @GET("api/deliverynotes/wh/{id}")
+    suspend fun getAllDeliveryNotes(@Path("id") id: Int?): List<FetchDeliveryNotesResponseItem>
+
+    @PUT("api/deliverynotes/{id}/{status}")
+    suspend fun changeDeliveryNoteStatus( @Path("id") id: Int,@Path("status") status: Int): FetchDeliveryNotesResponseItem
 }

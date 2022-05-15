@@ -58,6 +58,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
             notifyDataSetChanged()
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrdersAdapterViewHolder {
         val binding =
             ListItemOrdersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -116,7 +117,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
                     )
                 )
             }
-            "DELIVERED" ->{
+            "DELIVERED" -> {
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -130,8 +131,8 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
             createDeliveryNoteCallback?.invoke(ordersData)
         }
 
-         holder.binding.checkboxOrders.setOnCheckedChangeListener(null)
-         holder.binding.orderCard.setOnLongClickListener(null)
+        holder.binding.checkboxOrders.setOnCheckedChangeListener(null)
+        holder.binding.orderCard.setOnLongClickListener(null)
 
         if (deliveryNotesModels.contains(ordersData)) {
             holder.binding.checkboxOrders.visibility = View.VISIBLE
@@ -141,11 +142,13 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
             holder.binding.checkboxOrders.isChecked = false
         }
 
-        holder.binding.orderCard.setOnLongClickListener(View.OnLongClickListener {
-            holder.binding.checkboxOrders.visibility = View.VISIBLE
-            holder.binding.checkboxOrders.isChecked = true
-            return@OnLongClickListener true
-        })
+        if (ordersData.status == "SUBMITTED") {
+            holder.binding.orderCard.setOnLongClickListener(View.OnLongClickListener {
+                holder.binding.checkboxOrders.visibility = View.VISIBLE
+                holder.binding.checkboxOrders.isChecked = true
+                return@OnLongClickListener true
+            })
+        }
 
         holder.binding.checkboxOrders.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

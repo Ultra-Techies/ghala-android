@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponseItem
 import com.ultratechies.ghala.databinding.DispatchFragmentBinding
@@ -20,11 +21,8 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DispatchFragment : Fragment() {
-
     private lateinit var binding: DispatchFragmentBinding
-
     private lateinit var dispatchAdapter: DispatchAdapter
-
     private val viewModel: DispatchViewModel by viewModels()
 
     private var data = mutableListOf<FetchDeliveryNotesResponseItem>()
@@ -40,11 +38,14 @@ class DispatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        this.requireActivity()
+
         getDispatch()
         onRefresh()
         setUpAdapter()
         fetchDeliveryNotesListener()
         fetchDeliveryNotesErrorListener()
+        changeDeliveryNoteStatusListener()
 
 
     }
@@ -58,17 +59,46 @@ class DispatchFragment : Fragment() {
             getDispatch()
         }
     }
+
     private fun setUpAdapter() {
         dispatchAdapter = DispatchAdapter()
+        dispatchAdapter.onItemClick { fetchNoteResponse ->
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Dispatch this order")
+                .setMessage("Dispatch the order" + " " + fetchNoteResponse.noteCode)
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+
+                    binding.pbDispatch.visibility = View.VISIBLE
+                    viewModel.changeDeliveryNoteStatus(id=fetchNoteResponse.id, 1)
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
         binding.recyclerViewDispatch.apply {
-            adapter = DispatchAdapter()
+            adapter = dispatchAdapter
             layoutManager =
                 LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
     }
+
+
+    private fun changeDeliveryNoteStatusListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.changeDeliveryNoteStatus.collect {
+                    binding.pbDispatch.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
     private fun fetchDeliveryNotesErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collect {
                     binding.swipeContainer.isRefreshing = false
                     Snackbar.make(
@@ -84,24 +114,26 @@ class DispatchFragment : Fragment() {
     private fun fetchDeliveryNotesListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.fetchDeliveryNotes.collect {list->
+                viewModel.fetchDeliveryNotes.collect { list ->
                     binding.swipeContainer.isRefreshing = false
-                    if (list.isEmpty()) {
-                        binding.tvEmptyDispatchItems.visibility = View.VISIBLE
-                        binding.recyclerViewDispatch.visibility = View.GONE
-                    } else {
-                        binding.recyclerViewDispatch.visibility = View.VISIBLE
-                        binding.tvEmptyDispatchItems.visibility = View.GONE
-                        dispatchAdapter.saveData(list)
-                        Log.d("-----",list.toString())
-                    }
+                    data.clear()
+                    data.addAll(list)
+                    displayData(list)
                 }
             }
         }
     }
 
-
-
-
+    private fun displayData(list: List<FetchDeliveryNotesResponseItem>) {
+        if (list.isEmpty()) {
+            binding.tvEmptyDispatchItems.visibility = View.VISIBLE
+            binding.recyclerViewDispatch.visibility = View.GONE
+        } else {
+            binding.recyclerViewDispatch.visibility = View.VISIBLE
+            binding.tvEmptyDispatchItems.visibility = View.GONE
+            dispatchAdapter.saveData(list)
+            Log.d("-----", list.toString())
+        }
+    }
 
 }
