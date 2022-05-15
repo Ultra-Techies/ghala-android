@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
             appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                if (user == null) return@collectLatest
                 headerView.username.text = user.firstName
                 headerView.userEmailAddress.text = user.email
             }

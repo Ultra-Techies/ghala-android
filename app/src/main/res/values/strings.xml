@@ -141,4 +141,5 @@
     <string name="dispatch_status">Dispatch</string>
     <string name="no_users_available">No Users Available</string>
     <string name="space">\u0020</string>
+    <string name="logout">LOGOUT</string>
 </resources>

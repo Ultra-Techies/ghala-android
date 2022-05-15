@@ -1,5 +1,6 @@
 package com.ultratechies.ghala.ui.users
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -42,11 +43,11 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersAdapterViewHolder>()
         asyncListDiffer.submitList(usersResponse)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: UsersAdapterViewHolder, position: Int) {
         val usersData = asyncListDiffer.currentList[position]
-        val context = holder.binding.root.context
         holder.binding.apply {
-            textviewUserName.text = usersData.firstName + " "+ usersData.lastName
+            textviewUserName.text = "${usersData.firstName} ${usersData.lastName}"
             textViewUserRole.text = usersData.role
         }
     }
