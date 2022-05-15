@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F8"
+    android:background="@color/fragment_background"
     tools:context=".ui.orders.OrdersFragment">
 
     <LinearLayout

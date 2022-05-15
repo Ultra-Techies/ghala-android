@@ -1,4 +1,4 @@
-package com.ultratechies.ghala.data.models.responses
+package com.ultratechies.ghala.data.models.responses.warehouses
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

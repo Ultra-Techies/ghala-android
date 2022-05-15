@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ultratechies.ghala.data.models.responses.WarehousesResponse
+import com.ultratechies.ghala.data.models.responses.warehouses.WarehousesResponse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.WarehouseRepository
 import com.ultratechies.ghala.utils.parseErrors

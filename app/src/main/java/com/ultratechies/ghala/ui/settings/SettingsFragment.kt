@@ -16,7 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
-import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.SettingsFragmentBinding
 import com.ultratechies.ghala.domain.models.UserModel

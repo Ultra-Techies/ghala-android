@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
-import com.ultratechies.ghala.data.models.responses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 
 class WarehouseAdapter(listdata: ArrayList<Warehouse>, mfragment: Fragment) :
     RecyclerView.Adapter<WarehouseAdapter.MyHolder>() {

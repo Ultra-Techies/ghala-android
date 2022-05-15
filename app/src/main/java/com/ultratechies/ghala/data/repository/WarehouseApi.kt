@@ -1,8 +1,8 @@
 package com.ultratechies.ghala.data.repository
 
-import com.ultratechies.ghala.data.models.responses.AddWarehouseResponse
-import com.ultratechies.ghala.data.models.responses.Warehouse
-import com.ultratechies.ghala.data.models.responses.WarehousesResponse
+import com.ultratechies.ghala.data.models.responses.warehouses.AddWarehouseResponse
+import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
+import com.ultratechies.ghala.data.models.responses.warehouses.WarehousesResponse
 import retrofit2.Response
 import retrofit2.http.*
 
