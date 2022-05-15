@@ -21,7 +21,7 @@ class DeliveryNotesRepositoryImpl @Inject constructor(private val deliveryNotesA
         }
     override suspend fun fetchDeliveryNotes() = safeApiCall {
         val user = appDatasource.getUserFromPreferencesStore().first()
-        deliveryNotesApi.getAllDeliveryNotes(user.assignedWarehouse)
+        deliveryNotesApi.getAllDeliveryNotes(user?.assignedWarehouse)
     }
 
     override suspend fun changeDeliveryNoteStatus(id: Int, state:Int) = safeApiCall{
