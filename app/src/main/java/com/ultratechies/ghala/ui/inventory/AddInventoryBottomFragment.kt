@@ -36,7 +36,6 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
         const val TAG = "AddInventoryBottomSheetFragment"
     }
 
-
     @Inject
     lateinit var appDatasource: AppDatasource
 
@@ -170,26 +169,24 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {}
-            viewModel.errorMessage.collect {
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1000)
-                    dismiss()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        dismiss()
+                    }
                 }
             }
         }
     }
 
-
     private fun closeAddTaskBottomSheet() {
         dismiss()
     }
-
-
 }

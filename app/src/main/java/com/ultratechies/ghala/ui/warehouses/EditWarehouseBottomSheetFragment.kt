@@ -17,7 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
-import com.ultratechies.ghala.databinding.FragmentEwhBottomsheetBinding
+import com.ultratechies.ghala.databinding.FragmentEditwarehouseBottomsheetBinding
 import com.ultratechies.ghala.utils.handleApiError
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
     BottomSheetDialogFragment(), View.OnClickListener {
 
-    private lateinit var binding: FragmentEwhBottomsheetBinding
+    private lateinit var binding: FragmentEditwarehouseBottomsheetBinding
     private val viewModel: BottomSheetViewModel by viewModels()
     private lateinit var warehouseModel: Warehouse
 
@@ -68,7 +68,7 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEwhBottomsheetBinding.inflate(layoutInflater, container, false)
+        binding = FragmentEditwarehouseBottomsheetBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -141,7 +141,7 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
 
     private fun errorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorResponse.collectLatest { message ->
                     binding.pbBottomSheet.visibility = View.GONE
                     Snackbar.make(

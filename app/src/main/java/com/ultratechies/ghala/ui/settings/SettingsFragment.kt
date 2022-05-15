@@ -197,7 +197,7 @@ class SettingsFragment : Fragment() {
 
 
     private fun updateUserErrorListener() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collectLatest {
                     toggleLoading(false)
@@ -208,7 +208,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateUserListener() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.updateUser.collect {
                     toggleLoading(false)

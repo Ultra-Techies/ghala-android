@@ -87,7 +87,7 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun checkUserExistsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userExists.collect {
                     if (it.exists) {
                         toggleLoading(false)
@@ -102,7 +102,7 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun checkUserErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collect {
                     toggleLoading(false)
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
@@ -118,7 +118,7 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun fetchOTPlistener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getOTP.collect {
                     toggleLoading(false)
                     findNavController().navigate(
@@ -131,7 +131,7 @@ class PhoneVerificationFragment : Fragment() {
 
     private fun fetchOTPErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collect {
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
@@ -147,5 +147,4 @@ class PhoneVerificationFragment : Fragment() {
         )
         viewModel.fetchOtp(getOTPRequest)
     }
-
 }

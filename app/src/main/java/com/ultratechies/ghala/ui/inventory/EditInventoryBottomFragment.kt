@@ -225,6 +225,4 @@ class EditInventoryBottomFragment :
     private fun closeBottomSheet() {
         dismiss()
     }
-
-
 }

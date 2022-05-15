@@ -91,7 +91,7 @@ class OtpVerificationFragment : Fragment() {
     }
 
     private fun otpResponseListener() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.otpListener.collect { valid ->
                     if (valid) {

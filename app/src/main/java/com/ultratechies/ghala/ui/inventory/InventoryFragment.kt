@@ -198,6 +198,4 @@ class InventoryFragment : Fragment() {
         super.onResume()
         getInventory()
     }
-
-
 }
