@@ -173,6 +173,9 @@ class OrdersFragment : Fragment() {
             ordersAdapter.saveData(list)
             binding.tvEmptyOrderItems.visibility = View.GONE
             binding.recyclerViewOrders.visibility = View.VISIBLE
+            binding.recyclerViewOrders.scrollToPosition(
+                0
+            )
         }
     }
 

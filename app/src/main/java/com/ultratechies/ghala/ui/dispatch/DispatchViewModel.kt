@@ -30,7 +30,7 @@ class DispatchViewModel @Inject constructor(private val deliveryNotesRepository:
         viewModelScope.launch {
             when (val fetchDeliveryNotesResponse = deliveryNotesRepository.fetchDeliveryNotes()) {
                 is APIResource.Success -> {
-                    _fetchDeliveryNotes.emit(fetchDeliveryNotesResponse.value)
+                    _fetchDeliveryNotes.emit(fetchDeliveryNotesResponse.value.asReversed())
                 }
                 is APIResource.Loading -> {
 

@@ -132,6 +132,9 @@ class DispatchFragment : Fragment() {
             binding.recyclerViewDispatch.visibility = View.VISIBLE
             binding.tvEmptyDispatchItems.visibility = View.GONE
             dispatchAdapter.saveData(list)
+            binding.recyclerViewDispatch.scrollToPosition(
+                0
+            )
             Log.d("-----", list.toString())
         }
     }

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -72,11 +73,38 @@ class DispatchAdapter : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder>
             textViewOrderDeliveryWindow.text = StringBuilder(
                 context.getString(
                     R.string.delivery_window,
-                    dispatchData.deliveryWindow
+                    dispatchData.orders[0].deliveryWindow
                 )
             )
             textViewDispatchStatus.text =
                 dispatchData.status.lowercase().replaceFirstChar { it.uppercase() }
+
+            when (textViewDispatchStatus.text) {
+                "Pending" -> {
+                    holder.binding.textViewDispatchStatus.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.red
+                        )
+                    )
+                }
+                "Dispatched" -> {
+                    holder.binding.textViewDispatchStatus.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.grey
+                        )
+                    )
+                }
+                "Completed" -> {
+                    holder.binding.textViewDispatchStatus.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.teal
+                        )
+                    )
+                }
+            }
 
             if (textViewDispatchStatus.text == "Pending") {
                 textViewActions.text = StringBuilder(context.getString(R.string.dispatch_status))
@@ -88,8 +116,6 @@ class DispatchAdapter : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder>
             holder.binding.llActionButton.setOnClickListener {
                 dispatchNoteCallback?.invoke(dispatchData)
             }
-
-
         }
 
     }

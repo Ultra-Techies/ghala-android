@@ -46,7 +46,7 @@ class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val a
             val orderResponse = ordersRepo.getOrders(_user.value)
             when(orderResponse){
                 is APIResource.Success->{
-                    _getOrders.emit(orderResponse.value)
+                    _getOrders.emit(orderResponse.value.asReversed())
                 }
                 is APIResource.Loading ->{
 
