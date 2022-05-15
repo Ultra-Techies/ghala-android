@@ -40,7 +40,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserById() = safeApiCall {
         val user = userPrefs.getUserFromPreferencesStore().first()
-        val response = userApi.getUserById(user.id)
+        val response = userApi.getUserById(user!!.id)
         withContext(dispatcher) {
             // save details if assigned warehouse is not null
             response.assignedWarehouse?.let {

@@ -131,7 +131,7 @@ class OrdersFragment : Fragment() {
                                     deliverWindow = list[0].deliveryWindow,
                                     orderIds = list.map { it.id },
                                     route = list[0].route,
-                                    warehouseId = user.assignedWarehouse
+                                    warehouseId = user?.assignedWarehouse
                                 )
                                 createDeliveryNote(addDeliveryNote)
                                 Log.d("---->", addDeliveryNote.toString())

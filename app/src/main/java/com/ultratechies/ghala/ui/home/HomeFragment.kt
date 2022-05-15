@@ -81,8 +81,8 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    binding.userName.text = user.firstName + " " + user.lastName
-                    if (user.assignedWarehouse == null) {
+                    binding.userName.text = user?.firstName + " " + user?.lastName
+                    if (user?.assignedWarehouse == null) {
                         displayAssignWarehouseDialog()
                     }
                 }

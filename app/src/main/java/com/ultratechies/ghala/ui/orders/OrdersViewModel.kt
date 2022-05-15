@@ -36,7 +36,9 @@ class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val a
     init {
         viewModelScope.launch {
             appDatasource.getUserFromPreferencesStore().collectLatest { userModel->
-                _user.value = userModel
+                if (userModel != null) {
+                    _user.value = userModel
+                }
             }
         }
     }

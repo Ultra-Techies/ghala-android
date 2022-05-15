@@ -19,7 +19,7 @@ class OrdersRepositoryImpl @Inject constructor(
 
     override suspend fun getOrders(value: UserModel) = safeApiCall {
         val user = appDatasource.getUserFromPreferencesStore().first()
-        ordersApi.getOrdersByWarehouseId(user.assignedWarehouse)
+        ordersApi.getOrdersByWarehouseId(user?.assignedWarehouse)
     }
 
 

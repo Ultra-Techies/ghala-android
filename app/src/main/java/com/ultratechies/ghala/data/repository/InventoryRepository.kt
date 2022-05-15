@@ -35,7 +35,7 @@ class InventoryRepositoryImpl @Inject constructor(
 
     override suspend fun getInventoryByWarehouseId(value: UserModel)= safeApiCall {
         val user = appDatasource.getUserFromPreferencesStore().first()
-        inventoryApi.getInventoryByWarehouseId(user.assignedWarehouse)
+        inventoryApi.getInventoryByWarehouseId(user?.assignedWarehouse)
     }
 
     override suspend fun addInventoryItem(addInventoryRequest: AddInventoryRequest) = safeApiCall {
