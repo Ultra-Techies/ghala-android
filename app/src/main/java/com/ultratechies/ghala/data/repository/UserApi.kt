@@ -42,6 +42,9 @@ interface UserApi {
         @Field("phoneNumber") phoneNumber: String
     ): LoginResponse
 
+    @GET("refreshtoken")
+    suspend fun refreshToken(@Header("Authorization") refreshToken: String?): LoginResponse
+
     @PUT("api/users")
     suspend fun updateUser(
         @Body updateUserRequest: UpdateUserRequest
