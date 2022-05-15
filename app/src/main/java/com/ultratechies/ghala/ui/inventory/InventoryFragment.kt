@@ -96,7 +96,7 @@ class InventoryFragment : Fragment() {
 
     private fun fetchInventoryErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collect {
                     binding.swipeContainer.isRefreshing = false
                     Snackbar.make(
@@ -111,7 +111,7 @@ class InventoryFragment : Fragment() {
 
     private fun fetchInventoryListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.fetchInventory.collect {
                     binding.swipeContainer.isRefreshing = false
                     data.clear()
@@ -165,15 +165,17 @@ class InventoryFragment : Fragment() {
 
     private fun deleteInventoryListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.deleteInventory.collect {
-                    getInventory()
-                    binding.swipeContainer.isRefreshing = false
-                    Toast.makeText(
-                        requireContext(),
-                        "Task Deleted Successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.deleteInventory.collect {
+                        getInventory()
+                        binding.swipeContainer.isRefreshing = false
+                        Toast.makeText(
+                            requireContext(),
+                            "Task Deleted Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -181,7 +183,7 @@ class InventoryFragment : Fragment() {
 
     private fun deleteInventoryErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collect {
                     binding.swipeContainer.isRefreshing = false
                     Toast.makeText(
@@ -198,6 +200,4 @@ class InventoryFragment : Fragment() {
         super.onResume()
         getInventory()
     }
-
-
 }

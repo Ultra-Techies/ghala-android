@@ -36,7 +36,6 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
         const val TAG = "AddInventoryBottomSheetFragment"
     }
 
-
     @Inject
     lateinit var appDatasource: AppDatasource
 
@@ -124,16 +123,18 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
-                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    val addInventoryRequest = AddInventoryRequest(
-                        category = itemCategory as String,
-                        name = productName.toString(),
-                        ppu = productPrice.toString(),
-                        quantity = productQuantity.toString(),
-                        status = "AVAILABLE",
-                        warehouseId = user.assignedWarehouse.toString()
-                    )
-                    addInventoryItem(addInventoryRequest)
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                        val addInventoryRequest = AddInventoryRequest(
+                            category = itemCategory as String,
+                            name = productName.toString(),
+                            ppu = productPrice.toString(),
+                            quantity = productQuantity.toString(),
+                            status = "AVAILABLE",
+                            warehouseId = user.assignedWarehouse.toString()
+                        )
+                        addInventoryItem(addInventoryRequest)
+                    }
                 }
             }
 
@@ -150,7 +151,7 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.addInventoryItem.collect {
                     binding.pbBottomSheet.visibility = View.GONE
                     Snackbar.make(
@@ -170,26 +171,24 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
 
     private fun addInventoryItemErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {}
-            viewModel.errorMessage.collect {
-                Snackbar.make(
-                    dialog?.window!!.decorView,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1000)
-                    dismiss()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    Snackbar.make(
+                        dialog?.window!!.decorView,
+                        it,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        dismiss()
+                    }
                 }
             }
         }
     }
 
-
     private fun closeAddTaskBottomSheet() {
         dismiss()
     }
-
-
 }

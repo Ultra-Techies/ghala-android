@@ -207,7 +207,7 @@ class SetupAccountFragment : Fragment() {
 
     private fun registerUserListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewmodel.createUser.collect {
                     toggleLoading(true)
                     findNavController().navigate(R.id.action_setupAccountFragment2_to_successfulRegistrationFragment2)
@@ -217,7 +217,7 @@ class SetupAccountFragment : Fragment() {
     }
     private fun registerUserErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewmodel.errorMessage.collect {
                     toggleLoading(false)
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()

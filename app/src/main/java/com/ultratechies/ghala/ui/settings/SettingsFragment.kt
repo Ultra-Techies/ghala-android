@@ -64,15 +64,17 @@ class SettingsFragment : Fragment() {
 
     private fun displayUserData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-              binding.apply {
-                  userModel = user
-                  editTextUpdateFirstName.setText(user.firstName)
-                  editTextUpdateSecondName.setText(user.lastName)
-                  editTextUpdateEmailAddress.setText(user.email)
-                  editTextUpdatePin.setText(user.password)
-                  editTextUpdateRepeatPin.setText(user.password)
-              }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                    binding.apply {
+                        userModel = user
+                        editTextUpdateFirstName.setText(user.firstName)
+                        editTextUpdateSecondName.setText(user.lastName)
+                        editTextUpdateEmailAddress.setText(user.email)
+                        editTextUpdatePin.setText(user.password)
+                        editTextUpdateRepeatPin.setText(user.password)
+                    }
+                }
             }
         }
     }
@@ -167,7 +169,7 @@ class SettingsFragment : Fragment() {
 
     private fun updateUserErrorListener() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collectLatest {
                     toggleLoading(false)
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
@@ -178,7 +180,7 @@ class SettingsFragment : Fragment() {
 
     private fun updateUserListener() {
        lifecycleScope.launch {
-           repeatOnLifecycle(Lifecycle.State.STARTED){
+           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                viewModel.updateUser.collect{
                    toggleLoading(false)
                    Snackbar.make(binding.root,"Use Updated successfully",Snackbar.LENGTH_SHORT).show()

@@ -185,7 +185,7 @@ class EditInventoryBottomFragment :
 
     private fun editInventoryListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editInventory.collect {
                     binding.pbBottomSheet.visibility = View.GONE
                     refreshListCallback?.invoke()
@@ -207,7 +207,7 @@ class EditInventoryBottomFragment :
 
     private fun editInventoryErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collectLatest {
                     binding.pbBottomSheet.visibility = View.GONE
                     Snackbar.make(
@@ -225,6 +225,4 @@ class EditInventoryBottomFragment :
     private fun closeBottomSheet() {
         dismiss()
     }
-
-
 }

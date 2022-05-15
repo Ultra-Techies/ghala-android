@@ -41,9 +41,10 @@ class WarehousesFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         )
 
         binding.swipeContainer.post {
-            warehouses.clear()
+            binding.swipeContainer.isRefreshing = true
         }
 
+        warehouses.clear()
         viewModel.getWarehouses()
 
         binding.warehousesRecycler.layoutManager = LinearLayoutManager(context)
