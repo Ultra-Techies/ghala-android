@@ -143,4 +143,5 @@
     <string name="space">\u0020</string>
     <string name="logout">LOGOUT</string>
     <string name="warehouseStatsDesc">Inventory vs Orders statistics</string>
+    <string name="no_delivery_notes_available">No Delivery Notes Available</string>
 </resources>
