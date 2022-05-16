@@ -113,7 +113,7 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.OrdersAdapterViewHolder
                 holder.binding.textViewOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.red
+                        R.color.blue
                     )
                 )
             }
