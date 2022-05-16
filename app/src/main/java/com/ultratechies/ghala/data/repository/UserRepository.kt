@@ -92,7 +92,12 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUser(updateUserRequest: UpdateUserRequest): APIResource<String> {
         return withContext(dispatcher) {
             try {
-                userApi.updateUser(updateUserRequest)
+                 userApi.updateUser(updateUserRequest)
+
+                //fetch user by id
+                val response = userApi.getUserById(id = updateUserRequest.id!!)
+                userPrefs.saveUserToPreferencesStore(response)
+
                 APIResource.Success("success")
             } catch (throwable: Throwable) {
                 when (throwable) {

@@ -30,11 +30,13 @@
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.auth.UnAuthorizedActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

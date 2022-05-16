@@ -143,4 +143,8 @@
     <string name="space">\u0020</string>
     <string name="logout">LOGOUT</string>
     <string name="warehouseStatsDesc">Inventory vs Orders statistics</string>
+    <string name="no_delivery_notes_available">No Delivery Notes Available</string>
+    <string name="access_denied">Access denied</string>
+    <string name="please_contact_an_admin">Please contact an admin</string>
+    <string name="to_upgrade_your_role">To upgrade your role</string>
 </resources>

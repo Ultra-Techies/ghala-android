@@ -72,7 +72,7 @@ class DispatchAdapter : RecyclerView.Adapter<DispatchAdapter.DispatchViewHolder>
                 context.getString(
                     R.string.delivery_window,
                     dispatchData.orders[0].deliveryWindow
-                )
+                ).lowercase().replaceFirstChar { it.uppercase() }
             )
             textViewDispatchStatus.text =
                 dispatchData.status.lowercase().replaceFirstChar { it.uppercase() }

@@ -56,9 +56,13 @@ fun View.handleApiError(
 ) {
     when {
         failure.isNetworkError -> snackbar("Network Error", action)
-        failure.errorCode == 401 -> {
+        failure.errorCode == 403 -> {
             snackbar("Unauthorized request", action)
         }
+        failure.errorCode == 401 -> {
+            snackbar("Access denied")
+        }
+
         failure.errorCode == 404 -> {
             snackbar("Resource not found", action)
         }
@@ -93,7 +97,7 @@ fun View.handleApiError(
 fun parseErrors(failure: APIResource.Error): String {
     return when {
         failure.isNetworkError -> "Network Error"
-        failure.errorCode == 401 -> {
+        failure.errorCode == 403 -> {
             "Unauthorized request"
         }
         failure.errorCode == 404 -> {
