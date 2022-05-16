@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -283,18 +284,35 @@ open class HomeFragment : Fragment() {
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
+        try {
         entries.add(
             PieEntry(
                 ordersvsInventory.roundToInt().toFloat(),
-              /*  statsTitles[0 % statsTitles.size]*/
+              statsTitles[0 % statsTitles.size]
             )
-        )
+        ) } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(
+                binding.root,
+                "Error: " + e.message,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+        try {
         entries.add(
             PieEntry(
                 inventoryvsOrders.roundToInt().toFloat(),
                 statsTitles[1 % statsTitles.size]
             )
-        )
+        ) }
+        catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(
+                binding.root,
+                "Error: " + e.message,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
         val dataSet = PieDataSet(entries,"")
         dataSet.setDrawIcons(false)
         dataSet.sliceSpace = 3f
@@ -348,7 +366,7 @@ open class HomeFragment : Fragment() {
                                 )
                             )
                         }
-
+                        Log.d("HomeFragment", "Values: "+values1.toString())
                         displayData(values1, it)
                     }
                 }
@@ -388,7 +406,7 @@ open class HomeFragment : Fragment() {
         val data: BarData = createChartData(orderData)
         configureChartAppearance()
         prepareChartData(data)
-     /*   setPieChartData(homeStatsResponse)*/
+        setPieChartData(homeStatsResponse)
     }
 
     private fun prepareChartData(data: BarData) {
