@@ -142,7 +142,7 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
     private fun addInventoryItem(addInventoryRequest: AddInventoryRequest) {
         binding.root.hideKeyboard()
         binding.pbBottomSheet.visibility = View.VISIBLE
-        Snackbar.make(dialog?.window!!.decorView, "Adding your task...", Snackbar.LENGTH_LONG)
+        Snackbar.make(dialog?.window!!.decorView, "Adding your inventory...", Snackbar.LENGTH_LONG)
             .show()
         viewModel.addInventory(addInventoryRequest)
     }
@@ -154,7 +154,7 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
                     binding.pbBottomSheet.visibility = View.GONE
                     Snackbar.make(
                         dialog?.window!!.decorView,
-                        "Task added successfully",
+                        "Inventory added successfully",
                         Snackbar.LENGTH_SHORT
                     ).show()
                     addNewInventoryCallback.invoke()

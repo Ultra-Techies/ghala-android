@@ -176,7 +176,7 @@ class EditInventoryBottomFragment :
     private fun editInventory(editInventoryRequest: EditInventoryRequest) {
         binding.root.hideKeyboard()
         binding.pbBottomSheet.visibility = View.VISIBLE
-        Snackbar.make(dialog?.window!!.decorView, "Editing your task...", Snackbar.LENGTH_LONG)
+        Snackbar.make(dialog?.window!!.decorView, "Editing your inventory...", Snackbar.LENGTH_LONG)
             .show()
         viewModel.editInventoryItem(editInventoryRequest)
     }
@@ -189,7 +189,7 @@ class EditInventoryBottomFragment :
                     refreshListCallback?.invoke()
                     Snackbar.make(
                         dialog?.window!!.decorView,
-                        "Task edited successfully",
+                        "Inventory edited successfully",
                         Snackbar.LENGTH_SHORT
                     )
                         .show()

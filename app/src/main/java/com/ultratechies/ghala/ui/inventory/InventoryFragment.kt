@@ -169,7 +169,7 @@ class InventoryFragment : Fragment() {
                     binding.swipeContainer.isRefreshing = false
                     Toast.makeText(
                         requireContext(),
-                        "Task Deleted Successfully",
+                        "Inventory Deleted Successfully",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
