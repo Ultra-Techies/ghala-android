@@ -1,13 +1,12 @@
 package com.ultratechies.ghala.ui.home
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.DialogInterface
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -287,7 +286,7 @@ open class HomeFragment : Fragment() {
         entries.add(
             PieEntry(
                 ordersvsInventory.roundToInt().toFloat(),
-                statsTitles[0 % statsTitles.size]
+              /*  statsTitles[0 % statsTitles.size]*/
             )
         )
         entries.add(
@@ -389,7 +388,7 @@ open class HomeFragment : Fragment() {
         val data: BarData = createChartData(orderData)
         configureChartAppearance()
         prepareChartData(data)
-        setPieChartData(homeStatsResponse)
+     /*   setPieChartData(homeStatsResponse)*/
     }
 
     private fun prepareChartData(data: BarData) {
