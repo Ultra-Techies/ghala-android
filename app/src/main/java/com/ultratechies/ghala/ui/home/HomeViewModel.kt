@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(val userRepository: UserRepository,val h
             val homeStatsResponse = homeStatsRepo.getStats(id)
             when(homeStatsResponse){
                 is APIResource.Success->{
-            /*        _stats.emit(homeStatsResponse.value)*/
+                   _stats.emit(homeStatsResponse.value)
                 }
                 is APIResource.Loading ->{
                     _isLoading.emit(true)
