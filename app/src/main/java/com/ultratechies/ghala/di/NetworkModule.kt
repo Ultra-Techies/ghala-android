@@ -1,5 +1,6 @@
 package com.ultratechies.ghala.di
 
+import android.content.Context
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.ultratechies.ghala.BuildConfig
 import com.ultratechies.ghala.data.AccessTokenInterceptor
@@ -9,6 +10,7 @@ import com.ultratechies.ghala.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,7 +24,10 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun providesOkhttp(appDatasource: AppDatasource): OkHttpClient {
+    fun providesOkhttp(
+        appDatasource: AppDatasource,
+        @ApplicationContext context: Context
+    ): OkHttpClient {
         val okhhtp = OkHttpClient.Builder()
 
         if (BuildConfig.DEBUG) {
@@ -31,7 +36,7 @@ object NetworkModule {
             okhhtp.addInterceptor(logger)
         }
         // add interceptor
-        okhhtp.addInterceptor(AccessTokenInterceptor(appDatasource))
+        okhhtp.addInterceptor(AccessTokenInterceptor(appDatasource, context))
         return okhhtp.build()
     }
 
