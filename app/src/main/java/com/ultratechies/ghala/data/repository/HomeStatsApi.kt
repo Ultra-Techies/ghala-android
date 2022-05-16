@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface HomeStatsApi {
 
-    @GET("stats/{id}")
+    @GET("api/stats/{id}")
     suspend fun getStats(
         @Path("id") id: Int
     ): HomeStatsResponse
