@@ -167,6 +167,17 @@ class SettingsFragment : Fragment() {
                     editTextUpdateEmailAddress.error = "Please Enter a valid email"
                     return@setOnClickListener
                 }
+                if (editTextUpdatePin.text.trim().isEmpty()) {
+                    editTextUpdatePin.error = "Please Enter you Pin "
+                    pbSetupVerification.visibility = View.GONE
+                    return@setOnClickListener
+                }
+                if (editTextUpdateRepeatPin.text.trim() != editTextUpdatePin.text.trim()) {
+                    editTextUpdateRepeatPin.error = "Pins do not match "
+                    pbSetupVerification.visibility = View.GONE
+                    return@setOnClickListener
+                }
+
 
                 if (userModel?.firstName == editTextUpdateFirstName.text.trim().toString()
                     && userModel?.lastName == editTextUpdateSecondName.text.trim().toString()
@@ -211,7 +222,7 @@ class SettingsFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.updateUser.collect {
                     toggleLoading(false)
-                    Snackbar.make(binding.root, "Use Updated successfully", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(binding.root, "User Updated successfully", Snackbar.LENGTH_SHORT)
                         .show()
                 }
             }
