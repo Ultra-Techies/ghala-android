@@ -1,5 +1,6 @@
 package com.ultratechies.ghala.ui.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
@@ -18,6 +20,7 @@ import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.SettingsFragmentBinding
 import com.ultratechies.ghala.domain.models.UserModel
+import com.ultratechies.ghala.ui.auth.AuthActivity
 import com.ultratechies.ghala.ui.warehouses.WarehousesViewModel
 import com.ultratechies.ghala.utils.gone
 import com.ultratechies.ghala.utils.validateEmail
@@ -25,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -49,31 +53,53 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("on create",wareHouses.toString())
 
         validateFields()
         displayUserData()
         fetchWareHouses()
         updateUserListener()
         updateUserErrorListener()
+        logOutUser()
 
         warehouseViewModel.fetchWarehouses()
 
     }
 
+    private fun logOutUser() {
+        binding.deleteUser.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Logout")
+                .setMessage("Do you want to logout")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+                    /*    binding.pbSetupVerification.visibility = View.VISIBLE*/
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        appDatasource.clear()
+
+                        val intent = Intent(requireActivity(), AuthActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+    }
+
 
     private fun displayUserData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    binding.apply {
-                        userModel = user
-                        editTextUpdateFirstName.setText(user.firstName)
-                        editTextUpdateSecondName.setText(user.lastName)
-                        editTextUpdateEmailAddress.setText(user.email)
-                        editTextUpdatePin.setText(user.password)
-                        editTextUpdateRepeatPin.setText(user.password)
-                    }
+            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                if (user == null) return@collectLatest
+                binding.apply {
+                    userModel = user
+                    editTextUpdateFirstName.setText(user.firstName)
+                    editTextUpdateSecondName.setText(user.lastName)
+                    editTextUpdateEmailAddress.setText(user.email)
+                    editTextUpdatePin.setText(user.password)
+                    editTextUpdateRepeatPin.setText(user.password)
                 }
             }
         }
@@ -90,28 +116,29 @@ class SettingsFragment : Fragment() {
     }
 
     private fun fetchWareHouses() {
-       warehouseViewModel.warehouses.observe(viewLifecycleOwner){state->
-           when(state){
-               is APIResource.Success ->{
-                   binding.apply {
-                       progressBarWarehouses.gone()
-                       wareHouses.apply {
-                           clear()
-                           addAll(state.value)
-                       }
-                       val adapter = ArrayAdapter(
-                           requireActivity(),
-                           android.R.layout.simple_spinner_dropdown_item,
-                           wareHouses.map { it.name }
-                       )
-                       binding.updateWarehouseSpinner.adapter = adapter
-                       Log.d("---->", wareHouses.toString())
-                   }
-               }else->{
+        warehouseViewModel.warehouses.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is APIResource.Success -> {
+                    binding.apply {
+                        progressBarWarehouses.gone()
+                        wareHouses.apply {
+                            clear()
+                            addAll(state.value)
+                        }
+                        val adapter = ArrayAdapter(
+                            requireActivity(),
+                            android.R.layout.simple_spinner_dropdown_item,
+                            wareHouses.map { it.name }
+                        )
+                        binding.updateWarehouseSpinner.adapter = adapter
+                        Log.d("---->", wareHouses.toString())
+                    }
+                }
+                else -> {
 
-               }
-           }
-       }
+                }
+            }
+        }
     }
 
     private fun validateFields() {
@@ -142,33 +169,34 @@ class SettingsFragment : Fragment() {
                 }
 
                 if (userModel?.firstName == editTextUpdateFirstName.text.trim().toString()
-                            && userModel?.lastName == editTextUpdateSecondName.text.trim().toString()
-                            && userModel?.email == binding.editTextUpdateEmailAddress.text.toString() &&
-                            userModel?.password == editTextUpdatePin.text.trim().toString()){
-
-                    }else{
-                        toggleLoading(true)
-                    val updateUserRequest = UpdateUserRequest(
-                    /*    assignedWarehouse = null,*/
-                        email = editTextUpdateEmailAddress.text.trim().toString(),
-                        firstName = editTextUpdateFirstName.text.trim().toString(),
-                        id = userModel!!.id,
-                        lastName = editTextUpdateSecondName.text.trim().toString(),
-                        password = editTextUpdatePin.text.trim().toString(),
-                        phoneNumber = null,
-                        profilePhoto = listOf(),
-                        role = null
-
-                    )
-                    updateUser(updateUserRequest)
+                    && userModel?.lastName == editTextUpdateSecondName.text.trim().toString()
+                    && userModel?.email == binding.editTextUpdateEmailAddress.text.toString() &&
+                    userModel?.password == editTextUpdatePin.text.trim().toString()
+                ) {
+                    return@setOnClickListener
                 }
+                toggleLoading(true)
+                val updateUserRequest = UpdateUserRequest(
+                    /*    assignedWarehouse = null,*/
+                    email = editTextUpdateEmailAddress.text.trim().toString(),
+                    firstName = editTextUpdateFirstName.text.trim().toString(),
+                    id = userModel!!.id,
+                    lastName = editTextUpdateSecondName.text.trim().toString(),
+                    password = editTextUpdatePin.text.trim().toString(),
+                    phoneNumber = null,
+                    profilePhoto = listOf(),
+                    role = null
+                )
 
+                updateUser(updateUserRequest)
             }
+
         }
     }
 
+
     private fun updateUserErrorListener() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorMessage.collectLatest {
                     toggleLoading(false)
@@ -179,22 +207,21 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateUserListener() {
-       lifecycleScope.launch {
-           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-               viewModel.updateUser.collect{
-                   toggleLoading(false)
-                   Snackbar.make(binding.root,"Use Updated successfully",Snackbar.LENGTH_SHORT).show()
-               }
-           }
-       }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updateUser.collect {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, "Use Updated successfully", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
-    private fun updateUser(updateUserRequest: UpdateUserRequest){
+
+    private fun updateUser(updateUserRequest: UpdateUserRequest) {
         toggleLoading(true)
         viewModel.updateUser(updateUserRequest)
     }
-
-
-
 
 
 }

@@ -36,7 +36,9 @@ class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val a
     init {
         viewModelScope.launch {
             appDatasource.getUserFromPreferencesStore().collectLatest { userModel->
-                _user.value = userModel
+                if (userModel != null) {
+                    _user.value = userModel
+                }
             }
         }
     }
@@ -46,7 +48,7 @@ class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val a
             val orderResponse = ordersRepo.getOrders(_user.value)
             when(orderResponse){
                 is APIResource.Success->{
-                    _getOrders.emit(orderResponse.value)
+                    _getOrders.emit(orderResponse.value.asReversed())
                 }
                 is APIResource.Loading ->{
 

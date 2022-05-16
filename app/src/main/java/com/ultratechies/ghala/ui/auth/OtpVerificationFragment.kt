@@ -52,7 +52,7 @@ class OtpVerificationFragment : Fragment() {
 
     private fun fetchOTPlistener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getOTP.collect { otpResponse ->
                     toggleLoading(false)
                     showMessage("OTP resent successfully")
@@ -63,9 +63,11 @@ class OtpVerificationFragment : Fragment() {
 
     private fun fetchOTPErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collect {
-                toggleLoading(false)
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collect {
+                    toggleLoading(false)
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -89,10 +91,12 @@ class OtpVerificationFragment : Fragment() {
     }
 
     private fun otpResponseListener() {
-        lifecycleScope.launch {
-            viewModel.otpListener.collect { valid ->
-                if (valid) {
-                    findNavController().navigate(com.ultratechies.ghala.R.id.action_otpVerificationFragment2_to_setupAccountFragment2)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.otpListener.collect { valid ->
+                    if (valid) {
+                        findNavController().navigate(com.ultratechies.ghala.R.id.action_otpVerificationFragment2_to_setupAccountFragment2)
+                    }
                 }
             }
         }

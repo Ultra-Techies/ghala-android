@@ -67,6 +67,9 @@ class UserViewModel @Inject constructor(val userRepository: UserRepository) : Vi
 
     private val _loggedInId = MutableStateFlow(-1)
 
+    private var _redirectUserToLogin = MutableStateFlow(false)
+    var redirectUserToLogin = _redirectUserToLogin.asStateFlow()
+
     fun checkUserExists(checkUserExistsRequest: CheckUserExistsRequest) {
         viewModelScope.launch {
             val userExistsResponse = userRepository.getUserExists(checkUserExistsRequest)
@@ -114,10 +117,7 @@ class UserViewModel @Inject constructor(val userRepository: UserRepository) : Vi
             val createUserResponse = userRepository.createUser(createUserRequest)
             when (createUserResponse) {
                 is APIResource.Success -> {
-                    _user.value = createUserResponse.value
-
-                    _loggedInId.value = createUserResponse.value.id
-                    _createUser.emit(createUserResponse.value)
+                    _redirectUserToLogin.value = createUserResponse.value
                 }
                 is APIResource.Loading -> {
 
@@ -147,22 +147,22 @@ class UserViewModel @Inject constructor(val userRepository: UserRepository) : Vi
         }
     }
 
-  /*  fun getUserById(id: Int?) {
-        viewModelScope.launch {
-            val getUserByIdResponse = userRepository.getUserById(id!!)
-            when (getUserByIdResponse) {
-                is APIResource.Success -> {
-                    _getUserById.emit(getUserByIdResponse.value)
-                }
-                is APIResource.Loading -> {
+    /*  fun getUserById(id: Int?) {
+          viewModelScope.launch {
+              val getUserByIdResponse = userRepository.getUserById(id!!)
+              when (getUserByIdResponse) {
+                  is APIResource.Success -> {
+                      _getUserById.emit(getUserByIdResponse.value)
+                  }
+                  is APIResource.Loading -> {
 
-                }
-                is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(getUserByIdResponse))
-                }
-            }
-        }
-    }*/
+                  }
+                  is APIResource.Error -> {
+                      _errorMessage.emit(parseErrors(getUserByIdResponse))
+                  }
+              }
+          }
+      }*/
 
     fun resendOtp() {
         val phoneNumber = _phoneNumber.value

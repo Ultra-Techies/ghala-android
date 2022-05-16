@@ -111,30 +111,28 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
                 setUpUi()
                 return
             }
-            if (productPrice.isNullOrEmpty()) {
+            if (productPrice.isEmpty()) {
                 editTextProductPrice.error = "Please Enter Product Price"
                 setUpUi()
                 return
             }
-            if (productQuantity.isNullOrEmpty()) {
+            if (productQuantity.isEmpty()) {
                 editTextProductQuantity.error = "Please Enter Product Quantity"
                 setUpUi()
                 return
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                        val addInventoryRequest = AddInventoryRequest(
-                            category = itemCategory as String,
-                            name = productName.toString(),
-                            ppu = productPrice.toString(),
-                            quantity = productQuantity.toString(),
-                            status = "AVAILABLE",
-                            warehouseId = user.assignedWarehouse.toString()
-                        )
-                        addInventoryItem(addInventoryRequest)
-                    }
+                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                    val addInventoryRequest = AddInventoryRequest(
+                        category = itemCategory as String,
+                        name = productName.toString(),
+                        ppu = productPrice.toString(),
+                        quantity = productQuantity.toString(),
+                        status = "AVAILABLE",
+                        warehouseId = user?.assignedWarehouse.toString()
+                    )
+                    addInventoryItem(addInventoryRequest)
                 }
             }
 

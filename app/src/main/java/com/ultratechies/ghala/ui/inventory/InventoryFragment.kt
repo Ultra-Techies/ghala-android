@@ -1,7 +1,6 @@
 package com.ultratechies.ghala.ui.inventory
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,7 +110,7 @@ class InventoryFragment : Fragment() {
 
     private fun fetchInventoryListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.fetchInventory.collect {
                     binding.swipeContainer.isRefreshing = false
                     data.clear()
@@ -148,7 +147,6 @@ class InventoryFragment : Fragment() {
         }
         inventoryAdapter.onItemDelete {
             deleteInventoryItem(sku = it.sku)
-            Log.d("SKU", it.sku.toString())
         }
 
         binding.recyclerViewInventory.apply {
@@ -166,16 +164,14 @@ class InventoryFragment : Fragment() {
     private fun deleteInventoryListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.deleteInventory.collect {
-                        getInventory()
-                        binding.swipeContainer.isRefreshing = false
-                        Toast.makeText(
-                            requireContext(),
-                            "Task Deleted Successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                viewModel.deleteInventory.collect {
+                    getInventory()
+                    binding.swipeContainer.isRefreshing = false
+                    Toast.makeText(
+                        requireContext(),
+                        "Task Deleted Successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

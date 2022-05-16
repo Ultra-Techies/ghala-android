@@ -20,6 +20,8 @@ class AppDatasource @Inject constructor(@ApplicationContext context: Context, va
 
     companion object {
         val USER_KEY = stringPreferencesKey("user")
+        val ACCESS_TOKEN = stringPreferencesKey("access")
+        val REFRESH_TOKEN = stringPreferencesKey("refresh")
     }
 
     suspend fun saveUserToPreferencesStore(userModel: UserModel) {
@@ -29,10 +31,36 @@ class AppDatasource @Inject constructor(@ApplicationContext context: Context, va
         }
     }
 
-    fun getUserFromPreferencesStore(): Flow<UserModel> = applicationContext.dataStore.data
+    fun getUserFromPreferencesStore(): Flow<UserModel?> = applicationContext.dataStore.data
         .map { preferences ->
             val userModelString = preferences[USER_KEY]
             gson.fromJson(userModelString, UserModel::class.java)
         }
+
+    suspend fun saveAccessToken(accessToken: String) {
+        applicationContext.dataStore.edit { preferences ->
+            preferences[ACCESS_TOKEN] = accessToken
+        }
+    }
+
+    fun getAccessToken(): Flow<String?> = applicationContext.dataStore.data.map { preferences ->
+        preferences[ACCESS_TOKEN]
+    }
+
+    suspend fun saveRefreshToken(refreshToken: String) {
+        applicationContext.dataStore.edit { preferences ->
+            preferences[REFRESH_TOKEN] = refreshToken
+        }
+    }
+
+    fun getRefreshToken(): Flow<String?> = applicationContext.dataStore.data.map { preferences ->
+        preferences[REFRESH_TOKEN]
+    }
+
+    suspend fun clear() {
+        applicationContext.dataStore.edit {
+            it.clear()
+        }
+    }
 
 }

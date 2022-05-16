@@ -1,5 +1,7 @@
 package com.ultratechies.ghala.ui.home
 
+import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
@@ -23,6 +25,8 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.responses.home.HomeStatsResponse
@@ -67,6 +71,8 @@ open class HomeFragment : Fragment() {
         "Orders", "Inventory"
     )
 
+    private val pDialog: ProgressDialog by lazy { ProgressDialog(requireActivity()) }
+
     @Inject
     lateinit var appDatasource: AppDatasource
 
@@ -81,6 +87,7 @@ open class HomeFragment : Fragment() {
 
         getStats()
         getStatsListener()
+        fetchErrorListener()
 
         return binding.root
     }
@@ -89,7 +96,7 @@ open class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    if (user.assignedWarehouse != null) {
+                    if (user?.assignedWarehouse != null) {
                         viewModel.getStats(user.assignedWarehouse)
                     } else {
                         binding.root.snackbar("No warehouse assigned. Contact your administrator.",
@@ -103,14 +110,75 @@ open class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+        // set data
+        viewLifecycleOwner.lifecycleScope.launch {
+           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                    binding.userName.text = user?.firstName + " " + user?.lastName
+                    if (user?.assignedWarehouse == null) {
+                        displayAssignWarehouseDialog()
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    private fun displayAssignWarehouseDialog() {
+       val alert =  MaterialAlertDialogBuilder(requireActivity())
+            .setTitle("Unavailable warehouse")
+            .setMessage("Reach out admin to assign you a warehouse")
+            .setPositiveButton("Check Again", null)
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish()
+            }
+            .setCancelable(false)
+            .show()
+
+        alert.getButton( DialogInterface.BUTTON_POSITIVE ).setOnClickListener {
+            refreshUserDetails(alert)
+        }
+    }
+
+    private fun refreshUserDetails(p0: DialogInterface) {
+        pDialog.setMessage("Checking...")
+        pDialog.show()
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                    binding.userName.text = user.firstName + " " + user.lastName
+                viewModel.getUserById.collect {
+                    pDialog.dismiss()
+                    if (it.assignedWarehouse == null) {
+                        Snackbar.make(
+                            binding.root,
+                            "Please contact admin and try again",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // dismiss dialog
+                        p0.dismiss()
+                    }
+                }
+            }
+        }
+        viewModel.getUserById()
+    }
+
+    private fun fetchErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorMessage.collectLatest {
+                    pDialog.dismiss()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                 }
             }
         }
     }
+
 
     private fun configureChartAppearance() {
         chart!!.setPinchZoom(false)
@@ -153,7 +221,7 @@ open class HomeFragment : Fragment() {
 
         pieChart!!.rotationAngle = 0.toFloat()
         // enable rotation of the chart by touch
-        pieChart!!.isRotationEnabled = true;
+        pieChart!!.isRotationEnabled = true
         pieChart!!.isHighlightPerTapEnabled = true
 
 
@@ -257,7 +325,7 @@ open class HomeFragment : Fragment() {
 
     private fun getStatsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stats.collect { it ->
                     if (it != null) {
                         val values1: ArrayList<BarEntry> = ArrayList()

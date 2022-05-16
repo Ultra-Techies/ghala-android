@@ -2,7 +2,6 @@ package com.ultratechies.ghala.ui.inventory
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -169,7 +168,6 @@ class EditInventoryBottomFragment :
                 warehouseId = inventoryModel.warehouseId.toString()
             )
             editInventory(editInventoryRequest)
-            Log.d("---->", editInventoryRequest.toString())
 
 
         }
@@ -215,7 +213,6 @@ class EditInventoryBottomFragment :
                         it,
                         Snackbar.LENGTH_SHORT
                     ).show()
-                    Log.d("--->", it)
                 }
             }
         }

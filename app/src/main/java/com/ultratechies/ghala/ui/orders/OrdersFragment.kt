@@ -125,16 +125,14 @@ class OrdersFragment : Fragment() {
                         dialog.dismiss()
 
                         viewLifecycleOwner.lifecycleScope.launch {
-                            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                                appDatasource.getUserFromPreferencesStore().collectLatest { user ->
-                                    val addDeliveryNote = CreateDeliveryNoteRequest(
-                                        deliverWindow = list[0].deliveryWindow,
-                                        orderIds = list.map { it.id },
-                                        route = list[0].route,
-                                        warehouseId = user.assignedWarehouse
-                                    )
-                                    createDeliveryNote(addDeliveryNote)
-                                }
+                            appDatasource.getUserFromPreferencesStore().collectLatest { user ->
+                                val addDeliveryNote = CreateDeliveryNoteRequest(
+                                    deliverWindow = list[0].deliveryWindow,
+                                    orderIds = list.map { it.id },
+                                    route = list[0].route,
+                                    warehouseId = user?.assignedWarehouse
+                                )
+                                createDeliveryNote(addDeliveryNote)
                             }
                         }
 
@@ -173,6 +171,9 @@ class OrdersFragment : Fragment() {
             ordersAdapter.saveData(list)
             binding.tvEmptyOrderItems.visibility = View.GONE
             binding.recyclerViewOrders.visibility = View.VISIBLE
+            binding.recyclerViewOrders.scrollToPosition(
+                0
+            )
         }
     }
 
@@ -217,15 +218,14 @@ class OrdersFragment : Fragment() {
 
     private fun createDeliveryNoteErrorListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                deliveryNoteViewModel.errorResponse.collect {
-                    Snackbar.make(
-                        binding.root,
-                        it,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
-                }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {}
+            deliveryNoteViewModel.errorResponse.collect {
+                Snackbar.make(
+                    binding.root,
+                    it,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .show()
             }
         }
     }

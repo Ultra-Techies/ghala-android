@@ -1,7 +1,7 @@
-package com.ultratechies.ghala.domain.models
+package com.ultratechies.ghala.data.models.responses.auth
 
-data class UserModel(
-    val assignedWarehouse: Int?,
+data class FetchUserByPhoneNumberResponse(
+    val assignedWarehouse: Int,
     val email: String,
     val firstName: String,
     val id: Int,

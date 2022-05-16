@@ -33,18 +33,21 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesOrders(ordersApi: OrdersApi): OrdersRepository =
-        OrdersRepositoryImpl(ordersApi)
+    fun providesOrders(ordersApi: OrdersApi, appDatasource: AppDatasource): OrdersRepository =
+        OrdersRepositoryImpl(ordersApi, appDatasource = appDatasource)
 
     @Singleton
     @Provides
-    fun providesInventoryRepo(inventoryApi: InventoryApi): InventoryRepository =
-        InventoryRepositoryImpl(inventoryApi)
+    fun providesInventoryRepo(
+        inventoryApi: InventoryApi,
+        appDatasource: AppDatasource
+    ): InventoryRepository =
+        InventoryRepositoryImpl(inventoryApi, appDatasource = appDatasource)
 
     @Singleton
     @Provides
-    fun providesDeliveryNotes(deliveryNotesApi: DeliveryNotesApi): DeliveryNotesRepository =
-        DeliveryNotesRepositoryImpl(deliveryNotesApi)
+    fun providesDeliveryNotes(deliveryNotesApi: DeliveryNotesApi,appDatasource: AppDatasource): DeliveryNotesRepository =
+        DeliveryNotesRepositoryImpl(deliveryNotesApi,appDatasource = appDatasource)
 
     @Singleton
     @Provides

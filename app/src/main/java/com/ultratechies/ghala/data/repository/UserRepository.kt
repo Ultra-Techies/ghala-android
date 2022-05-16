@@ -3,14 +3,15 @@ package com.ultratechies.ghala.data.repository
 import com.google.gson.Gson
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.auth.CheckUserExistsRequest
+import com.ultratechies.ghala.data.models.requests.auth.FetchUserByPhoneNumber
 import com.ultratechies.ghala.data.models.requests.auth.GetOTPRequest
 import com.ultratechies.ghala.data.models.requests.user.CreateUserRequest
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
 import com.ultratechies.ghala.data.models.requests.user.VerifyUserRequest
-import com.ultratechies.ghala.domain.models.UserModel
 import com.ultratechies.ghala.domain.repository.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -32,36 +33,61 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createUser(createUserRequest: CreateUserRequest) = safeApiCall {
-        val userId = userApi.createUser(createUserRequest)
-        val response = getUserById(userId.id)
-        if (response is APIResource.Success) {
-            return@safeApiCall response.value
-        } else {
-            throw Exception("Unable to create user")
-        }
+        userApi.createUser(createUserRequest)
+        true
     }
 
-    override suspend fun getUserById(id: Int) = safeApiCall {
-        val response = userApi.getUserById(id)
+    override suspend fun getUserById() = safeApiCall {
+        val user = userPrefs.getUserFromPreferencesStore().first()
+        val response = userApi.getUserById(user!!.id)
         withContext(dispatcher) {
-            userPrefs.saveUserToPreferencesStore(response)
+            // save details if assigned warehouse is not null
+            response.assignedWarehouse?.let {
+                userPrefs.saveUserToPreferencesStore(response)
+            }
         }
         return@safeApiCall response
     }
 
+    /*   override suspend fun verifyUser(verifyUserRequest: VerifyUserRequest) = safeApiCall {
+           val response = userApi.verifyUser(verifyUserRequest)
+           if (response.has("verified")) {
+               return@safeApiCall false
+           } else {
+               // convert json to user model
+               val userModel = gson.fromJson(response, UserModel::class.java)
+               // store it
+               userPrefs.saveUserToPreferencesStore(userModel)
+               // return true
+               return@safeApiCall true
+           }
+       }*/
     override suspend fun verifyUser(verifyUserRequest: VerifyUserRequest) = safeApiCall {
-        val response = userApi.verifyUser(verifyUserRequest)
-        if (response.has("verified")) {
-            return@safeApiCall false
-        } else {
-            // convert json to user model
-            val userModel = gson.fromJson(response, UserModel::class.java)
-            // store it
-            userPrefs.saveUserToPreferencesStore(userModel)
-            // return true
-            return@safeApiCall true
+        withContext(dispatcher) {
+            // login
+            val res = userApi.verifyUser(
+                password = verifyUserRequest.password,
+                phoneNumber = verifyUserRequest.phoneNumber
+            )
+            // save access tokens
+            userPrefs.saveAccessToken(res.accessToken)
+            userPrefs.saveRefreshToken(res.refreshToken)
+            // fetch user by phone
+            val response =
+                userApi.fetchUser(FetchUserByPhoneNumber(phoneNumber = verifyUserRequest.phoneNumber))
+            userPrefs.saveUserToPreferencesStore(response)
+            true
         }
     }
+
+    override suspend fun fetchUserByPhoneNumber(fetchUserByPhoneNumber: FetchUserByPhoneNumber) =
+        safeApiCall {
+            val response = userApi.fetchUser(fetchUserByPhoneNumber)
+            withContext(dispatcher) {
+                userPrefs.saveUserToPreferencesStore(response)
+            }
+            return@safeApiCall response
+        }
 
     override suspend fun updateUser(updateUserRequest: UpdateUserRequest): APIResource<String> {
         return withContext(dispatcher) {
@@ -85,5 +111,8 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun fetchAllUsers() = safeApiCall {
+        userApi.fetchAllUsers()
+    }
 
 }
