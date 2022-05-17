@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_success_registration"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/outline_check_circle_black_48"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_registration_submitted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/your_registration_has_been_submitted_successfully"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_success_registration" />
+
+    <TextView
+        android:id="@+id/tv_successful"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/successfully"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_registration_submitted" />
+
+    <LinearLayout
+        android:id="@+id/ll_account_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_successful">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/account_first_name"
+            android:textColor="@color/black"
+            android:layout_gravity="bottom"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextAccountHolder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:autofillHints="@null"
+            android:background="@color/transparent"
+            android:hint="@string/malcom_maima"
+            android:inputType="none" />
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/outline_edit_black_18"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/editIcon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_account_second_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_account_holder">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/account_secons_name"
+            android:textColor="@color/black"
+            android:layout_gravity="bottom"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextSecondName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:autofillHints="@null"
+            android:background="@color/transparent"
+            android:hint="@string/malcom_maima"
+            android:inputType="none" />
+
+        <ImageButton
+            android:id="@+id/edit_second_button"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/outline_edit_black_18"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/editIcon" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_email_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_account_second_name">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/account_holder_email_address"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextAccountEmailAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:autofillHints="@null"
+            android:background="@color/transparent"
+            android:hint="@string/user_gmail_com"
+            android:inputType="textEmailAddress" />
+
+        <ImageButton
+            android:id="@+id/emailAddressEditButton"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/outline_edit_black_18"
+            android:contentDescription="@string/editIcon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_warehouse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_email_address">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/warehouse"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextWarehouseDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:autofillHints="@null"
+            android:background="@color/transparent"
+            android:hint="@string/ruiru_wh"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/editWarehouseName"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/outline_edit_black_18"
+            android:contentDescription="@string/editIcon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_role"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_warehouse">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/role"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextUserRole"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:autofillHints="@null"
+            android:background="@color/transparent"
+            android:hint="@string/dispatch_associate"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/editUserRole"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/outline_edit_black_18"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:contentDescription="@string/editIcon" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/registrationConfirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/colorSecondary"
+        android:fontFamily="sans-serif"
+        android:text="@string/confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_role" />
+
+    <ProgressBar
+        android:id="@+id/pb_registrationSuccessful"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:progressTint="@color/colorSecondary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registrationConfirmButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
