@@ -290,11 +290,6 @@ open class HomeFragment : Fragment() {
             )
         ) } catch (e: Exception) {
             e.printStackTrace()
-            Snackbar.make(
-                binding.root,
-                "Error: " + e.message,
-                Snackbar.LENGTH_LONG
-            ).show()
         }
         try {
         entries.add(
@@ -305,11 +300,6 @@ open class HomeFragment : Fragment() {
         ) }
         catch (e: Exception) {
             e.printStackTrace()
-            Snackbar.make(
-                binding.root,
-                "Error: " + e.message,
-                Snackbar.LENGTH_LONG
-            ).show()
         }
         val dataSet = PieDataSet(entries,"")
         dataSet.setDrawIcons(false)
