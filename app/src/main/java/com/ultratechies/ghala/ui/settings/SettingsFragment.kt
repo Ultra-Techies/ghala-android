@@ -22,6 +22,7 @@ import com.ultratechies.ghala.databinding.SettingsFragmentBinding
 import com.ultratechies.ghala.domain.models.UserModel
 import com.ultratechies.ghala.ui.auth.AuthActivity
 import com.ultratechies.ghala.ui.warehouses.WarehousesViewModel
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.gone
 import com.ultratechies.ghala.utils.validateEmail
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,6 +61,7 @@ class SettingsFragment : Fragment() {
         updateUserListener()
         updateUserErrorListener()
         logOutUser()
+        fetchUnAuthErrorListener()
 
         warehouseViewModel.fetchWarehouses()
 
@@ -212,6 +214,22 @@ class SettingsFragment : Fragment() {
                 viewModel.errorMessage.collectLatest {
                     toggleLoading(false)
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                 toggleLoading(false)
+                    binding.editTextUpdateFirstName.visibility = View.GONE
+                    binding.editTextUpdateSecondName.visibility = View.GONE
+                    binding.editTextUpdateEmailAddress.visibility = View.GONE
+                    binding.editTextUpdatePin.visibility = View.GONE
+                    binding.editTextUpdateRepeatPin.visibility = View.GONE
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }
