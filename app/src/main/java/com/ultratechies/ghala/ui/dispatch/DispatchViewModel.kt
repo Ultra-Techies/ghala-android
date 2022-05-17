@@ -25,6 +25,8 @@ class DispatchViewModel @Inject constructor(private val deliveryNotesRepository:
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
 
     fun getFetchDeliveryNotes() {
         viewModelScope.launch {
@@ -36,7 +38,10 @@ class DispatchViewModel @Inject constructor(private val deliveryNotesRepository:
 
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(fetchDeliveryNotesResponse))
+                    if (fetchDeliveryNotesResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(fetchDeliveryNotesResponse))
                 }
             }
         }
@@ -54,7 +59,10 @@ class DispatchViewModel @Inject constructor(private val deliveryNotesRepository:
 
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(changeNoteStatus))
+                    if (changeNoteStatus.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(changeNoteStatus))
                 }
             }
         }
