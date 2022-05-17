@@ -32,6 +32,7 @@ import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.responses.home.HomeStatsResponse
 import com.ultratechies.ghala.data.models.responses.home.OrderValueResponse
 import com.ultratechies.ghala.databinding.HomeFragmentBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -88,7 +89,7 @@ open class HomeFragment : Fragment() {
         getStats()
         getStatsListener()
         fetchErrorListener()
-
+        fetchUnAuthErrorListener()
         return binding.root
     }
 
@@ -112,7 +113,7 @@ open class HomeFragment : Fragment() {
 
         // set data
         viewLifecycleOwner.lifecycleScope.launch {
-           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appDatasource.getUserFromPreferencesStore().collectLatest { user ->
                     binding.userName.text = user?.firstName + " " + user?.lastName
                     if (user?.assignedWarehouse == null) {
@@ -126,7 +127,7 @@ open class HomeFragment : Fragment() {
 
 
     private fun displayAssignWarehouseDialog() {
-       val alert =  MaterialAlertDialogBuilder(requireActivity())
+        val alert = MaterialAlertDialogBuilder(requireActivity())
             .setTitle("Unavailable warehouse")
             .setMessage("Reach out admin to assign you a warehouse")
             .setPositiveButton("Check Again", null)
@@ -137,7 +138,7 @@ open class HomeFragment : Fragment() {
             .setCancelable(false)
             .show()
 
-        alert.getButton( DialogInterface.BUTTON_POSITIVE ).setOnClickListener {
+        alert.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
             refreshUserDetails(alert)
         }
     }
@@ -172,6 +173,17 @@ open class HomeFragment : Fragment() {
                 viewModel.errorMessage.collectLatest {
                     pDialog.dismiss()
                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                }
+            }
+        }
+    }
+
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    pDialog.dismiss()
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }
@@ -251,7 +263,10 @@ open class HomeFragment : Fragment() {
 
         val inventoryData = ArrayList<BarEntry>()
         val set1 = BarDataSet(orderData, GROUP_1_LABEL)
-        val set2 = BarDataSet(inventoryData, GROUP_2_LABEL) //add other data to compare with: when backend is ready
+        val set2 = BarDataSet(
+            inventoryData,
+            GROUP_2_LABEL
+        ) //add other data to compare with: when backend is ready
 
         @SuppressLint("ResourceType")
         set1.color = ColorTemplate.rgb(getString(R.color.red))
@@ -278,30 +293,32 @@ open class HomeFragment : Fragment() {
         }
 
         val ordersvsInventory = (ordersSum / (ordersSum + homeStatsResponse.inventoryValue)) * 100
-        val inventoryvsOrders = (homeStatsResponse.inventoryValue / (ordersSum + homeStatsResponse.inventoryValue)) * 100
+        val inventoryvsOrders =
+            (homeStatsResponse.inventoryValue / (ordersSum + homeStatsResponse.inventoryValue)) * 100
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         try {
-        entries.add(
-            PieEntry(
-                ordersvsInventory.roundToInt().toFloat(),
-              statsTitles[0 % statsTitles.size]
+            entries.add(
+                PieEntry(
+                    ordersvsInventory.roundToInt().toFloat(),
+                    statsTitles[0 % statsTitles.size]
+                )
             )
-        ) } catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         try {
-        entries.add(
-            PieEntry(
-                inventoryvsOrders.roundToInt().toFloat(),
-                statsTitles[1 % statsTitles.size]
+            entries.add(
+                PieEntry(
+                    inventoryvsOrders.roundToInt().toFloat(),
+                    statsTitles[1 % statsTitles.size]
+                )
             )
-        ) }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
-        val dataSet = PieDataSet(entries,"")
+        val dataSet = PieDataSet(entries, "")
         dataSet.setDrawIcons(false)
         dataSet.sliceSpace = 3f
         dataSet.iconsOffset = MPPointF(0F, 40F)
@@ -330,7 +347,7 @@ open class HomeFragment : Fragment() {
 
     private fun getStatsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-           viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stats.collect { it ->
                     if (it != null) {
                         val values1: ArrayList<BarEntry> = ArrayList()
@@ -339,8 +356,26 @@ open class HomeFragment : Fragment() {
                             if (i < it.orderValue.size) {
                                 finalValues.add(it.orderValue[i])
                             } else {
-                                if(!checkIfExists(finalValues, OrderValueResponse(month = i.toDouble(), monthName = getMonthName(i), sum = 0, year = year.toDouble(), yearName = year.toString()))) {
-                                    finalValues.add(OrderValueResponse(month = i.toDouble(), monthName = getMonthName(i), sum = 0, year = year.toDouble(), yearName = year.toString()))
+                                if (!checkIfExists(
+                                        finalValues,
+                                        OrderValueResponse(
+                                            month = i.toDouble(),
+                                            monthName = getMonthName(i),
+                                            sum = 0,
+                                            year = year.toDouble(),
+                                            yearName = year.toString()
+                                        )
+                                    )
+                                ) {
+                                    finalValues.add(
+                                        OrderValueResponse(
+                                            month = i.toDouble(),
+                                            monthName = getMonthName(i),
+                                            sum = 0,
+                                            year = year.toDouble(),
+                                            yearName = year.toString()
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -354,13 +389,13 @@ open class HomeFragment : Fragment() {
                                 )
                             )
                         }
-                        Log.d("HomeFragment", "Values: "+values1.toString())
+                        Log.d("HomeFragment", "Values: " + values1.toString())
                         displayData(values1, it)
                     }
                 }
             }
-            }
         }
+    }
 
     private fun getMonthName(i: Int): String {
         return when (i) {
@@ -381,7 +416,10 @@ open class HomeFragment : Fragment() {
     }
 
     //returns true if the OrderValueResponse item already exists in the finalValues list
-    private fun checkIfExists(finalValues: ArrayList<OrderValueResponse>, item: OrderValueResponse): Boolean {
+    private fun checkIfExists(
+        finalValues: ArrayList<OrderValueResponse>,
+        item: OrderValueResponse
+    ): Boolean {
         for (i in 0 until finalValues.size) {
             if (finalValues[i].month == item.month) {
                 return true
