@@ -15,7 +15,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.responses.deliverynotes.FetchDeliveryNotesResponseItem
 import com.ultratechies.ghala.databinding.DispatchFragmentBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -45,6 +47,7 @@ class DispatchFragment : Fragment() {
         fetchDeliveryNotesListener()
         fetchDeliveryNotesErrorListener()
         changeDeliveryNoteStatusListener()
+        fetchUnAuthErrorListener()
 
 
     }
@@ -118,6 +121,18 @@ class DispatchFragment : Fragment() {
                     data.clear()
                     data.addAll(list)
                     displayData(list)
+                }
+            }
+        }
+    }
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.swipeContainer.isRefreshing = false
+                    binding.recyclerViewDispatch.visibility = View.GONE
+                    binding.tvEmptyDispatchItems.visibility = View.VISIBLE
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }

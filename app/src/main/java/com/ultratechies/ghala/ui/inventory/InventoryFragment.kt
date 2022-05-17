@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
 import com.ultratechies.ghala.databinding.InventoryFragmentBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -45,6 +47,7 @@ class InventoryFragment : Fragment() {
 
         binding.swipeContainer.isRefreshing = false
         fetchInventoryListener()
+        fetchUnAuthErrorListener()
         fetchInventoryErrorListener()
         deleteInventoryListener()
         deleteInventoryErrorListener()
@@ -103,6 +106,19 @@ class InventoryFragment : Fragment() {
                         it,
                         Snackbar.LENGTH_SHORT
                     ).show()
+                }
+            }
+        }
+    }
+
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.swipeContainer.isRefreshing = false
+                    binding.recyclerViewInventory.visibility = View.GONE
+                    binding.tvEmptyInventoryItems.visibility = View.VISIBLE
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }

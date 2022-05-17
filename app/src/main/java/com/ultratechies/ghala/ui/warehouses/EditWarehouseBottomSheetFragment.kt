@@ -18,6 +18,7 @@ import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.FragmentEditwarehouseBottomsheetBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.handleApiError
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
@@ -80,6 +81,7 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
         setOnClickListeners()
         editWarehouseListener()
         errorListener()
+        fetchUnAuthErrorListener()
     }
 
     private fun setOnClickListeners() {
@@ -150,6 +152,16 @@ class EditWarehouseBottomSheetFragment(var refreshListCallback: () -> Unit) :
                         Snackbar.LENGTH_SHORT
                     )
                         .show()
+                }
+            }
+        }
+    }
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.pbBottomSheet.visibility = View.GONE
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }

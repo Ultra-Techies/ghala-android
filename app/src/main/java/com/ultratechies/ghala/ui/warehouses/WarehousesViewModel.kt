@@ -9,6 +9,8 @@ import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.WarehouseRepository
 import com.ultratechies.ghala.utils.parseErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +28,7 @@ class WarehousesViewModel @Inject constructor(
 
     private val _deletedWarehouseResponse: MutableLiveData<APIResource<Unit>> = MutableLiveData()
     val deletedWarehouseResponse: LiveData<APIResource<Unit>> get() = _deletedWarehouseResponse
+
 
     fun getWarehouses() = viewModelScope.launch {
         _warehouses.value = APIResource.Loading

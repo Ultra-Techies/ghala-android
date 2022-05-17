@@ -22,6 +22,10 @@ class UsersViewModel @Inject constructor(val usersRepository: UserRepository) : 
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
+
     fun fetchAllUsers() {
         viewModelScope.launch {
             when (val fetchUserResponse = usersRepository.fetchAllUsers()) {
@@ -29,7 +33,10 @@ class UsersViewModel @Inject constructor(val usersRepository: UserRepository) : 
                         _fetchAllUsers.emit(fetchUserResponse.value)
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(fetchUserResponse))
+                    if (fetchUserResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(fetchUserResponse))
                 }
                 is APIResource.Loading -> {
 

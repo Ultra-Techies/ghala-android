@@ -23,10 +23,13 @@ class AddInventoryBottomSheetViewModel @Inject constructor(val inventoryReposito
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
 
+
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
     fun addInventory(addInventoryRequest: AddInventoryRequest) {
         viewModelScope.launch {
-            val addInventoryResponse = inventoryRepository.addInventoryItem(addInventoryRequest)
-            when (addInventoryResponse) {
+            when ( val addInventoryResponse = inventoryRepository.addInventoryItem(addInventoryRequest)) {
                 is APIResource.Success -> {
                     _addInventoryItem.emit(addInventoryResponse.value)
                 }
@@ -34,7 +37,10 @@ class AddInventoryBottomSheetViewModel @Inject constructor(val inventoryReposito
 
                 }
                 is APIResource.Error ->{
-                    _errorMessage.emit(parseErrors(addInventoryResponse))
+                    if (addInventoryResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(addInventoryResponse))
                 }
             }
         }

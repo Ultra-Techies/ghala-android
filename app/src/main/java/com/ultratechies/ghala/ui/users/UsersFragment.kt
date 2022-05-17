@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.responses.user.FetchAllUsersResponse
 import com.ultratechies.ghala.databinding.FragmentUsersBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -42,6 +44,7 @@ class UsersFragment : Fragment() {
         setUpAdapter()
         fetchUsersListener()
         fetchUsersErrorListener()
+        fetchUnAuthErrorListener()
     }
 
     private fun fetchUsersErrorListener() {
@@ -91,6 +94,19 @@ class UsersFragment : Fragment() {
         binding.rvUsers.apply {
             adapter = usersAdapter
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        }
+    }
+
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.swipeContainer.isRefreshing = false
+                    binding.rvUsers.visibility = View.GONE
+                    binding.tvEmptyUsers.visibility = View.VISIBLE
+                    displayUnauthorizedDialog(requireActivity())
+                }
+            }
         }
     }
 

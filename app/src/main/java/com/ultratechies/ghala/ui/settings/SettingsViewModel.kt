@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ultratechies.ghala.data.models.requests.user.UpdateUserRequest
 import com.ultratechies.ghala.data.repository.APIResource
-import com.ultratechies.ghala.data.repository.WarehouseRepository
 import com.ultratechies.ghala.domain.models.UserModel
 import com.ultratechies.ghala.domain.repository.UserRepository
 import com.ultratechies.ghala.utils.parseErrors
@@ -18,13 +17,16 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(val userRepository: UserRepository, private val repository: WarehouseRepository)  : ViewModel() {
+class SettingsViewModel @Inject constructor(val userRepository: UserRepository)  : ViewModel() {
 
     private val _updateUser = MutableSharedFlow<Any>()
     val updateUser = _updateUser.asSharedFlow()
 
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
+
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
 
     private val _user = MutableStateFlow(
         UserModel(
@@ -43,8 +45,7 @@ class SettingsViewModel @Inject constructor(val userRepository: UserRepository, 
 
     fun updateUser(updateUserRequest: UpdateUserRequest) {
         viewModelScope.launch {
-            val updateUser = userRepository.updateUser(updateUserRequest)
-            when (updateUser) {
+            when (  val updateUser = userRepository.updateUser(updateUserRequest)) {
                 is APIResource.Success -> {
                     _updateUser.emit(updateUser.value)
                 }
@@ -52,7 +53,10 @@ class SettingsViewModel @Inject constructor(val userRepository: UserRepository, 
 
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(updateUser))
+                    if (updateUser.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(updateUser))
                 }
             }
         }

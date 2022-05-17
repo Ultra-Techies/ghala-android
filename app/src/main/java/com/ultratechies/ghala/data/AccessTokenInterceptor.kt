@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.ui.auth.AuthActivity
-import com.ultratechies.ghala.ui.auth.UnAuthorizedActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -53,20 +52,20 @@ class AccessTokenInterceptor(val appDatasource: AppDatasource, val context: Cont
                     lock.unlock()
                 }
             }
-            if (res.code == 403) {
-                synchronized(this) {
-                    lock.lock()
-
-                    res.request.newBuilder().delete()
-                     runBlocking { appDatasource.clear() }
-
-                    val intent = Intent(context, UnAuthorizedActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-
-                    lock.unlock()
-                }
-            }
+//            if (res.code == 403) {
+//                synchronized(this) {
+//                    lock.lock()
+//
+//                    res.request.newBuilder().delete()
+//                     runBlocking { appDatasource.clear() }
+//
+//                    val intent = Intent(context, UnAuthorizedActivity::class.java)
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                    context.startActivity(intent)
+//
+//                    lock.unlock()
+//                }
+//            }
             return res
         } else {
             chain.proceed(chain.request())

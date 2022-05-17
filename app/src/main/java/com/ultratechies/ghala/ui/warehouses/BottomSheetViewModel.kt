@@ -8,6 +8,7 @@ import com.ultratechies.ghala.data.models.responses.warehouses.AddWarehouseRespo
 import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.WarehouseRepository
+import com.ultratechies.ghala.utils.parseErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -27,15 +28,23 @@ class BottomSheetViewModel @Inject constructor(private val warehouseRepo: Wareho
     private val _errorResponse = MutableSharedFlow<String>()
     val errorResponse = _errorResponse.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
     fun newWarehouse(warehouse: Warehouse) {
         viewModelScope.launch {
-            val warehouseResponse = warehouseRepo.addNewWarehouse(warehouse)
-            when (warehouseResponse) {
+            when (val warehouseResponse = warehouseRepo.addNewWarehouse(warehouse)) {
                 is APIResource.Success -> {
                     _newWarehouseResponse.emit(warehouseResponse.value)
                 }
                 is APIResource.Error -> {
-                    _errorResponse.emit(warehouseResponse.errorCode.toString())
+                    if (warehouseResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                    _errorResponse.emit(parseErrors(warehouseResponse))
+                }
+                is APIResource.Loading ->{
+
                 }
             }
 

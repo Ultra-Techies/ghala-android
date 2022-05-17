@@ -17,6 +17,7 @@ import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.requests.inventory.EditInventoryRequest
 import com.ultratechies.ghala.data.models.responses.inventory.InventoryResponseItem
 import com.ultratechies.ghala.databinding.FragmentInventoryEditBottomsheetBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,6 +87,7 @@ class EditInventoryBottomFragment :
 
         editInventoryListeners()
         editInventoryErrorListeners()
+        fetchUnAuthErrorListener()
     }
 
 
@@ -213,6 +215,16 @@ class EditInventoryBottomFragment :
                         it,
                         Snackbar.LENGTH_SHORT
                     ).show()
+                }
+            }
+        }
+    }
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.pbBottomSheet.visibility= View.GONE
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }

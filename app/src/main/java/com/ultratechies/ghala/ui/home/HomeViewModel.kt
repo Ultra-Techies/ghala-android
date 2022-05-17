@@ -2,8 +2,8 @@ package com.ultratechies.ghala.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.models.responses.home.HomeStatsResponse
+import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.data.repository.HomeStatsRepository
 import com.ultratechies.ghala.domain.models.UserModel
 import com.ultratechies.ghala.domain.repository.UserRepository
@@ -16,7 +16,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val userRepository: UserRepository,val homeStatsRepo: HomeStatsRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    val userRepository: UserRepository,
+    val homeStatsRepo: HomeStatsRepository
+) : ViewModel() {
 
     private val _getUserById = MutableSharedFlow<UserModel>()
     val getUserById = _getUserById.asSharedFlow()
@@ -33,6 +36,9 @@ class HomeViewModel @Inject constructor(val userRepository: UserRepository,val h
     private val _isLoading = MutableSharedFlow<Boolean>()
     val isLoading = _isLoading.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
 
     fun getUserById() {
         viewModelScope.launch {
@@ -44,7 +50,10 @@ class HomeViewModel @Inject constructor(val userRepository: UserRepository,val h
 
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(response))
+                    if (response.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(response))
                 }
             }
         }
@@ -53,16 +62,20 @@ class HomeViewModel @Inject constructor(val userRepository: UserRepository,val h
     fun getStats(id: Int) {
         viewModelScope.launch {
             val homeStatsResponse = homeStatsRepo.getStats(id)
-            when(homeStatsResponse){
-                is APIResource.Success->{
-                   _stats.emit(homeStatsResponse.value)
+            when (homeStatsResponse) {
+                is APIResource.Success -> {
+                    _stats.emit(homeStatsResponse.value)
                 }
-                is APIResource.Loading ->{
+                is APIResource.Loading -> {
                     _isLoading.emit(true)
                 }
-                is APIResource.Error ->{
-                    _errorResponse.emit(parseErrors(homeStatsResponse))
+                is APIResource.Error -> {
+                    if (homeStatsResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(homeStatsResponse))
                 }
             }
         }
-    }}
+    }
+}
