@@ -14,6 +14,7 @@ import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.data.repository.APIResource
 import com.ultratechies.ghala.databinding.WarehousesFragmentBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.handleApiError
 import com.ultratechies.ghala.utils.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
@@ -95,6 +96,9 @@ class WarehousesFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     warehouses.clear()
                 }
                 is APIResource.Error -> {
+                    if (it.errorCode == 403){
+                        displayUnauthorizedDialog(requireActivity())
+                    }
                     binding.root.handleApiError(it)
                     binding.swipeContainer.isRefreshing = false
                     showEmptyState(View.VISIBLE)

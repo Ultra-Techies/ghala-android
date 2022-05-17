@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -17,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.responses.warehouses.Warehouse
 import com.ultratechies.ghala.databinding.FragmentWhBottomsheetBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +27,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) : BottomSheetDialogFragment(), View.OnClickListener {
+class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback: () -> Unit) :
+    BottomSheetDialogFragment(), View.OnClickListener {
 
 
     private lateinit var binding: FragmentWhBottomsheetBinding
@@ -66,6 +69,8 @@ class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) :
         addWarehouseListener()
 
         errorListener()
+
+        fetchUnAuthErrorListener()
 
     }
 
@@ -115,20 +120,22 @@ class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) :
         dismiss()
     }
 
-    private fun addWarehouseListener(){
+    private fun addWarehouseListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.newWarehouseResponse.collectLatest {
-                if (it.id > 0) {
-                    binding.pbBottomSheet.visibility = GONE
-                    Snackbar.make(
-                        dialog?.window!!.decorView,
-                        "Warehouse added successfully",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                    addNewWarehouseCallback.invoke()
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        delay(1000)
-                        dismiss()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.newWarehouseResponse.collectLatest {
+                    if (it.id > 0) {
+                        binding.pbBottomSheet.visibility = GONE
+                        Snackbar.make(
+                            dialog?.window!!.decorView,
+                            "Warehouse added successfully",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        addNewWarehouseCallback.invoke()
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            delay(1000)
+                            dismiss()
+                        }
                     }
                 }
             }
@@ -150,7 +157,18 @@ class NewWarehouseBottomSheetFragment(var addNewWarehouseCallback : ()->Unit ) :
         }
     }
 
-    private fun addWarehouse( warehouse: Warehouse){
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.pbBottomSheet.visibility = GONE
+                    displayUnauthorizedDialog(requireActivity())
+                }
+            }
+        }
+    }
+
+    private fun addWarehouse(warehouse: Warehouse) {
         binding.root.hideKeyboard()
         binding.pbBottomSheet.visibility = VISIBLE
         Snackbar.make(dialog?.window!!.decorView, "Adding warehouse...", Snackbar.LENGTH_LONG)
