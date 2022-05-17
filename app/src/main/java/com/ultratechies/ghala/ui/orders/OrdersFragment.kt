@@ -19,6 +19,7 @@ import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.deliverynotes.CreateDeliveryNoteRequest
 import com.ultratechies.ghala.data.models.responses.orders.OrderResponseItem
 import com.ultratechies.ghala.databinding.OrdersFragmentBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -61,6 +62,8 @@ class OrdersFragment : Fragment() {
 
         createDeliveryNoteListeners()
         createDeliveryNoteErrorListeners()
+
+        fetchUnAuthErrorListener()
 
 
     }
@@ -188,6 +191,19 @@ class OrdersFragment : Fragment() {
                         Snackbar.LENGTH_SHORT
                     )
                         .show()
+                }
+            }
+        }
+    }
+
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.swipeContainer.isRefreshing = false
+                    binding.recyclerViewOrders.visibility =View.GONE
+                    binding.tvEmptyOrderItems.visibility = View.VISIBLE
+                    displayUnauthorizedDialog(requireActivity())
                 }
             }
         }

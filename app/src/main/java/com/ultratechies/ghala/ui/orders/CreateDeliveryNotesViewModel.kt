@@ -22,6 +22,9 @@ class CreateDeliveryNotesViewModel @Inject constructor(private val deliveryNotes
     private val _errorResponse = MutableSharedFlow<String>()
     val errorResponse = _errorResponse.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
     fun createDeliveryNote(createDeliveryNotes: CreateDeliveryNoteRequest) {
         viewModelScope.launch {
             when (val createDeliveryNoteResponse = deliveryNotesRepository.createDeliveryNotes(createDeliveryNotes)) {
@@ -32,7 +35,10 @@ class CreateDeliveryNotesViewModel @Inject constructor(private val deliveryNotes
 
                 }
                 is APIResource.Error ->{
-                    _errorResponse.emit(parseErrors(createDeliveryNoteResponse))
+                    if (createDeliveryNoteResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorResponse.emit(parseErrors(createDeliveryNoteResponse))
                 }
             }
         }

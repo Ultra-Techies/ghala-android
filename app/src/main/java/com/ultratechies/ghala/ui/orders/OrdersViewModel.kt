@@ -14,12 +14,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val appDatasource: AppDatasource) : ViewModel() {
+class OrdersViewModel @Inject constructor(private val ordersRepo: OrdersRepository, val appDatasource: AppDatasource) : ViewModel() {
     private val _getOrders = MutableSharedFlow<List<OrderResponseItem>>()
     val getOrders = _getOrders.asSharedFlow()
 
     private val _errorResponse = MutableSharedFlow<String>()
     val errorResponse = _errorResponse.asSharedFlow()
+
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
 
     private val _user = MutableStateFlow(UserModel(
         assignedWarehouse = 0,
@@ -45,8 +48,7 @@ class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val a
 
     fun fetchOrders(){
         viewModelScope.launch {
-            val orderResponse = ordersRepo.getOrders(_user.value)
-            when(orderResponse){
+            when(  val orderResponse = ordersRepo.getOrders(_user.value)){
                 is APIResource.Success->{
                     _getOrders.emit(orderResponse.value.asReversed())
                 }
@@ -54,7 +56,10 @@ class OrdersViewModel @Inject constructor(val ordersRepo: OrdersRepository,val a
 
                 }
                 is APIResource.Error ->{
-                    _errorResponse.emit(parseErrors(orderResponse))
+                    if (orderResponse.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorResponse.emit(parseErrors(orderResponse))
                 }
             }
         }
