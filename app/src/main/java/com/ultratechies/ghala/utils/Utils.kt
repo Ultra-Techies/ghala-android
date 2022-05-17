@@ -1,25 +1,29 @@
 package com.ultratechies.ghala.utils
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.icu.text.NumberFormat
 import android.net.ConnectivityManager
 import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.RequiresApi
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.ultratechies.ghala.data.repository.APIResource
+import com.ultratechies.ghala.databinding.DialogAcessDeniedBinding
 import java.text.SimpleDateFormat
 
-const val BASE_URL = "http://192.168.0.104:8080/"
+const val BASE_URL = "http://192.168.0.101:8080/"
 
 
 fun isNetworkAvailable(context: Context): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val activeNetworkInfo = connectivityManager.activeNetworkInfo
     return activeNetworkInfo != null && activeNetworkInfo.isConnected
 }
@@ -40,6 +44,7 @@ private const val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 fun validateEmail(email: String): Boolean {
     return email.matches(emailPattern.toRegex())
 }
+
 @SuppressLint("SimpleDateFormat")
 fun formatDate(date: String, originalFormat: String, expectedFormat: String): String {
     return try {
@@ -94,6 +99,7 @@ fun View.handleApiError(
         }
     }
 }
+
 fun parseErrors(failure: APIResource.Error): String {
     return when {
         failure.isNetworkError -> "Network Error"
@@ -129,8 +135,8 @@ fun parseErrors(failure: APIResource.Error): String {
 }
 
 @RequiresApi(Build.VERSION_CODES.N)
- fun getFormattedNumbers(amount:Int): String? {
-return NumberFormat.getNumberInstance().format(amount)
+fun getFormattedNumbers(amount: Int): String? {
+    return NumberFormat.getNumberInstance().format(amount)
 
 }
 
@@ -150,4 +156,14 @@ fun EditText.showKeyboard() {
 
 fun View.gone() {
     this.visibility = View.GONE
+}
+
+fun displayUnauthorizedDialog(context: Context) {
+    val alertBuilder = AlertDialog.Builder(context)
+
+    val view = DialogAcessDeniedBinding.inflate(LayoutInflater.from(context))
+    alertBuilder.setView( view.root )
+
+    val alertDialog = alertBuilder.create()
+    alertDialog.show()
 }
