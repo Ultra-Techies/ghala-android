@@ -30,15 +30,19 @@
     </string-array>
     <string-array name="category_items">
         <item>Select A Category</item>
-        <item>Drinks</item>
-        <item>Detergents</item>
-        <item>Household Items</item>
+        <item>Dry Cereals</item>
+        <item>Flour</item>
+        <item>Cooking Oil</item>
+        <item>Sugar</item>
+        <item>Soap &amp; Detergent </item>
     </string-array>
     <string-array name="new_category_items">
-        <item>Select A  New Category</item>
-        <item>Drinks</item>
-        <item>Detergents</item>
-        <item>Household Items</item>
+        <item>Select A Category</item>
+        <item>Dry Cereals</item>
+        <item>Flour</item>
+        <item>Cooking Oil</item>
+        <item>Sugar</item>
+        <item>Soap &amp; Detergent </item>
     </string-array>
     <string-array name="department">
         <item>Select a department </item>
