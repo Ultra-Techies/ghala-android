@@ -26,6 +26,9 @@ class InventoryViewModel @Inject constructor(private val inventoryRepo: Inventor
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
     private val _user = MutableStateFlow(
         UserModel(
         assignedWarehouse = 0,
@@ -50,7 +53,10 @@ class InventoryViewModel @Inject constructor(private val inventoryRepo: Inventor
 
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(response))
+                    if (response.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(response))
                 }
             }
         }
@@ -63,7 +69,10 @@ class InventoryViewModel @Inject constructor(private val inventoryRepo: Inventor
                     _deleteInventory.emit(response.value)
                 }
                 is APIResource.Error -> {
-                    _errorMessage.emit(parseErrors(response))
+                    if (response.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(response))
                 }
                 else->{
 

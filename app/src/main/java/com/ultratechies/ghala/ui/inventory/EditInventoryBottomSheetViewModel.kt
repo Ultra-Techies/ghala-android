@@ -21,17 +21,22 @@ class EditInventoryBottomSheetViewModel @Inject constructor(val inventoryReposit
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage =_errorMessage.asSharedFlow()
 
+    private val _unAuthorizedError = MutableSharedFlow<Boolean>()
+    val unAuthorizedError = _unAuthorizedError.asSharedFlow()
+
     fun editInventoryItem(editInventoryRequest: EditInventoryRequest){
         viewModelScope.launch {
-            val response = inventoryRepository.editInventoryItem(editInventoryRequest)
-            when(response){
+            when(  val response = inventoryRepository.editInventoryItem(editInventoryRequest)){
                 is APIResource.Success ->{
                     _editInventory.emit(response.value)
                 }
                 is APIResource.Error ->{
-                    _errorMessage.emit(parseErrors(response))
+                    if (response.errorCode == 403)
+                        _unAuthorizedError.emit(true)
+                    else
+                        _errorMessage.emit(parseErrors(response))
                 }
-                else ->{
+                is APIResource.Loading ->{
 
                 }
             }

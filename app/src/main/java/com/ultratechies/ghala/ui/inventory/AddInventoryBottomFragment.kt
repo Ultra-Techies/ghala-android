@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.data.models.requests.inventory.AddInventoryRequest
 import com.ultratechies.ghala.databinding.FragmentInventoryBottomsheetBinding
+import com.ultratechies.ghala.utils.displayUnauthorizedDialog
 import com.ultratechies.ghala.utils.hideKeyboard
 import com.ultratechies.ghala.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,6 +66,7 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
         setUpOnClickListeners()
         addInventoryItemListeners()
         addInventoryItemErrorListeners()
+        fetchUnAuthErrorListener()
 
     }
 
@@ -185,7 +187,16 @@ class AddInventoryBottomFragment(var addNewInventoryCallback: () -> Unit) :
             }
         }
     }
-
+    private fun fetchUnAuthErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.unAuthorizedError.collectLatest {
+                    binding.pbBottomSheet.visibility= View.GONE
+                    displayUnauthorizedDialog(requireActivity())
+                }
+            }
+        }
+    }
     private fun closeAddTaskBottomSheet() {
         dismiss()
     }
