@@ -2,11 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<!--    <item-->
-<!--        android:id="@+id/nav_search"-->
-<!--        android:icon="@drawable/ic_search_24"-->
-<!--        android:title="@string/menu_home"-->
-<!--        app:showAsAction="always"-->
-<!--        />-->
+    <item
+        android:id="@+id/nav_logout"
+        android:title="@string/menu_logout"
+        app:showAsAction="never"
+        />
 
 </menu>
