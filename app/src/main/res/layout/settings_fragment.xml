@@ -188,22 +188,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextUpdateRepeatPin" />
 
-
-            <Button
-                android:id="@+id/deleteUser"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/colorSecondary"
-                android:fontFamily="sans-serif"
-                android:text="@string/logout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/updateUser" />
-
-
             <ProgressBar
                 android:id="@+id/pb_setup_verification"
                 android:layout_width="wrap_content"

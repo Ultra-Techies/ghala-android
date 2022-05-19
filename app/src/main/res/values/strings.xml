@@ -151,4 +151,6 @@
     <string name="access_denied">Access denied</string>
     <string name="please_contact_an_admin">Please contact an admin</string>
     <string name="to_upgrade_your_role">To upgrade your role</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_users">Users</string>
 </resources>
