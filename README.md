@@ -1,3 +1,4 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/81d397e07037483bb0c6e52940ceb924)](https://www.codacy.com/gh/Ultra-Techies/ghala-android/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ultra-Techies/ghala-android&amp;utm_campaign=Badge_Grade)
 # Ghala-Android
 This is an android version of a warehouse management system, that helps in managing day-to-day operations in a warehouse.
 
