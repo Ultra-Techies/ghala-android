@@ -1,5 +1,6 @@
 package com.ultratechies.ghala.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,13 +14,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.ultratechies.ghala.R
 import com.ultratechies.ghala.data.models.AppDatasource
 import com.ultratechies.ghala.databinding.ActivityMainBinding
+import com.ultratechies.ghala.ui.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -62,8 +66,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_orders,
                 R.id.nav_inventory,
                 R.id.nav_dispatch,
+                R.id.nav_users,
                 R.id.nav_settings,
-                R.id.nav_users
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -76,15 +80,35 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.nav_search -> {
-//                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.nav_logout -> {
+                logoutUser()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun logoutUser() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Logout")
+            .setMessage("Do you want to logout")
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                /*    binding.pbSetupVerification.visibility = View.VISIBLE*/
+                lifecycleScope.launch {
+                    appDatasource.clear()
+                    val intent = Intent(this@MainActivity, AuthActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_home)

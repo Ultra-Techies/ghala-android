@@ -26,13 +26,13 @@
             android:id="@+id/nav_dispatch"
             android:icon="@drawable/ic_clock_black_24dp"
             android:title="@string/menu_dispatch" />
+        <item android:id="@+id/nav_users"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="@string/menu_users"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black"
             android:title="@string/menu_settings" />
-        <item android:id="@+id/nav_users"
-            android:icon="@drawable/ic_baseline_person_24"
-            android:title="Users"/>
-"
+
     </group>
 </menu>

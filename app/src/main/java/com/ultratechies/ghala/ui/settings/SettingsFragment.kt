@@ -60,36 +60,11 @@ class SettingsFragment : Fragment() {
         fetchWareHouses()
         updateUserListener()
         updateUserErrorListener()
-        logOutUser()
         fetchUnAuthErrorListener()
 
         warehouseViewModel.fetchWarehouses()
 
     }
-
-    private fun logOutUser() {
-        binding.deleteUser.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Logout")
-                .setMessage("Do you want to logout")
-                .setPositiveButton("Yes") { dialog, _ ->
-                    dialog.dismiss()
-                    /*    binding.pbSetupVerification.visibility = View.VISIBLE*/
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        appDatasource.clear()
-
-                        val intent = Intent(requireActivity(), AuthActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
-                    }
-                }
-                .setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
-    }
-
 
     private fun displayUserData() {
         viewLifecycleOwner.lifecycleScope.launch {
