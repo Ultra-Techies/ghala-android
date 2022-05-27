@@ -40,7 +40,6 @@ The app has the following key features:
 - An admin can  view All Warehouses or Filter Warehouses
 
 ## General Preview
-More designs coming soon...
 
 [UI/UX Design](https://miro.com/app/board/uXjVOKTf9mk=/?share_link_id=657041887226)
 
